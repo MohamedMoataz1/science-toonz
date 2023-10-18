@@ -40,9 +40,8 @@ public class Session {
     private int category;
 
     @ManyToOne
+    @JoinColumn(name = "course_id")
     private Course course;
 
-    @ManyToMany(mappedBy = "sessions")
-    private List<Student> students;
 
 }

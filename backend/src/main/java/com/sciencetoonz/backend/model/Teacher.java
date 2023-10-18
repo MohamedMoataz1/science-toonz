@@ -39,9 +39,6 @@ public class Teacher implements UserDetails {
     private String password;
 
 
-    @OneToMany(mappedBy = "teacher")
-    private List<Course> courses;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

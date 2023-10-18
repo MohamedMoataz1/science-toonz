@@ -1,0 +1,85 @@
+.background {
+    width: 100%;
+    height: 100vh;
+    background-color: darkgoldenrod;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+    
+}
+.form {
+    width: 1100px;
+    height: 520px;
+
+    /* border: 1px solid black; */
+    display: flex;
+    justify-content: start;
+    
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.8);
+
+
+}
+.sciencetoonzphoto {
+    /* border: 1px solid black; */
+    width: 700px;
+    height: 520px;
+    background-image: url('../images/ScienceToonz.png') ;
+    background-size: cover;
+    background-position: center;
+    
+
+    
+}
+.loginform {
+    /* border: 0.5px solid black;  */
+    width: 450px;
+    height: 520px;
+    background-color: white;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+.loginform h1{
+    color: darkred;
+}
+.loginform input {
+    padding: 8px;
+    border-radius: 8px;
+    margin: 17px;
+    width: 200px;
+    
+}
+.loginform input[type = "text" ]::placeholder {
+    color: rgba(139, 0, 0, 0.8);
+
+
+}
+.loginform input[type="text"]:focus::placeholder {
+    color: transparent; /* Hide the placeholder text on focus */
+}
+.loginform input[type = "password" ]::placeholder {
+    color: rgba(139, 0, 0, 0.8);
+
+}
+.loginform input[type = "password" ]:focus::placeholder {
+    color: transparent;
+}
+.loginform input[type="password"]:focus {
+    border: 1px solid darkred;
+      
+} 
+.submit {
+    border-radius: 5px;
+    position: relative;
+    top: 25px;
+    padding: 5px;
+    width: 100px;
+    background-color: darkred;
+    font-size: 20px;
+    color: white; 
+    cursor: pointer;
+}

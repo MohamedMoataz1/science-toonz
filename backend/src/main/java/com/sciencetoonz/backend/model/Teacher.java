@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @Data
@@ -36,6 +37,10 @@ public class Teacher implements UserDetails {
     @NotEmpty
     @Column(nullable = false)
     private String password;
+
+
+    @OneToMany(mappedBy = "teacher")
+    private List<Course> courses;
 
 
     @Override

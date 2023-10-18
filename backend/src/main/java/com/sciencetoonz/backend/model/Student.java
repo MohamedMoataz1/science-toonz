@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -54,6 +55,22 @@ public class Student implements UserDetails {
     @NotEmpty
     @Column(nullable = false)
     private long fees;
+
+    @ManyToMany
+    @JoinTable(
+            name = "students_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses;
+
+    @ManyToMany
+    @JoinTable(
+            name = "students_sessions",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "session_id")
+    )
+    private List<Session> sessions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

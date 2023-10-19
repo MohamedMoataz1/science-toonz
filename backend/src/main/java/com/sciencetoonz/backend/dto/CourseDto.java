@@ -1,5 +1,8 @@
-package com.sciencetoonz.backend.model;
+package com.sciencetoonz.backend.dto;
 
+import com.sciencetoonz.backend.model.Session;
+import com.sciencetoonz.backend.model.Student;
+import com.sciencetoonz.backend.model.Teacher;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -11,21 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Course {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotEmpty
-    @Column(nullable = false)
+public class CourseDto {
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
-
-
-
 }

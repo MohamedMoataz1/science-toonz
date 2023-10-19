@@ -15,9 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseDto {
-
     private String name;
-
     private Teacher teacher;
-
 }

@@ -8,6 +8,8 @@ import com.sciencetoonz.backend.service.CourseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseServiceImpl implements CourseService {
 
@@ -27,4 +29,13 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.save(course);
         return course;
     }
+
+    public List<Course> getCourses(Long teacherId) {
+         return courseRepository.findAllByTeacherId(teacherId);
+    }
+
+    public Course findByName(String courseName) {
+        return courseRepository.findByName(courseName);
+    }
+
 }

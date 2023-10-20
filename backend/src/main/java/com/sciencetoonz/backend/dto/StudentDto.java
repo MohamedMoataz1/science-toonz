@@ -1,10 +1,13 @@
 package com.sciencetoonz.backend.dto;
 
+import com.sciencetoonz.backend.model.Course;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,4 +30,5 @@ public class StudentDto {
     private long year;
 
     private long fees;
+
 }

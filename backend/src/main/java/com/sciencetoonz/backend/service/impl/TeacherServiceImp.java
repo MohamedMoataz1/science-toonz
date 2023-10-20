@@ -27,4 +27,5 @@ public class TeacherServiceImp implements TeacherService {
         teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
         teacherRepo.save(teacher);
     }
+
 }

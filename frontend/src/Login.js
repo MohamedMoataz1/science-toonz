@@ -10,12 +10,16 @@ const Login = () => {
         const User = {username , password} ; 
         console.log(User) ;
         
-        // fetch('http://localhost:8000/users' , {
+        // fetch('http://localhost:8080/api/login/' , {
         //     method : 'POST',
-        //     body : JSON.stringify(User)
+        //     body : JSON.stringify(User),
+        //     headers:{
+        //         'Content-Type': 'application/json'
+        //     }
         
         // }).then (
-        // ()=> {
+        // (res)=> {
+        //         console.log(res)
         //         console.log(User)
         // }
         // )

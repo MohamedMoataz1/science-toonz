@@ -2,27 +2,27 @@ import { useState } from 'react';
 import './cssFiles/Login.css';
 
 const Login = () => {
-    const [username ,setusername] = useState(null);
+    const [email ,setusername] = useState(null);
     const [password ,setpassword] = useState(null);
 
     const handlesubmit = (e) => {
         e.preventDefault();
-        const User = {username , password} ; 
+        const User = {email , password} ; 
         console.log(User) ;
         
-        // fetch('http://localhost:8080/api/login/' , {
-        //     method : 'POST',
-        //     body : JSON.stringify(User),
-        //     headers:{
-        //         'Content-Type': 'application/json'
-        //     }
+        fetch('http://localhost:8080/api/login/' , {
+            method : 'POST',
+            body : JSON.stringify(User),
+            headers:{
+                'Content-Type': 'application/json'
+            }
         
-        // }).then (
-        // (res)=> {
-        //         console.log(res)
-        //         console.log(User)
-        // }
-        // )
+        }).then((res) => res.json()) // Parse the response as JSON
+        .then((data) => {
+            // Log the parsed JSON data
+            console.log("Response Data:", data);
+        }
+        )
 
     }
 

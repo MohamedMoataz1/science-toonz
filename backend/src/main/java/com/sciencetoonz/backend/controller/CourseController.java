@@ -1,0 +1,34 @@
+package com.sciencetoonz.backend.controller;
+
+import com.sciencetoonz.backend.dto.CourseDto;
+import com.sciencetoonz.backend.model.Course;
+import com.sciencetoonz.backend.model.Teacher;
+import com.sciencetoonz.backend.service.CourseService;
+import com.sciencetoonz.backend.util.AuthenticationUser;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/course")
+public class CourseController {
+
+    private CourseService courseService;
+
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
+
+    @PostMapping("/createCourse")
+    public ResponseEntity<String> createCourse(@RequestBody CourseDto courseDto, Authentication authentication) {
+        System.out.println("hii");
+
+        Teacher teacher = (Teacher) AuthenticationUser.get(authentication);
+        Course course = courseService.createCourse(courseDto, teacher);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Course created with id = "+ course.getId());
+    }
+}

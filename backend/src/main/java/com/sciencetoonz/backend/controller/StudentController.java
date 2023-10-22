@@ -2,6 +2,7 @@ package com.sciencetoonz.backend.controller;
 
 import com.sciencetoonz.backend.dto.StudentDto;
 import com.sciencetoonz.backend.dto.StudentEmailDto;
+import com.sciencetoonz.backend.model.Session;
 import com.sciencetoonz.backend.model.Student;
 import com.sciencetoonz.backend.service.StudentService;
 import com.sciencetoonz.backend.util.AuthenticationUser;
@@ -35,5 +36,11 @@ public class StudentController {
     @PostMapping("/addStudentToCourse/{courseName}")
     public String addStudentToCourse(@RequestBody StudentEmailDto studentEmail, @PathVariable("courseName") String courseName) {
         return studentService.addStudentToCourse(studentEmail.getStudentEmail(), courseName);
+    }
+
+    @PostMapping("/addSessionsToStudent/{studentEmail}")
+    public String addSessionsToStudent(@RequestBody List<String> sessionsName,
+                                       @PathVariable("studentEmail") String studentEmail) {
+        return studentService.addSessionsToStudent(studentEmail, sessionsName);
     }
 }

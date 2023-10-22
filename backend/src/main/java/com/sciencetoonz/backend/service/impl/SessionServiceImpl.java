@@ -6,8 +6,10 @@ import com.sciencetoonz.backend.dto.SessionDto;
 import com.sciencetoonz.backend.exception.ApiError;
 import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Session;
+import com.sciencetoonz.backend.model.Student;
 import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +44,16 @@ public class SessionServiceImpl implements SessionService {
         return session;
     }
 
-    public List<Session> getSessionsByCourseName(String courseName) {
+    public List<SessionDto> getSessionsByCourseName(String courseName) {
         List<Session> sessions = sessionRepository.findAllByCourseName(courseName);
-        return sessions;
+        List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getDay(), session.getStartTime(),
+                session.getEndTime(), session.getLink(), session.getCategory())).toList();
+        return sessionDtos;
     }
+
+    public List<Session> getSessionsbySessionsName(List<String> sessionsName) {
+        return sessionRepository.findAllBySessionNameIn(sessionsName);
+    }
+
+
 }

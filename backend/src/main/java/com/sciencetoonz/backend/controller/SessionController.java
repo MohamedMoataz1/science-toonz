@@ -26,8 +26,10 @@ public class SessionController {
     }
 
     @GetMapping("/getSessionsByCourse/{courseName}")
-    public List<Session> getSessionsByCourse(@PathVariable("courseName") String courseName) {
+    public List<SessionDto> getSessionsByCourse(@PathVariable("courseName") String courseName) {
         return sessionService.getSessionsByCourseName(courseName);
     }
+
+
 
 }

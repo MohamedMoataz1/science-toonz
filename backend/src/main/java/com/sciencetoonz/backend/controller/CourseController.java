@@ -32,9 +32,14 @@ public class CourseController {
     }
 
     @GetMapping("/getCourses")
-    public List<Course> getCoursesOfTeacher(Authentication authentication) {
+    public ResponseEntity<List<Course>> getCoursesOfTeacher(Authentication authentication) {
         Teacher teacher = (Teacher) AuthenticationUser.get(authentication);
         Long teacherId = teacher.getId();
-        return courseService.getCourses(teacherId);
+        return ResponseEntity.ok(courseService.getCourses(teacherId));
+    }
+
+    @GetMapping("/getCourseById/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(courseService.findById(id));
     }
 }

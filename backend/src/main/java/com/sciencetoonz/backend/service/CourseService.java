@@ -10,4 +10,5 @@ public interface CourseService {
     public Course createCourse(CourseDto courseDto, Teacher teacher);
     public List<Course> getCourses(Long teacherId);
     public Course findByName(String courseName);
+    public Course findById(Long courseId);
 }

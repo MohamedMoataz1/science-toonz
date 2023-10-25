@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class TeacherServiceImp implements TeacherService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
-    private TeacherRepo teacherRepo;
+    private final TeacherRepo teacherRepo;
 
     public TeacherServiceImp(TeacherRepo teacherRepo, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.teacherRepo = teacherRepo;
@@ -27,4 +27,5 @@ public class TeacherServiceImp implements TeacherService {
         teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
         teacherRepo.save(teacher);
     }
+
 }

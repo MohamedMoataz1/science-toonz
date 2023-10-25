@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.sql.Time;
 import java.util.Date;
@@ -22,6 +23,10 @@ public class Session {
     @NotEmpty
     @Column(nullable = false)
     private String day;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String sessionName;
 
     @NotEmpty
     @Column(nullable = false)

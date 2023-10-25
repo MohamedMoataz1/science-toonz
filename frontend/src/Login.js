@@ -1,28 +1,43 @@
 import { useState } from 'react';
 import './cssFiles/Login.css';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
-    const [username ,setusername] = useState(null);
+    const [email ,setusername] = useState(null);
     const [password ,setpassword] = useState(null);
+    const history = useHistory();
 
     const handlesubmit = (e) => {
         e.preventDefault();
-        const User = {username , password} ; 
-        console.log(User) ;
+        const User = {email , password} ; 
+        // console.log(User) ;
         
-        // fetch('http://localhost:8080/api/login/' , {
-        //     method : 'POST',
-        //     body : JSON.stringify(User),
-        //     headers:{
-        //         'Content-Type': 'application/json'
-        //     }
+        fetch('http://localhost:8080/api/login/' , {
+            method : 'POST',
+            body : JSON.stringify(User),
+            headers:{
+                'Content-Type': 'application/json'
+            }
         
-        // }).then (
-        // (res)=> {
-        //         console.log(res)
-        //         console.log(User)
-        // }
-        // )
+        }).then((res) => res.json()) // Parse the response as JSON
+        .then((data) => {
+            // Log the parsed JSON data
+            // console.log("Response Data:", data.user_role);
+            if (data.user_role === true) {
+                
+                
+                
+                console.log(data.user.firstName);
+                localStorage.setItem('userToken', data.token);
+                localStorage.setItem('userName', data.user.firstName);
+
+                history.push('/home');
+
+              }
+            
+
+        }
+        )
 
     }
 

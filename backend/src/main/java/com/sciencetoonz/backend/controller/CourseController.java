@@ -8,10 +8,9 @@ import com.sciencetoonz.backend.util.AuthenticationUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/course")
@@ -25,10 +24,21 @@ public class CourseController {
 
     @PostMapping("/createCourse")
     public ResponseEntity<String> createCourse(@RequestBody CourseDto courseDto, Authentication authentication) {
-        System.out.println("hii");
 
         Teacher teacher = (Teacher) AuthenticationUser.get(authentication);
         Course course = courseService.createCourse(courseDto, teacher);
         return ResponseEntity.status(HttpStatus.CREATED).body("Course created with id = "+ course.getId());
+    }
+
+    @GetMapping("/getCourses")
+    public ResponseEntity<List<Course>> getCoursesOfTeacher(Authentication authentication) {
+        Teacher teacher = (Teacher) AuthenticationUser.get(authentication);
+        Long teacherId = teacher.getId();
+        return ResponseEntity.ok(courseService.getCourses(teacherId));
+    }
+
+    @GetMapping("/getCourseById/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(courseService.findById(id));
     }
 }

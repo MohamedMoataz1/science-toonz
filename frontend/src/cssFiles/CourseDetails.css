@@ -1,0 +1,17 @@
+.vitolo {
+    margin: 60px;
+    padding: 150px;
+    border: 1px solid black;
+    border-radius: 40px;
+    background-color: aquamarine;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    
+    
+}
+.vitolo h1 {
+    font-size: 60px;
+}

@@ -39,7 +39,7 @@ public class LoginServiceImplementation implements LoginService {
         UserDetails user = AuthenticationUser.get(authentication);
         String accessToken = jwtUtil.generateAccessToken(user.getUsername());
         boolean user_type;
-        if ("admin".equals(user.getUsername())) {
+        if (user.getUsername().contains("admin")) {
             user_type = true;
         }
         else {

@@ -29,9 +29,6 @@ public class LoginController {
 
     @PostMapping("/addTeacher")
     public void addTeacher(@Valid @RequestBody TeacherDto teacherDto) {
-
         teacherService.saveTeacher(teacherDto);
     }
-
-
 }

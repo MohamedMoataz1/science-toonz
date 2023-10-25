@@ -35,11 +35,11 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(Customizer.withDefaults())
+                .cors() // Enable CORS support
+                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests(requests ->

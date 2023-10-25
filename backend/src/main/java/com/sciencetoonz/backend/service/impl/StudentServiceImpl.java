@@ -77,8 +77,8 @@ public class StudentServiceImpl implements StudentService {
         return "Course " + courseName + " to "+ student.getFirstName();
     }
 
-    public String addSessionsToStudent(String studentEmail, List<String> sessionsName) {
-        List<Session> sessions = sessionService.getSessionsbySessionsName(sessionsName);
+    public String addSessionsToStudent(String studentEmail, List<Long> sessionsIds) {
+        List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
         Student student = studentRepo.findByEmail(studentEmail);
         List<Session> sessionList = student.getSessions();
         sessionList.addAll(sessions);

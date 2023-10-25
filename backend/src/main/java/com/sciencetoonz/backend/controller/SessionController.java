@@ -22,7 +22,7 @@ public class SessionController {
     @PostMapping("/createSession/{courseName}")
     public ResponseEntity<String> createSession(@RequestBody SessionDto sessionDto,@PathVariable("courseName") String courseName) {
         Session session = sessionService.createSession(sessionDto,courseName);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Session created with name = "+ session.getSessionName());
+        return ResponseEntity.status(HttpStatus.CREATED).body("Session created with id = "+ session.getId());
     }
 
     @GetMapping("/getSessionsByCourse/{courseName}")

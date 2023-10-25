@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -51,13 +52,14 @@ public class SessionServiceImpl implements SessionService {
 
     public List<SessionDto> getSessionsByCourseName(String courseName) {
         List<Session> sessions = sessionRepository.findAllByCourseName(courseName);
+        System.out.println("afer repo");
         List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getDay(), session.getStartTime(),
                 session.getEndTime(),session.getDate().substring(0,10), session.getLink(), session.getCategory())).toList();
         return sessionDtos;
     }
 
-    public List<Session> getSessionsbySessionsName(List<String> sessionsName) {
-        return sessionRepository.findAllBySessionNameIn(sessionsName);
+    public List<Session> getSessionsbySessionsIds(List<Long> sessionsIds) {
+        return sessionRepository.findAllByIdIn(sessionsIds);
     }
 
 }

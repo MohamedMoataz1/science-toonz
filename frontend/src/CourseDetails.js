@@ -1,83 +1,96 @@
-import { useParams , Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Logo from '../src/images/ST Transparent.png'
 import './cssFiles/CourseDetails.css'
 import { useEffect, useState } from "react";
 
 const CourseDetails = () => {
-    const [courseByid ,setcourseByid ] = useState('nothing to show');
+    const [courseByid, setcourseByid] = useState('nothing to show');
     const { id } = useParams();
     const userToken = localStorage.getItem('userToken');
-    const [Students ,setstudents ] = useState('nothing to show');
-    const [Sessions ,setSessions ] = useState('nothing to show');
+    const [Students, setstudents] = useState([]);
+    const [Sessions, setSessions] = useState([{}]);
 
     const headers = {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
     };
-    
+
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/course/getCourseById/${id}`,
-            {
-                headers: headers,
-            })
-            .then(res => {
-                return res.json();
-            })
-            .then(data => {
-                setcourseByid(data);
-                
+        const getData = async () => {
+            await fetch(`http://localhost:8080/api/course/getCourseById/${id}`,
+                {
+                    headers: headers,
+                })
+                .then(res => {
+                    return res.json();
+                })
+                .then(data => {
+                    setcourseByid(data);
+                })
+        }
+        const getSessions = async () => {
+            await fetch("http://localhost:8080/api/session/getSessionsByCourse/feb",
+                {
+                    headers: headers,
+                })
+                .then(res => {
+                    return res.json();
 
-            })
-    }, [])
+                })
+                .then(data => {
+                    setSessions(data);
+                    console.log(data);
 
-    useEffect(() => {
-        fetch(`http://localhost:8080/api/session/getSessionsByCourse/${courseByid.name}`,
-            {
-                headers: headers,
-            })
-            .then(res => {
-                return res.json();
-                console.log(res);
-            })
-            .then(data => {
-                setSessions(data)
-                
 
-            })
-    }, [])
-
-    useEffect(() => {
-        fetch(`http://localhost:8080/api/student/getStudents/${courseByid.name}`,
-            {
-                headers: headers,
-            })
-            .then(res => {
-                return res.json();
-                
-            })
-            .then(data => {
-                setstudents(data);
-                
-
-            })
+                })
+            }
+        getSessions()
+        getData()
     }, [])
 
 
+// useEffect(() => {
+//     fetch(`http://localhost:8080/api/student/getStudents/${courseByid.name}`,
+//         {
+//             headers: headers,
+//         })
+//         .then(res => {
+//             return res.json();
 
-    return (
-       
-                <div className='vitolo'>
-                    <h1>Course Name:  {courseByid.name}</h1>
-                    <h2>Start Date:  {courseByid.startDate}</h2>
-                    <h2>end Date:  {courseByid.endDate}</h2>
-                    <h2>Students : <br />  {Students} </h2>
-                    <h2>sessions : <br /> {Sessions} </h2>
-                 
+//         })
+//         .then(data => {
+//             setstudents(data);
+
+//         })
+// }, [])
+
+return (
+
+    <div className='vitolo'>
+        <h1>Course Name:  {courseByid.name}</h1>
+        <h2>Start Date:  {courseByid.startDate}</h2>
+        <h2>end Date:  {courseByid.endDate}</h2>
+
+
+        <h2>sessions : </h2>
+        <div className="session-container">
+            {Sessions.map((session, index) => (
+                <div key={session.id} className="session-item">
+                    <h2 >{session.day}</h2>
+                    <h2>{session.link}</h2>
                 </div>
-       
+            ))}
+        </div>
 
-    );
+
+
+
+
+    </div>
+
+
+);
 
 }
 

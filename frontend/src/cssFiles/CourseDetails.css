@@ -1,7 +1,7 @@
 .vitolo {
-    margin: 60px;
-    padding: 150px;
-    border: 1px solid black;
+    margin: 50px;
+    padding: 50px;
+    /* border: 1px solid black; */
     border-radius: 40px;
     background-color: aquamarine;
     display: flex;
@@ -14,4 +14,18 @@
 }
 .vitolo h1 {
     font-size: 60px;
+}
+.session-item {
+    /* border: 1px solid black; */
+    display: flex;
+    justify-content: start;
+
+}
+.session-container 
+{
+    display: flex;
+    flex-flow: column wrap;
+    border: 1px solid black;
+    border-radius: 15px;
+    width: 1000px;
 }

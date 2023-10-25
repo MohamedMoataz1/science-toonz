@@ -27,7 +27,7 @@ const Home = () => {
             })
             .then(data => {
                 setcorses(data);
-                console.log(setcorses);
+                
 
             })
     }, [])

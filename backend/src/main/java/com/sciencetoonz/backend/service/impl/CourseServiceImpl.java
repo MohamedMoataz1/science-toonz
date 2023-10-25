@@ -18,7 +18,7 @@ public class CourseServiceImpl implements CourseService {
 
 
     private final ModelMapper modelMapper;
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
     public CourseServiceImpl(CourseRepository courseRepository, ModelMapper modelMapper) {
         this.courseRepository = courseRepository;
@@ -26,9 +26,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     public Course createCourse(CourseDto courseDto, Teacher teacher) {
+        Course savedCourse = courseRepository.findByName(courseDto.getName());
+        if(savedCourse != null) {
+            throw ApiError.badRequest("Course already exists with this name");
+        }
         Course course = modelMapper.map(courseDto, Course.class);
         course.setTeacher(teacher);
-        System.out.println(course);
         courseRepository.save(course);
         return course;
     }

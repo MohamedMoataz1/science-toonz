@@ -23,5 +23,4 @@ public class CourseDto {
     private Date startDate;
     @JsonFormat(pattern = "MM/dd/yyyy")
     private Date endDate;
-    private Teacher teacher;
 }

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
-    private TeacherRepo teacherRepo;
-    private StudentRepo studentRepo;
+    private final TeacherRepo teacherRepo;
+    private final StudentRepo studentRepo;
 
     public CustomUserDetailsServiceImpl(TeacherRepo teacherRepo, StudentRepo studentRepo) {
         this.teacherRepo = teacherRepo;

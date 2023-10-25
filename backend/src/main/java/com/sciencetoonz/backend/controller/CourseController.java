@@ -24,7 +24,6 @@ public class CourseController {
 
     @PostMapping("/createCourse")
     public ResponseEntity<String> createCourse(@RequestBody CourseDto courseDto, Authentication authentication) {
-        System.out.println("hii");
 
         Teacher teacher = (Teacher) AuthenticationUser.get(authentication);
         Course course = courseService.createCourse(courseDto, teacher);

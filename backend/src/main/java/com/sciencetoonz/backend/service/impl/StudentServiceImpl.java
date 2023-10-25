@@ -31,6 +31,12 @@ public class StudentServiceImpl implements StudentService {
         this.courseService = courseService;
     }
 
+    public void saveStudent(Student student) {
+        studentRepo.save(student);
+    }
+    public Student findByEmail(String studentEmail) {
+        return studentRepo.findByEmail(studentEmail);
+    }
 
     public void addStudent(StudentDto studentDto) {
 
@@ -40,7 +46,6 @@ public class StudentServiceImpl implements StudentService {
         }
 
         Student student = modelMapper.map(studentDto, Student.class);
-        System.out.println(student);
         student.setPassword(passwordEncoder.encode(student.getPassword()));
         studentRepo.save(student);
     }
@@ -52,11 +57,21 @@ public class StudentServiceImpl implements StudentService {
     public String addStudentToCourse(String studentEmail, String courseName) {
         System.out.println(studentEmail);
         Student student = studentRepo.findByEmail(studentEmail);
-        List<Course> studentCourses = student.getCourses();
+        if(student == null) {
+            throw ApiError.badRequest("You must create a new user koty");
+        }
+
         Course course = courseService.findByName(courseName);
+        if(course == null) {
+            throw ApiError.notFound("Course not found");
+        }
+
+        List<Course> studentCourses = student.getCourses();
         if (studentCourses.contains(course)){
             throw ApiError.notFound("Student Already Assigned to this course before");
         }
+
+
         studentCourses.add(course);
         studentRepo.save(student);
         return "Course " + courseName + " to "+ student.getFirstName();
@@ -68,7 +83,7 @@ public class StudentServiceImpl implements StudentService {
         List<Session> sessionList = student.getSessions();
         sessionList.addAll(sessions);
         studentRepo.save(student);
-        return "saved";
+        return sessions.size() + " sessions added to " + student.getFirstName();
     }
 
 }

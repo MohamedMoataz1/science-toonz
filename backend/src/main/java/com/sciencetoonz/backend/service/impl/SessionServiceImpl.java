@@ -52,7 +52,7 @@ public class SessionServiceImpl implements SessionService {
     public List<SessionDto> getSessionsByCourseName(String courseName) {
         List<Session> sessions = sessionRepository.findAllByCourseName(courseName);
         List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getDay(), session.getStartTime(),
-                session.getEndTime(), session.getLink(), session.getCategory())).toList();
+                session.getEndTime(),session.getDate().substring(0,10), session.getLink(), session.getCategory())).toList();
         return sessionDtos;
     }
 

@@ -30,6 +30,4 @@ public class SessionController {
         return sessionService.getSessionsByCourseName(courseName);
     }
 
-
-
 }

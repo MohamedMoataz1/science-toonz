@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Time;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +21,8 @@ public class SessionDto {
     private Time startTime;
 
     private Time endTime;
+
+    private String date;
 
     private String link;
 

@@ -38,6 +38,10 @@ public class Session {
 
     @NotEmpty
     @Column(nullable = false)
+    private String date;
+
+    @NotEmpty
+    @Column(nullable = false)
     private String link;
 
     @NotEmpty

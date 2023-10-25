@@ -60,5 +60,4 @@ public class SessionServiceImpl implements SessionService {
         return sessionRepository.findAllBySessionNameIn(sessionsName);
     }
 
-
 }

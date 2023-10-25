@@ -34,6 +34,10 @@ public class Course {
     @JsonFormat(pattern = "MM/dd/yyyy")
     private Date endDate;
 
+    @NotEmpty
+    @Column(nullable = false)
+    private Long numOfCategories;
+
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;

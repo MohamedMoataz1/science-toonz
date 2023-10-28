@@ -1,6 +1,11 @@
 import Logo from './images/ST Transparent.png';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 const Navbar = () => {
+    const loc = useLocation()
+    const logoutHandler = (e) => {
+        localStorage.removeItem("userToken");
+        
+    }
     return (
 
                 <div className="navbar">
@@ -9,7 +14,7 @@ const Navbar = () => {
                         <Link to="/home" className='homebutton'> Home </Link>
 
                         {/* <button className='Coursesbutton'> Courses </button> */}
-                        <button className='Logoutbutton'> Logout </button>
+                        <button className='Logoutbutton' onClick={logoutHandler}> Logout </button>
                     </div>
                 </div>
 

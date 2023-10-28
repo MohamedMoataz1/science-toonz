@@ -1,9 +1,9 @@
-.vitolo {
+.Details {
     margin: 50px;
     padding: 50px;
     /* border: 1px solid black; */
     border-radius: 40px;
-    background-color: aquamarine;
+    background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,11 +21,83 @@
     justify-content: start;
 
 }
-.session-container 
+.sessions-container 
 {
+    margin: 30px;
+
+    max-height: 450px;
+    flex-direction: column;
     display: flex;
-    flex-flow: column wrap;
-    border: 1px solid black;
-    border-radius: 15px;
-    width: 1000px;
+    padding: 30px;
+    border-radius: 60px;
+    width: 85%;
+}
+.nav-bar-session-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 5%;
+}
+
+body.active-modal {
+    overflow-y: hidden;
+}
+.btn-modal {
+    padding: 10px;
+    display: block;
+    margin: 100px auto 0;
+    font-size: 18px;
+}
+.modal , .overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+}
+.overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(270deg,#00223e,#ae796a);
+    
+}
+
+.modal-content {
+    background-color: white;
+    border: 10px solid black;
+    box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 1);
+    width: 50%;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+    border-radius: 35px;
+
+    
+}
+.close-btn{
+
+    display: flex;
+    justify-content: space-between;
+    padding-right: 25px;
+    padding-top: 15px;
+    margin-right: 1px;
+    margin-left: 31px;
+    
+} 
+.add-course-form {
+    /* border: 1px solid black; */
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin: 22px;
+    padding: 10px;
+}
+.logoimage-popup {
+    height: 50%;
+    width: 15%;
 }

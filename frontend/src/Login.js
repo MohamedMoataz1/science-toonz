@@ -12,13 +12,13 @@ const Login = () => {
         const User = {email , password} ; 
         // console.log(User) ;
         
-        fetch('http://localhost:8080/api/login/' , {
+        fetch('http://localhost:8080/api/login/' ,{
             method : 'POST',
             body : JSON.stringify(User),
             headers:{
                 'Content-Type': 'application/json'
             }
-        
+         
         }).then((res) => res.json()) // Parse the response as JSON
         .then((data) => {
             // Log the parsed JSON data

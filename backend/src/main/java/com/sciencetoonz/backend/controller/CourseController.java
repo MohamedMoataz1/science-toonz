@@ -1,5 +1,6 @@
 package com.sciencetoonz.backend.controller;
 
+import com.sciencetoonz.backend.dto.CourseDetailsDto;
 import com.sciencetoonz.backend.dto.CourseDto;
 import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Teacher;
@@ -31,7 +32,7 @@ public class CourseController {
     }
 
     @GetMapping("/getCourses")
-    public ResponseEntity<List<Course>> getCoursesOfTeacher(Authentication authentication) {
+    public ResponseEntity<List<CourseDto>> getCoursesOfTeacher(Authentication authentication) {
         Teacher teacher = (Teacher) AuthenticationUser.get(authentication);
         Long teacherId = teacher.getId();
         return ResponseEntity.ok(courseService.getCourses(teacherId));
@@ -40,5 +41,11 @@ public class CourseController {
     @GetMapping("/getCourseById/{id}")
     public ResponseEntity<Course> getCourseById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(courseService.findById(id));
+    }
+
+    @GetMapping("/getCourseDetailsById/{courseId}")
+    public ResponseEntity<CourseDetailsDto> getCourseDetailsById(@PathVariable("courseId") Long courseId) {
+        CourseDetailsDto course = courseService.findCourseDetailsById(courseId);
+        return ResponseEntity.ok(course);
     }
 }

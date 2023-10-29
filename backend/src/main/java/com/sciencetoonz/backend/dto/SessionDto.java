@@ -16,6 +16,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionDto {
+    private Long id;
+
     private String day;
 
     private Time startTime;

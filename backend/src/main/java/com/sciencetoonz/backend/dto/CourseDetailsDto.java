@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseDto {
+public class CourseDetailsDto {
 
     private long id;
     private String name;
@@ -25,4 +25,6 @@ public class CourseDto {
     @JsonFormat(pattern = "MM/dd/yyyy")
     private Date endDate;
     private Long numOfCategories;
+    private List<StudentDto> students;
+    private List<SessionDto> sessions;
 }

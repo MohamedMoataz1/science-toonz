@@ -10,35 +10,36 @@ import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
 import com.sciencetoonz.backend.service.StudentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
 
-    private final SessionRepository sessionRepository;
-    private final CourseService courseService;
-    private final ModelMapper modelMapper;
+    @Autowired
+    private SessionRepository sessionRepository;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private StudentService studentService;
 
-    public SessionServiceImpl(SessionRepository sessionRepository, ModelMapper modelMapper, CourseService courseService) {
-        this.courseService = courseService;
-        this.modelMapper = modelMapper;
-        this.sessionRepository = sessionRepository;
-    }
 
-    public Session createSession(SessionDto sessionDto, String courseName) {
+    @Override
+    public Session createSession(SessionDto sessionDto, Long courseId) {
         Session session = modelMapper.map(sessionDto, Session.class);
 
-        Course course = courseService.findByName(courseName);
+        Course course = courseService.findById(courseId);
         if (course == null) {
             throw ApiError.badRequest("This course doesn't exist");
         }
 
         String dayS = session.getDay().substring(0,3).toLowerCase();
         String timeS = session.getStartTime().toString().substring(0,2).toLowerCase();
-        String courseS = courseName.substring(0,3).toLowerCase();
+        String courseS = course.getName().substring(0,3).toLowerCase();
         session.setSessionName(courseS+dayS+timeS);
         session.setCourse(course);
         Session savedSession = sessionRepository.findBySessionName(session.getSessionName());
@@ -50,6 +51,7 @@ public class SessionServiceImpl implements SessionService {
         return session;
     }
 
+    @Override
     public List<SessionDto> getSessionsByCourseId(Long courseId) {
         List<Session> sessions = sessionRepository.findSessionsByCourseId(courseId);
         List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),session.getDay(), session.getStartTime(),
@@ -57,8 +59,42 @@ public class SessionServiceImpl implements SessionService {
         return sessionDtos;
     }
 
+    @Override
     public List<Session> getSessionsbySessionsIds(List<Long> sessionsIds) {
         return sessionRepository.findAllByIdIn(sessionsIds);
     }
 
+    @Override
+    public String addSessionsToStudent(String studentEmail, List<Long> sessionsIds) {
+        List<Session> sessions = getSessionsbySessionsIds(sessionsIds);
+        if(sessions.stream().count()==0) {
+            throw ApiError.notFound("No sessions with those ids");
+        }
+        Student student = studentService.getStudentByEmail(studentEmail);
+        if(student == null) {
+            throw ApiError.notFound("Student Not Found");
+        }
+        List<Session> sessionList = student.getSessions();
+        boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
+        if(hasOverlap) {
+            throw ApiError.badRequest("There is a session already assigned before");
+        }
+        sessionList.addAll(sessions);
+        studentService.saveStudent(student);
+        return sessions.size() + " sessions added to " + student.getFirstName();
+    }
+
+    @Override
+    public List<SessionDto> getSessionsOfCourseOfStudent(Long studentId, Long courseId) {
+        Student student = studentService.getStudentById(studentId);
+        List<Session> sessions = sessionRepository.findByStudentsAndCourseId(student,courseId);
+        List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),
+                session.getDay(),
+                session.getStartTime(),
+                session.getEndTime(),
+                session.getDate(),
+                session.getLink(),
+                session.getCategory())).toList();
+        return sessionDtos;
+    }
 }

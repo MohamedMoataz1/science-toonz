@@ -19,15 +19,27 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-    @PostMapping("/createSession/{courseName}")
-    public ResponseEntity<String> createSession(@RequestBody SessionDto sessionDto,@PathVariable("courseName") String courseName) {
-        Session session = sessionService.createSession(sessionDto,courseName);
+    @PostMapping("/createSession/{courseId}")
+    public ResponseEntity<String> createSession(@RequestBody SessionDto sessionDto,@PathVariable("courseId") Long courseId) {
+        Session session = sessionService.createSession(sessionDto,courseId);
         return ResponseEntity.status(HttpStatus.CREATED).body("Session created with id = "+ session.getId());
     }
 
     @GetMapping("/getSessionsByCourse/{courseId}")
-    public List<SessionDto> getSessionsByCourse(@PathVariable("courseId") Long courseId) {
-        return sessionService.getSessionsByCourseId(courseId);
+    public ResponseEntity<List<SessionDto>> getSessionsByCourse(@PathVariable("courseId") Long courseId) {
+        return ResponseEntity.ok(sessionService.getSessionsByCourseId(courseId));
     }
 
+    @GetMapping("/getSessionsOfStudentOfCourse/{studentId}/{courseId}")
+    public ResponseEntity<List<SessionDto>> getSessionsOfStudentOfCourse(@PathVariable("studentId")Long studentId,
+                                                                      @PathVariable("courseId")Long courseId) {
+        return ResponseEntity.ok(sessionService.getSessionsOfCourseOfStudent(studentId,courseId));
+    }
+
+    @PostMapping("/addSessionsToStudent/{studentEmail}")
+    public ResponseEntity<String> addSessionsToStudent(@RequestBody List<Long> sessionsIds,
+                                                       @PathVariable("studentEmail") String studentEmail) {
+        String success = sessionService.addSessionsToStudent(studentEmail, sessionsIds);
+        return ResponseEntity.ok(success);
+    }
 }

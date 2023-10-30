@@ -4,40 +4,30 @@ import com.sciencetoonz.backend.Repository.StudentRepo;
 import com.sciencetoonz.backend.dto.StudentDto;
 import com.sciencetoonz.backend.exception.ApiError;
 import com.sciencetoonz.backend.model.Course;
-import com.sciencetoonz.backend.model.Session;
 import com.sciencetoonz.backend.model.Student;
 import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
 import com.sciencetoonz.backend.service.StudentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-    private final PasswordEncoder passwordEncoder;
-    private final SessionService sessionService;
-    private final ModelMapper modelMapper;
-    private final CourseService courseService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
     private StudentRepo studentRepo;
 
-    public StudentServiceImpl(StudentRepo studentRepo, PasswordEncoder passwordEncoder, SessionService sessionService, ModelMapper modelMapper, CourseService courseService) {
-        this.studentRepo = studentRepo;
-        this.passwordEncoder = passwordEncoder;
-        this.sessionService = sessionService;
-        this.modelMapper = modelMapper;
-        this.courseService = courseService;
-    }
-
-    public void saveStudent(Student student) {
-        studentRepo.save(student);
-    }
-    public Student findByEmail(String studentEmail) {
-        return studentRepo.findByEmail(studentEmail);
-    }
-
+    @Override
     public void addStudent(StudentDto studentDto) {
 
         Student savedStudent = studentRepo.findByEmail(studentDto.getEmail());
@@ -50,6 +40,7 @@ public class StudentServiceImpl implements StudentService {
         studentRepo.save(student);
     }
 
+    @Override
     public List<StudentDto> getStudentsByCourseId(Long courseId) {
         List<Student> students = studentRepo.findAllByCoursesId(courseId);
         List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(
@@ -67,6 +58,7 @@ public class StudentServiceImpl implements StudentService {
         return studentDtos;
     }
 
+    @Override
     public String addStudentToCourse(String studentEmail, Long courseId) {
         System.out.println(studentEmail);
         Student student = studentRepo.findByEmail(studentEmail);
@@ -89,13 +81,23 @@ public class StudentServiceImpl implements StudentService {
         return "Course " + course.getName() + " to "+ student.getFirstName();
     }
 
-    public String addSessionsToStudent(String studentEmail, List<Long> sessionsIds) {
-        List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
-        Student student = studentRepo.findByEmail(studentEmail);
-        List<Session> sessionList = student.getSessions();
-        sessionList.addAll(sessions);
+    @Override
+    public Student getStudentById(Long studentId) {
+        Optional<Student> student = studentRepo.findById(studentId);
+        if (!student.isPresent()) {
+            throw ApiError.notFound("Student not found");
+        }
+        return student.get();
+    }
+
+    @Override
+    public Student getStudentByEmail(String studentEmail) {
+        return studentRepo.findByEmail(studentEmail);
+    }
+
+    @Override
+    public void saveStudent(Student student) {
         studentRepo.save(student);
-        return sessions.size() + " sessions added to " + student.getFirstName();
     }
 
 }

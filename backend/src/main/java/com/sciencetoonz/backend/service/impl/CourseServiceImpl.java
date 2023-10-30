@@ -13,7 +13,10 @@ import com.sciencetoonz.backend.model.Session;
 import com.sciencetoonz.backend.model.Student;
 import com.sciencetoonz.backend.model.Teacher;
 import com.sciencetoonz.backend.service.CourseService;
+import com.sciencetoonz.backend.service.SessionService;
+import com.sciencetoonz.backend.service.StudentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,17 +26,16 @@ import java.util.Optional;
 public class CourseServiceImpl implements CourseService {
 
 
-    private final ModelMapper modelMapper;
-    private final CourseRepository courseRepository;
-    private final StudentRepo studentRepo;
-    private final SessionRepository sessionRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private SessionService sessionService;
 
-    public CourseServiceImpl(CourseRepository courseRepository, ModelMapper modelMapper, StudentRepo studentRepo, SessionRepository sessionRepository) {
-        this.courseRepository = courseRepository;
-        this.modelMapper = modelMapper;
-        this.studentRepo = studentRepo;
-        this.sessionRepository = sessionRepository;
-    }
+
 
     public Course createCourse(CourseDto courseDto, Teacher teacher) {
         Course savedCourse = courseRepository.findByName(courseDto.getName());
@@ -79,31 +81,10 @@ public class CourseServiceImpl implements CourseService {
 
         Course course = c.get();
 
-        List<Student> students = studentRepo.findStudentsByCoursesContains(course);
-        List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(
-                student.getId(),
-                student.getFirstName(),
-                student.getLastName(),
-                student.getFatherName(),
-                student.getSchool(),
-                student.getEmail(),
-                student.getPassword(),
-                student.getOfficialEmail(),
-                student.getYear(),
-                student.getFees()
-        )).toList();
+        List<StudentDto> studentDtos = studentService.getStudentsByCourseId(course.getId());
 
-        List<Session> sessions = sessionRepository.findSessionsByCourseId(course.getId());
-        List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(
-                session.getId(),
-                session.getDay(),
-                session.getStartTime(),
-                session.getEndTime(),
-                session.getDate(),
-                session.getLink(),
-                session.getCategory()
-        )).toList();
 
+        List<SessionDto> sessionDtos = sessionService.getSessionsByCourseId(course.getId());
 
         CourseDetailsDto courseDetailsDto = new CourseDetailsDto(course.getId(),
                 course.getName(),

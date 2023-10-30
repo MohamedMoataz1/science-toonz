@@ -6,9 +6,11 @@ import com.sciencetoonz.backend.model.Session;
 import java.util.List;
 
 public interface SessionService {
-    public Session createSession(SessionDto sessionDto, String courseName);
+    public Session createSession(SessionDto sessionDto, Long courseId);
 
     public List<SessionDto> getSessionsByCourseId(Long courseId);
 
     public List<Session> getSessionsbySessionsIds(List<Long> sessionsIds);
+    public List<SessionDto> getSessionsOfCourseOfStudent(Long studentId, Long courseId);
+    public String addSessionsToStudent(String studentEmail, List<Long> sessionsIds);
 }

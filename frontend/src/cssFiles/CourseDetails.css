@@ -101,3 +101,8 @@ body.active-modal {
     height: 50%;
     width: 15%;
 }
+.thead {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+}

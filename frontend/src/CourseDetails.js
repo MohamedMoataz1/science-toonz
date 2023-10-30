@@ -15,7 +15,6 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-
 const CourseDetails = () => {
     const [courseByid, setcourseByid] = useState('nothing to show');
     const { id } = useParams();
@@ -37,53 +36,61 @@ const CourseDetails = () => {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
     };
+    
+
 
 
     useEffect(() => {
-        const getcourses = async () => {
-            await fetch(`http://localhost:8080/api/course/getCourseById/${id}`,
-                {
-                    headers: headers,
-                })
-                .then(res => {
-                    return res.json();
-                })
-                .then(data => {
-                    setcourseByid(data);
-                })
+        const fetchs = async () => {
+            let _data;
+            let _sessions;
+            let _studends;
+            const getcourses = async () => {
+                await fetch(`http://localhost:8080/api/course/getCourseById/${id}`,
+                    {
+                        headers: headers,
+                    })
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(data => {
+                        _data = data;
+                        console.log(data);
+                    })
+                await fetch(`http://localhost:8080/api/session/getSessionsByCourse/${courseByid.name}`,
+                    {
+                        headers: headers,
+                    })
+                    .then(res => {
+                        return res.json();
+    
+                    })
+                    .then(data => {
+                        _sessions = data;
+                        console.log(data);
+                    })
+                await fetch(`http://localhost:8080/api/student/getStudents/${courseByid.name} `,
+                    {
+                        headers: headers,
+                    })
+                    .then(res => {
+                        return res.json();
+    
+                    })
+                    .then(data => {
+                        _studends = data;
+                        console.log(data);
+                    })
+            }
+    
+            await getcourses();
+            console.log("waiting the function")
+            setcourseByid(_data);
+            setstudents(_studends);
+            setSessions(_sessions);
         }
-        const getSessions = async () => {
-            await fetch(`http://localhost:8080/api/session/getSessionsByCourse/${courseByid.name}`,
-                {
-                    headers: headers,
-                })
-                .then(res => {
-                    return res.json();
-
-                })
-                .then(data => {
-                    setSessions(data);
-                })
-        }
-        const getStudents = async () => {
-            await fetch(`http://localhost:8080/api/student/getStudents/${courseByid.name}`,
-                {
-                    headers: headers,
-                })
-                .then(res => {
-                    return res.json();
-
-                })
-                .then(data => {
-                    setstudents(data);
-                })
-        }
-
-        getcourses();
-        getSessions();
-        getStudents();
-
-    }, [headers])
+       fetchs()
+    },[])
 
     if (modal) {
         document.body.classList.add('active-modal')
@@ -180,7 +187,7 @@ const CourseDetails = () => {
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
-                            <TableRow>
+                            <TableRow className="thead">
                                 <TableCell>Name</TableCell>
                                 <TableCell >Start Date</TableCell>
                                 <TableCell >End Date</TableCell>

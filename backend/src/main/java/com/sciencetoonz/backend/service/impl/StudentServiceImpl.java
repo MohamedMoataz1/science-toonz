@@ -50,18 +50,31 @@ public class StudentServiceImpl implements StudentService {
         studentRepo.save(student);
     }
 
-    public List<Student> getStudentsByCourseName(String courseName) {
-        return studentRepo.findAllByCoursesName(courseName);
+    public List<StudentDto> getStudentsByCourseId(Long courseId) {
+        List<Student> students = studentRepo.findAllByCoursesId(courseId);
+        List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(
+                student.getId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getFatherName(),
+                student.getSchool(),
+                student.getEmail(),
+                student.getPassword(),
+                student.getOfficialEmail(),
+                student.getYear(),
+                student.getFees()
+        )).toList();
+        return studentDtos;
     }
 
-    public String addStudentToCourse(String studentEmail, String courseName) {
+    public String addStudentToCourse(String studentEmail, Long courseId) {
         System.out.println(studentEmail);
         Student student = studentRepo.findByEmail(studentEmail);
         if(student == null) {
             throw ApiError.badRequest("You must create a new user koty");
         }
 
-        Course course = courseService.findByName(courseName);
+        Course course = courseService.findById(courseId);
         if(course == null) {
             throw ApiError.notFound("Course not found");
         }
@@ -71,14 +84,13 @@ public class StudentServiceImpl implements StudentService {
             throw ApiError.notFound("Student Already Assigned to this course before");
         }
 
-
         studentCourses.add(course);
         studentRepo.save(student);
-        return "Course " + courseName + " to "+ student.getFirstName();
+        return "Course " + course.getName() + " to "+ student.getFirstName();
     }
 
-    public String addSessionsToStudent(String studentEmail, List<String> sessionsName) {
-        List<Session> sessions = sessionService.getSessionsbySessionsName(sessionsName);
+    public String addSessionsToStudent(String studentEmail, List<Long> sessionsIds) {
+        List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
         Student student = studentRepo.findByEmail(studentEmail);
         List<Session> sessionList = student.getSessions();
         sessionList.addAll(sessions);

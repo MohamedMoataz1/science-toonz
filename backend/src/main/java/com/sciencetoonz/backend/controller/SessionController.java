@@ -22,14 +22,12 @@ public class SessionController {
     @PostMapping("/createSession/{courseName}")
     public ResponseEntity<String> createSession(@RequestBody SessionDto sessionDto,@PathVariable("courseName") String courseName) {
         Session session = sessionService.createSession(sessionDto,courseName);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Session created with name = "+ session.getSessionName());
+        return ResponseEntity.status(HttpStatus.CREATED).body("Session created with id = "+ session.getId());
     }
 
-    @GetMapping("/getSessionsByCourse/{courseName}")
-    public List<SessionDto> getSessionsByCourse(@PathVariable("courseName") String courseName) {
-        return sessionService.getSessionsByCourseName(courseName);
+    @GetMapping("/getSessionsByCourse/{courseId}")
+    public List<SessionDto> getSessionsByCourse(@PathVariable("courseId") Long courseId) {
+        return sessionService.getSessionsByCourseId(courseId);
     }
-
-
 
 }

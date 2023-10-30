@@ -9,4 +9,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     public Course findByName(String courseName);
     public List<Course> findAllByTeacherId(Long teacherId);
+
 }

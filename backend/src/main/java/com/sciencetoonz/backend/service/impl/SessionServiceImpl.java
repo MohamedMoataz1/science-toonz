@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -35,9 +36,9 @@ public class SessionServiceImpl implements SessionService {
             throw ApiError.badRequest("This course doesn't exist");
         }
 
-        String dayS = session.getDay().substring(0,3);
-        String timeS = session.getStartTime().toString().substring(0,2);
-        String courseS = courseName.substring(0,3);
+        String dayS = session.getDay().substring(0,3).toLowerCase();
+        String timeS = session.getStartTime().toString().substring(0,2).toLowerCase();
+        String courseS = courseName.substring(0,3).toLowerCase();
         session.setSessionName(courseS+dayS+timeS);
         session.setCourse(course);
         Session savedSession = sessionRepository.findBySessionName(session.getSessionName());
@@ -49,16 +50,15 @@ public class SessionServiceImpl implements SessionService {
         return session;
     }
 
-    public List<SessionDto> getSessionsByCourseName(String courseName) {
-        List<Session> sessions = sessionRepository.findAllByCourseName(courseName);
-        List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getDay(), session.getStartTime(),
-                session.getEndTime(), session.getLink(), session.getCategory())).toList();
+    public List<SessionDto> getSessionsByCourseId(Long courseId) {
+        List<Session> sessions = sessionRepository.findSessionsByCourseId(courseId);
+        List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),session.getDay(), session.getStartTime(),
+                session.getEndTime(),session.getDate().substring(0,10), session.getLink(), session.getCategory())).toList();
         return sessionDtos;
     }
 
-    public List<Session> getSessionsbySessionsName(List<String> sessionsName) {
-        return sessionRepository.findAllBySessionNameIn(sessionsName);
+    public List<Session> getSessionsbySessionsIds(List<Long> sessionsIds) {
+        return sessionRepository.findAllByIdIn(sessionsIds);
     }
-
 
 }

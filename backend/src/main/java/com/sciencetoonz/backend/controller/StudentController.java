@@ -28,22 +28,22 @@ public class StudentController {
         studentService.addStudent(studentDto);
     }
 
-    @GetMapping("/getStudents/{courseName}")
-    public ResponseEntity<List<Student>> getStudentsByCourseName (@PathVariable("courseName") String courseName) {
-        List<Student> students = studentService.getStudentsByCourseName(courseName);
+    @GetMapping("/getStudents/{courseId}")
+    public ResponseEntity<List<StudentDto>> getStudentsByCourseName (@PathVariable("courseId") Long courseId) {
+        List<StudentDto> students = studentService.getStudentsByCourseId(courseId);
         return ResponseEntity.ok(students);
     }
 
-    @PostMapping("/addStudentToCourse/{courseName}/{studentEmail}")
-    public ResponseEntity<String> addStudentToCourse(@PathVariable("courseName") String courseName, @PathVariable("studentEmail") String studentEmail) {
-        String success = studentService.addStudentToCourse(studentEmail, courseName);
+    @PostMapping("/addStudentToCourse/{courseId}/{studentEmail}")
+    public ResponseEntity<String> addStudentToCourse(@PathVariable("courseId") Long courseId, @PathVariable("studentEmail") String studentEmail) {
+        String success = studentService.addStudentToCourse(studentEmail, courseId);
         return ResponseEntity.ok(success);
     }
 
     @PostMapping("/addSessionsToStudent/{studentEmail}")
-    public ResponseEntity<String> addSessionsToStudent(@RequestBody List<String> sessionsName,
+    public ResponseEntity<String> addSessionsToStudent(@RequestBody List<Long> sessionsIds,
                                        @PathVariable("studentEmail") String studentEmail) {
-        String success = studentService.addSessionsToStudent(studentEmail, sessionsName);
+        String success = studentService.addSessionsToStudent(studentEmail, sessionsIds);
         return ResponseEntity.ok(success);
     }
 }

@@ -4,6 +4,7 @@ import com.sciencetoonz.backend.Repository.StudentRepo;
 import com.sciencetoonz.backend.dto.StudentDto;
 import com.sciencetoonz.backend.exception.ApiError;
 import com.sciencetoonz.backend.model.Course;
+import com.sciencetoonz.backend.model.Session;
 import com.sciencetoonz.backend.model.Student;
 import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
@@ -26,6 +27,8 @@ public class StudentServiceImpl implements StudentService {
     private CourseService courseService;
     @Autowired
     private StudentRepo studentRepo;
+    @Autowired
+    private SessionService sessionService;
 
     @Override
     public void addStudent(StudentDto studentDto) {
@@ -59,11 +62,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public String addStudentToCourse(String studentEmail, Long courseId) {
+    public String addStudentToCourse(String studentEmail, Long courseId, List<Long> sessionsIds) {
         System.out.println(studentEmail);
         Student student = studentRepo.findByEmail(studentEmail);
         if(student == null) {
-            throw ApiError.badRequest("You must create a new user koty");
+            throw ApiError.notFound("You must create a new user koty");
         }
 
         Course course = courseService.findById(courseId);
@@ -77,8 +80,19 @@ public class StudentServiceImpl implements StudentService {
         }
 
         studentCourses.add(course);
+        List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
+        if(sessions.stream().count()==0) {
+            throw ApiError.notFound("No sessions with those ids");
+        }
+        List<Session> sessionList = student.getSessions();
+        boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
+        if(hasOverlap) {
+            throw ApiError.badRequest("There is a session already assigned before");
+        }
+        sessionList.addAll(sessions);
         studentRepo.save(student);
-        return "Course " + course.getName() + " to "+ student.getFirstName();
+        return sessions.size() + " sessions added to " + student.getFirstName() +
+                " and Course " + course.getName() + " to "+ student.getFirstName();
     }
 
     @Override

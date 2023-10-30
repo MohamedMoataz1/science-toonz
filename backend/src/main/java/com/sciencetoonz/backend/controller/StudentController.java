@@ -35,8 +35,9 @@ public class StudentController {
     }
 
     @PostMapping("/addStudentToCourse/{courseId}/{studentEmail}")
-    public ResponseEntity<String> addStudentToCourse(@PathVariable("courseId") Long courseId, @PathVariable("studentEmail") String studentEmail) {
-        String success = studentService.addStudentToCourse(studentEmail, courseId);
+    public ResponseEntity<String> addStudentToCourse(@PathVariable("courseId") Long courseId, @PathVariable("studentEmail") String studentEmail,
+                                                     @RequestBody List<Long> sessionsIds) {
+        String success = studentService.addStudentToCourse(studentEmail, courseId, sessionsIds);
         return ResponseEntity.ok(success);
     }
 

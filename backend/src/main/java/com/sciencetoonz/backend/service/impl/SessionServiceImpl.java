@@ -74,6 +74,7 @@ public class SessionServiceImpl implements SessionService {
         if(student == null) {
             throw ApiError.notFound("Student Not Found");
         }
+
         List<Session> sessionList = student.getSessions();
         boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
         if(hasOverlap) {

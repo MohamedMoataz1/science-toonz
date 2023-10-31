@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const CourseDetails = () => {
-    const [courseByid, setcourseByid] = useState('nothing to show');
+    const [AllDetails, setAllDetails] = useState('nothing to show');
     const { id } = useParams();
     const userToken = localStorage.getItem('userToken');
     const [Students, setstudents] = useState([]);
@@ -42,56 +42,25 @@ const CourseDetails = () => {
 
 
     useEffect(() => {
-        const fetchs = async () => {
-            let _data;
-            let _sessions;
-            let _studends;
-            const getcourses = async () => {
-                await fetch(`http://localhost:8080/api/course/getCourseById/${id}`,
-                    {
-                        headers: headers,
-                    })
-                    .then(res => {
-                        return res.json();
-                    })
-                    .then(data => {
-                        _data = data;
-                        console.log(data);
-                    })
-                await fetch(`http://localhost:8080/api/session/getSessionsByCourse/${courseByid.name}`,
-                    {
-                        headers: headers,
-                    })
-                    .then(res => {
-                        return res.json();
-    
-                    })
-                    .then(data => {
-                        _sessions = data;
-                        console.log(data);
-                    })
-                await fetch(`http://localhost:8080/api/student/getStudents/${courseByid.name} `,
-                    {
-                        headers: headers,
-                    })
-                    .then(res => {
-                        return res.json();
-    
-                    })
-                    .then(data => {
-                        _studends = data;
-                        console.log(data);
-                    })
-            }
-    
-            await getcourses();
-            console.log("waiting the function")
-            setcourseByid(_data);
-            setstudents(_studends);
-            setSessions(_sessions);
-        }
-       fetchs()
-    },[])
+        const getall = async () => {
+          await fetch(`http://localhost:8080/api/course/getCourseDetailsById/1`, {
+            headers: headers,
+          })
+            .then((res) => {
+              return res.json();
+            })
+            .then((data) => {
+                console.log(data.sessions);
+              setAllDetails(data);
+              setstudents(data.students);
+              setSessions(data.sessions);
+            });
+        };
+      
+        getall(); 
+      
+      }, [] );
+      
 
     if (modal) {
         document.body.classList.add('active-modal')
@@ -105,7 +74,7 @@ const CourseDetails = () => {
         const AddedSession = { day, startTime, endTime, link, category };
         console.log(AddedSession);
 
-        fetch(`http://localhost:8080/api/session/createSession/${courseByid.name}`, {
+        fetch(`http://localhost:8080/api/session/createSession/${AllDetails.name}`, {
             method: 'POST',
             body: JSON.stringify(AddedSession),
             headers: headers,
@@ -132,9 +101,9 @@ const CourseDetails = () => {
 
         <div className="Details">
 
-            <h1>Course Name:  {courseByid.name}</h1>
-            <h2>Start Date:  {courseByid.startDate}</h2>
-            <h2>end Date:  {courseByid.endDate}</h2>
+            <h1>Course Name:  {AllDetails.name}</h1>
+            <h2>Start Date:  {AllDetails.startDate}</h2>
+            <h2>end Date:  {AllDetails.endDate}</h2>
 
             <div className="sessions-container">
                 <div className="nav-bar-session-details">

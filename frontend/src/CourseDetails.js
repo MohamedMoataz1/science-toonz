@@ -15,19 +15,19 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-
 const CourseDetails = () => {
-    const [AllDetails, setAllDetails] = useState('nothing to show');
+    const [courseByid, setcourseByid] = useState('nothing to show');
     const { id } = useParams();
     const userToken = localStorage.getItem('userToken');
     const [Students, setstudents] = useState([]);
-    const [Sessions, setSessions] = useState([]);
+    const [Sessions, setSessions] = useState([{}]);
     const [modal, setmodal] = useState(false);
-    const [day, setday] = useState();
-    const [startTime, setstartTime] = useState();
-    const [endTime, setendTime] = useState();
-    const [link, setlink] = useState();
-    const [category, setcategory] = useState();
+    const [day, setday] = useState(null);
+    const [startTime, setstartTime] = useState(null);
+    const [endTime, setendTime] = useState(null);
+    const [link, setlink] = useState(null);
+    const [category, setcategory] = useState(null);
+    const [Date, setDate] = useState(null);
     // const [AddedSession ,setAddedSession] = useState(null);
 
     const togglemodal = () => {
@@ -37,29 +37,61 @@ const CourseDetails = () => {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
     };
+    
+
 
 
     useEffect(() => {
-        const getall = async () => {
-            await fetch(`http://localhost:8080/api/course/getCourseDetailsById/${id}`,
-                {
-                    headers: headers,
-                })
-                .then(res => {
-                    return res.json();
-                })
-                .then(data => {
-                    setAllDetails(data);
-                    setstudents(data.students);
-                    setSessions(data.sessions);
-                })
+        const fetchs = async () => {
+            let _data;
+            let _sessions;
+            let _studends;
+            const getcourses = async () => {
+                await fetch(`http://localhost:8080/api/course/getCourseById/${id}`,
+                    {
+                        headers: headers,
+                    })
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(data => {
+                        _data = data;
+                        console.log(data);
+                    })
+                await fetch(`http://localhost:8080/api/session/getSessionsByCourse/${courseByid.name}`,
+                    {
+                        headers: headers,
+                    })
+                    .then(res => {
+                        return res.json();
+    
+                    })
+                    .then(data => {
+                        _sessions = data;
+                        console.log(data);
+                    })
+                await fetch(`http://localhost:8080/api/student/getStudents/${courseByid.name} `,
+                    {
+                        headers: headers,
+                    })
+                    .then(res => {
+                        return res.json();
+    
+                    })
+                    .then(data => {
+                        _studends = data;
+                        console.log(data);
+                    })
+            }
+    
+            await getcourses();
+            console.log("waiting the function")
+            setcourseByid(_data);
+            setstudents(_studends);
+            setSessions(_sessions);
         }
-   
-        
-
-        getall();
-
-    }, [] )
+       fetchs()
+    },[])
 
     if (modal) {
         document.body.classList.add('active-modal')
@@ -73,7 +105,7 @@ const CourseDetails = () => {
         const AddedSession = { day, startTime, endTime, link, category };
         console.log(AddedSession);
 
-        fetch(`http://localhost:8080/api/session/createSession/${AllDetails.name}`, {
+        fetch(`http://localhost:8080/api/session/createSession/${courseByid.name}`, {
             method: 'POST',
             body: JSON.stringify(AddedSession),
             headers: headers,
@@ -100,9 +132,9 @@ const CourseDetails = () => {
 
         <div className="Details">
 
-            <h1>Course Name:  {AllDetails.name}</h1>
-            <h2>Start Date:  {AllDetails.startDate}</h2>
-            <h2>end Date:  {AllDetails.endDate}</h2>
+            <h1>Course Name:  {courseByid.name}</h1>
+            <h2>Start Date:  {courseByid.startDate}</h2>
+            <h2>end Date:  {courseByid.endDate}</h2>
 
             <div className="sessions-container">
                 <div className="nav-bar-session-details">
@@ -132,7 +164,10 @@ const CourseDetails = () => {
 
 
                                     <label >Category : </label><br />
-                                    <input type="number" required onChange={(e) => setcategory(e.target.value)} /><br />
+                                    <input type="text" required onChange={(e) => setcategory(e.target.value)} /><br />
+
+                                    <label >Category : </label><br />
+                                    <input type="Date" required onChange={(e) => setDate(e.target.value)} /><br />
 
                                     <button className="close-modal" >
                                         Add Course

@@ -34,10 +34,10 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @PostMapping("/addStudentToCourse/{courseId}/{studentEmail}")
-    public ResponseEntity<String> addStudentToCourse(@PathVariable("courseId") Long courseId, @PathVariable("studentEmail") String studentEmail,
+    @PostMapping("/addStudentToCourseWithSessions/{courseId}/{studentEmail}")
+    public ResponseEntity<String> addStudentToCourseWithSessions(@PathVariable("courseId") Long courseId, @PathVariable("studentEmail") String studentEmail,
                                                      @RequestBody List<Long> sessionsIds) {
-        String success = studentService.addStudentToCourse(studentEmail, courseId, sessionsIds);
+        String success = studentService.addStudentToCourseWithSessions(studentEmail, courseId, sessionsIds);
         return ResponseEntity.ok(success);
     }
 

@@ -65,7 +65,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public String addStudentToCourse(String studentEmail, Long courseId, List<Long> sessionsIds) {
+    public String addStudentToCourseWithSessions(String studentEmail, Long courseId, List<Long> sessionsIds) {
         System.out.println(studentEmail);
         Student student = studentRepo.findByEmail(studentEmail);
         if(student == null) {
@@ -87,6 +87,13 @@ public class StudentServiceImpl implements StudentService {
         if(sessions.stream().count()==0) {
             throw ApiError.notFound("No sessions with those ids");
         }
+
+        for(Session session:sessions) {
+            if (session.getCourse()!=course) {
+                throw ApiError.badRequest("This Session with id "+ session.getId() + " is not related to this course");
+            }
+        }
+
         List<Session> sessionList = student.getSessions();
         boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
         if(hasOverlap) {
@@ -95,7 +102,7 @@ public class StudentServiceImpl implements StudentService {
         sessionList.addAll(sessions);
         studentRepo.save(student);
         return sessions.size() + " sessions added to " + student.getFirstName() +
-                " and Course " + course.getName() + " to "+ student.getFirstName();
+                " with Course " + course.getName();
     }
 
     @Override

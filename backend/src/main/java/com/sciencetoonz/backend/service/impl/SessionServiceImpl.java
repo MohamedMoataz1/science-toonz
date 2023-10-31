@@ -10,7 +10,7 @@ import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
 import com.sciencetoonz.backend.service.StudentService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +18,17 @@ import java.util.List;
 @Service
 public class SessionServiceImpl implements SessionService {
 
-    @Autowired
-    private SessionRepository sessionRepository;
-    @Autowired
-    private CourseService courseService;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private StudentService studentService;
+    private final SessionRepository sessionRepository;
+    private final CourseService courseService;
+    private final ModelMapper modelMapper;
+    private final StudentService studentService;
+
+    public SessionServiceImpl(SessionRepository sessionRepository, CourseService courseService, ModelMapper modelMapper, @Lazy StudentService studentService) {
+        this.sessionRepository = sessionRepository;
+        this.courseService = courseService;
+        this.modelMapper = modelMapper;
+        this.studentService = studentService;
+    }
 
 
     @Override

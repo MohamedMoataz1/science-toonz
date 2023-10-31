@@ -6,19 +6,21 @@ import com.sciencetoonz.backend.model.Teacher;
 import com.sciencetoonz.backend.service.TeacherService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class TeacherServiceImp implements TeacherService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private TeacherRepo teacherRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
+    private final TeacherRepo teacherRepo;
+
+    public TeacherServiceImp(PasswordEncoder passwordEncoder, ModelMapper modelMapper, TeacherRepo teacherRepo) {
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
+        this.teacherRepo = teacherRepo;
+    }
 
     public void saveTeacher(TeacherDto teacherDto) {
         Teacher teacher = modelMapper.map(teacherDto, Teacher.class);

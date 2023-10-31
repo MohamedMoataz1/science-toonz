@@ -10,7 +10,7 @@ import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
 import com.sciencetoonz.backend.service.StudentService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +19,19 @@ import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private CourseService courseService;
-    @Autowired
-    private StudentRepo studentRepo;
-    @Autowired
-    private SessionService sessionService;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
+    private final CourseService courseService;
+    private final StudentRepo studentRepo;
+    private final SessionService sessionService;
+
+    public StudentServiceImpl(PasswordEncoder passwordEncoder, ModelMapper modelMapper, CourseService courseService, StudentRepo studentRepo, SessionService sessionService) {
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
+        this.courseService = courseService;
+        this.studentRepo = studentRepo;
+        this.sessionService = sessionService;
+    }
 
     @Override
     public void addStudent(StudentDto studentDto) {

@@ -10,34 +10,30 @@ import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
 import com.sciencetoonz.backend.service.StudentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
     private final PasswordEncoder passwordEncoder;
-    private final SessionService sessionService;
     private final ModelMapper modelMapper;
     private final CourseService courseService;
-    private StudentRepo studentRepo;
+    private final StudentRepo studentRepo;
+    private final SessionService sessionService;
 
-    public StudentServiceImpl(StudentRepo studentRepo, PasswordEncoder passwordEncoder, SessionService sessionService, ModelMapper modelMapper, CourseService courseService) {
-        this.studentRepo = studentRepo;
+    public StudentServiceImpl(PasswordEncoder passwordEncoder, ModelMapper modelMapper, CourseService courseService, StudentRepo studentRepo, SessionService sessionService) {
         this.passwordEncoder = passwordEncoder;
-        this.sessionService = sessionService;
         this.modelMapper = modelMapper;
         this.courseService = courseService;
+        this.studentRepo = studentRepo;
+        this.sessionService = sessionService;
     }
 
-    public void saveStudent(Student student) {
-        studentRepo.save(student);
-    }
-    public Student findByEmail(String studentEmail) {
-        return studentRepo.findByEmail(studentEmail);
-    }
-
+    @Override
     public void addStudent(StudentDto studentDto) {
 
         Student savedStudent = studentRepo.findByEmail(studentDto.getEmail());
@@ -50,6 +46,7 @@ public class StudentServiceImpl implements StudentService {
         studentRepo.save(student);
     }
 
+    @Override
     public List<StudentDto> getStudentsByCourseId(Long courseId) {
         List<Student> students = studentRepo.findAllByCoursesId(courseId);
         List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(
@@ -67,11 +64,12 @@ public class StudentServiceImpl implements StudentService {
         return studentDtos;
     }
 
-    public String addStudentToCourse(String studentEmail, Long courseId) {
+    @Override
+    public String addStudentToCourseWithSessions(String studentEmail, Long courseId, List<Long> sessionsIds) {
         System.out.println(studentEmail);
         Student student = studentRepo.findByEmail(studentEmail);
         if(student == null) {
-            throw ApiError.badRequest("You must create a new user koty");
+            throw ApiError.notFound("You must create a new user koty");
         }
 
         Course course = courseService.findById(courseId);
@@ -85,17 +83,45 @@ public class StudentServiceImpl implements StudentService {
         }
 
         studentCourses.add(course);
-        studentRepo.save(student);
-        return "Course " + course.getName() + " to "+ student.getFirstName();
-    }
-
-    public String addSessionsToStudent(String studentEmail, List<Long> sessionsIds) {
         List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
-        Student student = studentRepo.findByEmail(studentEmail);
+        if(sessions.stream().count()==0) {
+            throw ApiError.notFound("No sessions with those ids");
+        }
+
+        for(Session session:sessions) {
+            if (session.getCourse()!=course) {
+                throw ApiError.badRequest("This Session with id "+ session.getId() + " is not related to this course");
+            }
+        }
+
         List<Session> sessionList = student.getSessions();
+        boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
+        if(hasOverlap) {
+            throw ApiError.badRequest("There is a session already assigned before");
+        }
         sessionList.addAll(sessions);
         studentRepo.save(student);
-        return sessions.size() + " sessions added to " + student.getFirstName();
+        return sessions.size() + " sessions added to " + student.getFirstName() +
+                " with Course " + course.getName();
+    }
+
+    @Override
+    public Student getStudentById(Long studentId) {
+        Optional<Student> student = studentRepo.findById(studentId);
+        if (!student.isPresent()) {
+            throw ApiError.notFound("Student not found");
+        }
+        return student.get();
+    }
+
+    @Override
+    public Student getStudentByEmail(String studentEmail) {
+        return studentRepo.findByEmail(studentEmail);
+    }
+
+    @Override
+    public void saveStudent(Student student) {
+        studentRepo.save(student);
     }
 
 }

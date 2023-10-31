@@ -2,6 +2,7 @@ package com.sciencetoonz.backend.Repository;
 
 import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Session;
+import com.sciencetoonz.backend.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,5 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     public Session findBySessionName(String sessionName);
 
     public List<Session> findSessionsByCourseId(Long courseId);
+    public List<Session> findByStudentsAndCourseId(Student student, Long courseId);
 }

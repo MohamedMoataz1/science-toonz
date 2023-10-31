@@ -16,11 +16,12 @@ public class TeacherServiceImp implements TeacherService {
     private final ModelMapper modelMapper;
     private final TeacherRepo teacherRepo;
 
-    public TeacherServiceImp(TeacherRepo teacherRepo, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
-        this.teacherRepo = teacherRepo;
+    public TeacherServiceImp(PasswordEncoder passwordEncoder, ModelMapper modelMapper, TeacherRepo teacherRepo) {
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.teacherRepo = teacherRepo;
     }
+
     public void saveTeacher(TeacherDto teacherDto) {
         Teacher teacher = modelMapper.map(teacherDto, Teacher.class);
         System.out.println(teacher);

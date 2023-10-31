@@ -15,19 +15,19 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-
 const CourseDetails = () => {
     const [AllDetails, setAllDetails] = useState('nothing to show');
     const { id } = useParams();
     const userToken = localStorage.getItem('userToken');
     const [Students, setstudents] = useState([]);
-    const [Sessions, setSessions] = useState([]);
+    const [Sessions, setSessions] = useState([{}]);
     const [modal, setmodal] = useState(false);
-    const [day, setday] = useState();
-    const [startTime, setstartTime] = useState();
-    const [endTime, setendTime] = useState();
-    const [link, setlink] = useState();
-    const [category, setcategory] = useState();
+    const [day, setday] = useState(null);
+    const [startTime, setstartTime] = useState(null);
+    const [endTime, setendTime] = useState(null);
+    const [link, setlink] = useState(null);
+    const [category, setcategory] = useState(null);
+    const [Date, setDate] = useState(null);
     // const [AddedSession ,setAddedSession] = useState(null);
 
     const togglemodal = () => {
@@ -37,29 +37,30 @@ const CourseDetails = () => {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
     };
+    
+
 
 
     useEffect(() => {
         const getall = async () => {
-            await fetch(`http://localhost:8080/api/course/getCourseDetailsById/${id}`,
-                {
-                    headers: headers,
-                })
-                .then(res => {
-                    return res.json();
-                })
-                .then(data => {
-                    setAllDetails(data);
-                    setstudents(data.students);
-                    setSessions(data.sessions);
-                })
-        }
-   
-        
-
-        getall();
-
-    }, [] )
+          await fetch(`http://localhost:8080/api/course/getCourseDetailsById/1`, {
+            headers: headers,
+          })
+            .then((res) => {
+              return res.json();
+            })
+            .then((data) => {
+                console.log(data.sessions);
+              setAllDetails(data);
+              setstudents(data.students);
+              setSessions(data.sessions);
+            });
+        };
+      
+        getall(); 
+      
+      }, [] );
+      
 
     if (modal) {
         document.body.classList.add('active-modal')
@@ -132,7 +133,10 @@ const CourseDetails = () => {
 
 
                                     <label >Category : </label><br />
-                                    <input type="number" required onChange={(e) => setcategory(e.target.value)} /><br />
+                                    <input type="text" required onChange={(e) => setcategory(e.target.value)} /><br />
+
+                                    <label >Category : </label><br />
+                                    <input type="Date" required onChange={(e) => setDate(e.target.value)} /><br />
 
                                     <button className="close-modal" >
                                         Add Course

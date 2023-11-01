@@ -102,6 +102,9 @@ public class SessionServiceImpl implements SessionService {
         session.setDate(sessionDto.getDate());
         session.setLink(sessionDto.getLink());
         session.setCategory(sessionDto.getCategory());
+        String dayS = session.getDay().substring(0,3).toLowerCase();
+        String timeS = session.getStartTime().toString().substring(0,2).toLowerCase();
+        session.setSessionName(session.getSessionName().substring(0,3)+dayS+timeS);
         sessionRepository.save(session);
         return "Session Updated Successfully!";
     }

@@ -122,4 +122,20 @@ public class SessionServiceImpl implements SessionService {
                 session.getCategory())).toList();
         return sessionDtos;
     }
+
+    @Override
+    public String removeSessionsOfCourseOfStudent(Long studentId, Long courseId) {
+        Student student = studentService.getStudentById(studentId);
+        List<Session> sessions = sessionRepository.findByStudentsAndCourseId(student,courseId);
+        student.getSessions().removeAll(sessions);
+        return "A number of " + sessions.size() + " Sessions deleted";
+    }
+
+    @Override
+    public String updateSessionsOfStudent(Long studentId, long courseId, List<Long> sessionIds) {
+        System.out.println(removeSessionsOfCourseOfStudent(studentId,courseId));
+        Student student = studentService.getStudentById(studentId);
+        System.out.println(addSessionsToStudent(student.getEmail(),sessionIds));
+        return "Sessions Updated Successfully";
+    }
 }

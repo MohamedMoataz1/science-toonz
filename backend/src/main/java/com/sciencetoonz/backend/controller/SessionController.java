@@ -49,4 +49,12 @@ public class SessionController {
         String success = sessionService.updateCourseSession(sessionId,sessionDto);
         return ResponseEntity.ok(success);
     }
+
+    @PutMapping("/updateSessionsOfStudent/{studentId}/{courseId}")
+    public ResponseEntity<String> updateSessionsOfStudent(@PathVariable("studentId") Long studentId,
+                                                          @PathVariable("courseId") Long courseId,
+                                                          @RequestBody List<Long> sessionIds) {
+        String success = sessionService.updateSessionsOfStudent(studentId,courseId,sessionIds);
+        return ResponseEntity.ok(success);
+    }
 }

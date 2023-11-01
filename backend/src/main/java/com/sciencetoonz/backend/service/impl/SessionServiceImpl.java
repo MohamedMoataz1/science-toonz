@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -86,6 +87,23 @@ public class SessionServiceImpl implements SessionService {
         sessionList.addAll(sessions);
         studentService.saveStudent(student);
         return sessions.size() + " sessions added to " + student.getFirstName();
+    }
+
+    @Override
+    public String updateCourseSession(Long sessionId, SessionDto sessionDto) {
+        Optional<Session> optionalSession = sessionRepository.findById(sessionId);
+        if(!optionalSession.isPresent()) {
+            throw ApiError.notFound("Session you want to update not found!");
+        }
+        Session session = optionalSession.get();
+        session.setDay(sessionDto.getDay());
+        session.setStartTime(sessionDto.getStartTime());
+        session.setEndTime(sessionDto.getEndTime());
+        session.setDate(sessionDto.getDate());
+        session.setLink(sessionDto.getLink());
+        session.setCategory(sessionDto.getCategory());
+        sessionRepository.save(session);
+        return "Session Updated Successfully!";
     }
 
     @Override

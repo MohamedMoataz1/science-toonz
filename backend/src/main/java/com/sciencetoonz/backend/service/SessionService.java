@@ -13,4 +13,5 @@ public interface SessionService {
     public List<Session> getSessionsbySessionsIds(List<Long> sessionsIds);
     public List<SessionDto> getSessionsOfCourseOfStudent(Long studentId, Long courseId);
     public String addSessionsToStudent(String studentEmail, List<Long> sessionsIds);
+    public String updateCourseSession(Long sessionId, SessionDto sessionDto);
 }

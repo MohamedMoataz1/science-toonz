@@ -36,13 +36,6 @@ public class SessionController {
         return ResponseEntity.ok(sessionService.getSessionsOfCourseOfStudent(studentId,courseId));
     }
 
-    @PostMapping("/addSessionsToStudent/{studentEmail}")
-    public ResponseEntity<String> addSessionsToStudent(@RequestBody List<Long> sessionsIds,
-                                                       @PathVariable("studentEmail") String studentEmail) {
-        String success = sessionService.addSessionsToStudent(studentEmail, sessionsIds);
-        return ResponseEntity.ok(success);
-    }
-
     @PutMapping("/updateCourseSession/{sessionId}")
     public ResponseEntity<String> updateCourseSession(@PathVariable("sessionId") Long sessionId,
                                                 @RequestBody SessionDto sessionDto) {

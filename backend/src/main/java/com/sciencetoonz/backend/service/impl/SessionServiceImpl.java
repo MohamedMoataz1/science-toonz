@@ -1,6 +1,7 @@
 package com.sciencetoonz.backend.service.impl;
 
 import com.sciencetoonz.backend.Repository.SessionRepository;
+import com.sciencetoonz.backend.dto.CourseDto;
 import com.sciencetoonz.backend.dto.SessionDto;
 import com.sciencetoonz.backend.exception.ApiError;
 import com.sciencetoonz.backend.model.Course;
@@ -68,21 +69,41 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public String addSessionsToStudent(String studentEmail, List<Long> sessionsIds) {
-        List<Session> sessions = getSessionsbySessionsIds(sessionsIds);
-        if(sessions.stream().count()==0) {
-            throw ApiError.notFound("No sessions with those ids");
-        }
+    public String addSessionsToStudent(String studentEmail,Long courseId, List<Long> sessionsIds) {
+        Course course = courseService.findById(courseId);
         Student student = studentService.getStudentByEmail(studentEmail);
         if(student == null) {
             throw ApiError.notFound("Student Not Found");
         }
 
+        if(!student.getCourses().contains(course)) {
+            throw ApiError.notFound("This student is not registered to this course!");
+        }
+        if(course.getNumOfCategories() != sessionsIds.size()) {
+            throw ApiError.badRequest("Number of sessions is not enough to this course");
+        }
+
+
+
+        List<Session> sessions = getSessionsbySessionsIds(sessionsIds);
+
+        if(sessions.stream().count()==0) {
+            throw ApiError.notFound("No sessions with those ids");
+        }
+
+        for(int i = 0;i<course.getNumOfCategories();i++) {
+            if (sessions.get(i).getCategory() != i+1) {
+                throw ApiError.badRequest("Arrangement of session categories is not valid!");
+            }
+        }
+
         List<Session> sessionList = student.getSessions();
+
         boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
         if(hasOverlap) {
             throw ApiError.badRequest("There is a session already assigned before");
         }
+
         sessionList.addAll(sessions);
         studentService.saveStudent(student);
         return sessions.size() + " sessions added to " + student.getFirstName();
@@ -136,7 +157,7 @@ public class SessionServiceImpl implements SessionService {
     public String updateSessionsOfStudent(Long studentId, long courseId, List<Long> sessionIds) {
         System.out.println(removeSessionsOfCourseOfStudent(studentId,courseId));
         Student student = studentService.getStudentById(studentId);
-        System.out.println(addSessionsToStudent(student.getEmail(),sessionIds));
+        System.out.println(addSessionsToStudent(student.getEmail(),courseId,sessionIds));
         return "Sessions Updated Successfully";
     }
 }

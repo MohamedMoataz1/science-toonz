@@ -48,4 +48,11 @@ public class CourseController {
         CourseDetailsDto course = courseService.findCourseDetailsById(courseId);
         return ResponseEntity.ok(course);
     }
+
+    @PutMapping("/editCourse/{courseId}")
+    public ResponseEntity<String> editCourse(@PathVariable("courseId") Long courseId,
+                                             @RequestBody CourseDto courseDto) {
+        String success = courseService.editCourse(courseId,courseDto);
+        return ResponseEntity.ok(success);
+    }
 }

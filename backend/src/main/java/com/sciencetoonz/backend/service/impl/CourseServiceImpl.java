@@ -95,5 +95,25 @@ public class CourseServiceImpl implements CourseService {
         return courseDetailsDto;
     }
 
+    @Override
+    public String editCourse(Long courseId, CourseDto courseDto) {
+        Optional<Course> courseOptional = courseRepository.findById(courseId);
+        if(!courseOptional.isPresent()) {
+            throw ApiError.notFound("Course not found");
+        }
+        Course savedCourse = courseRepository.findByName(courseDto.getName());
+        if(savedCourse != null) {
+            throw ApiError.badRequest("Course already exists with this name");
+        }
+        Course course = courseOptional.get();
+        course.setName(courseDto.getName());
+        course.setStartDate(courseDto.getStartDate());
+        course.setEndDate(courseDto.getEndDate());
+        course.setNumOfCategories(courseDto.getNumOfCategories());
+        course.setMaterialLink(courseDto.getMaterialLink());
+        courseRepository.save(course);
+        return "Course Updated";
+    }
+
 
 }

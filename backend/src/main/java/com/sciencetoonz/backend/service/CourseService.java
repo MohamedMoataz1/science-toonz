@@ -13,4 +13,5 @@ public interface CourseService {
     public Course findByName(String courseName);
     public Course findById(Long courseId);
     public CourseDetailsDto findCourseDetailsById(Long courseId);
+    public String editCourse(Long courseId, CourseDto courseDto);
 }

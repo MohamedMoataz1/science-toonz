@@ -50,4 +50,10 @@ public class SessionController {
         String success = sessionService.updateSessionsOfStudent(studentId,courseId,sessionIds);
         return ResponseEntity.ok(success);
     }
+
+    @DeleteMapping("/deleteSession/{sessionId}")
+    public ResponseEntity<String> deleteSession(@PathVariable("sessionId") Long sessionId) {
+        String success = sessionService.deleteSession(sessionId);
+        return ResponseEntity.ok(success);
+    }
 }

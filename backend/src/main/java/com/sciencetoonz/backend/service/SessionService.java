@@ -16,4 +16,5 @@ public interface SessionService {
     public String updateCourseSession(Long sessionId, SessionDto sessionDto);
     public String removeSessionsOfCourseOfStudent(Long studentId, Long courseId);
     public String updateSessionsOfStudent(Long studentId, long courseId, List<Long> sessionIds);
+    public String deleteSession(Long sessionId);
 }

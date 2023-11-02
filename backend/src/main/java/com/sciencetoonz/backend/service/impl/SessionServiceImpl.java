@@ -160,4 +160,14 @@ public class SessionServiceImpl implements SessionService {
         System.out.println(addSessionsToStudent(student.getEmail(),courseId,sessionIds));
         return "Sessions Updated Successfully";
     }
+
+    @Override
+    public String deleteSession(Long sessionId) {
+        Optional<Session> optionalSession = sessionRepository.findById(sessionId);
+        if(!optionalSession.isPresent()) {
+            throw ApiError.notFound("Session not found");
+        }
+        sessionRepository.deleteById(sessionId);
+        return "Session Deleted";
+    }
 }

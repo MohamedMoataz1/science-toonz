@@ -38,6 +38,10 @@ public class Course {
     @Column(nullable = false)
     private Long numOfCategories;
 
+    @NotEmpty
+    @Column(nullable = false)
+    private String materialLink;
+
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;

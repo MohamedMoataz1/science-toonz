@@ -29,4 +29,6 @@ public class SessionDto {
     private String link;
 
     private int category;
+
+    private String vimeoLink;
 }

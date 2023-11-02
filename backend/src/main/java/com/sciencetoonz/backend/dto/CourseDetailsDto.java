@@ -25,6 +25,7 @@ public class CourseDetailsDto {
     @JsonFormat(pattern = "MM/dd/yyyy")
     private Date endDate;
     private Long numOfCategories;
+    private String materialLink;
     private List<StudentDto> students;
     private List<SessionDto> sessions;
 }

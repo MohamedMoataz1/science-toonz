@@ -48,6 +48,11 @@ public class Session {
     @Column(nullable = false)
     private int category;
 
+    @NotEmpty
+    @Column(nullable = false)
+    private String vimeoLink;
+
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;

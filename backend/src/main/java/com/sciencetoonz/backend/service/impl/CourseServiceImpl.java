@@ -52,7 +52,8 @@ public class CourseServiceImpl implements CourseService {
                  course.getName(),
                  course.getStartDate(),
                  course.getEndDate(),
-                 course.getNumOfCategories()
+                 course.getNumOfCategories(),
+                 course.getMaterialLink()
          )).toList();
          return courseDtos;
     }
@@ -88,6 +89,7 @@ public class CourseServiceImpl implements CourseService {
                 course.getStartDate(),
                 course.getEndDate(),
                 course.getNumOfCategories(),
+                course.getMaterialLink(),
                 studentDtos,
                 sessionDtos);
         return courseDetailsDto;

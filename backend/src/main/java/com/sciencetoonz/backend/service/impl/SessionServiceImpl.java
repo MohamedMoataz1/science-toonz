@@ -43,8 +43,7 @@ public class SessionServiceImpl implements SessionService {
 
         String dayS = session.getDay().substring(0,3).toLowerCase();
         String timeS = session.getStartTime().toString().substring(0,2).toLowerCase();
-        String courseS = course.getName().substring(0,3).toLowerCase();
-        session.setSessionName(courseS+dayS+timeS);
+        session.setSessionName(course.getName()+dayS+timeS);
         session.setCourse(course);
         Session savedSession = sessionRepository.findBySessionName(session.getSessionName());
         if (savedSession != null) {
@@ -59,7 +58,7 @@ public class SessionServiceImpl implements SessionService {
     public List<SessionDto> getSessionsByCourseId(Long courseId) {
         List<Session> sessions = sessionRepository.findSessionsByCourseId(courseId);
         List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),session.getDay(), session.getStartTime(),
-                session.getEndTime(),session.getDate().substring(0,10), session.getLink(), session.getCategory())).toList();
+                session.getEndTime(),session.getDate().substring(0,10), session.getLink(), session.getCategory(), session.getVimeoLink())).toList();
         return sessionDtos;
     }
 
@@ -102,9 +101,10 @@ public class SessionServiceImpl implements SessionService {
         session.setDate(sessionDto.getDate());
         session.setLink(sessionDto.getLink());
         session.setCategory(sessionDto.getCategory());
+        session.setVimeoLink(sessionDto.getVimeoLink());
         String dayS = session.getDay().substring(0,3).toLowerCase();
         String timeS = session.getStartTime().toString().substring(0,2).toLowerCase();
-        session.setSessionName(session.getSessionName().substring(0,3)+dayS+timeS);
+        session.setSessionName(session.getCourse().getName()+dayS+timeS);
         sessionRepository.save(session);
         return "Session Updated Successfully!";
     }
@@ -119,7 +119,8 @@ public class SessionServiceImpl implements SessionService {
                 session.getEndTime(),
                 session.getDate(),
                 session.getLink(),
-                session.getCategory())).toList();
+                session.getCategory(),
+                session.getVimeoLink())).toList();
         return sessionDtos;
     }
 

@@ -41,5 +41,11 @@ public class StudentController {
         return ResponseEntity.ok(success);
     }
 
+    @DeleteMapping("/removeStudentFromCourse/{courseId}/{studentId}")
+    public ResponseEntity<String> removeStudentFromCourse(@PathVariable("courseId") Long courseId,
+                                                          @PathVariable("studentId") Long studentId) {
+        String success = studentService.removeStudentFromCourse(studentId, courseId);
+        return ResponseEntity.ok(success);
+    }
 
 }

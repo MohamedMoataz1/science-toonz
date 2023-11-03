@@ -115,5 +115,10 @@ public class CourseServiceImpl implements CourseService {
         return "Course Updated";
     }
 
+    @Override
+    public void save(Course course) {
+        courseRepository.save(course);
+    }
+
 
 }

@@ -134,4 +134,24 @@ public class StudentServiceImpl implements StudentService {
         studentRepo.save(student);
     }
 
+    @Override
+    public String removeStudentFromCourse(Long studentId, Long courseId) {
+        Optional<Student> savedStudent = studentRepo.findById(studentId);
+        if(!savedStudent.isPresent()) {
+            throw ApiError.notFound("Student Not Found!");
+        }
+        Student student = savedStudent.get();
+        Course course = courseService.findById(courseId);
+
+        if(!course.getStudents().contains(student)) {
+            throw ApiError.notFound("Student is not registered to this course!");
+        }
+
+        course.getStudents().remove(student);
+        System.out.println(sessionService.removeSessionsOfCourseOfStudent(studentId,courseId));
+        courseService.save(course);
+        saveStudent(student);
+        return "Student "+student.getEmail()+" removed from course "+course.getName();
+    }
+
 }

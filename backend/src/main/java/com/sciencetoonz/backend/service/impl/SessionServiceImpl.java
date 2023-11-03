@@ -80,7 +80,7 @@ public class SessionServiceImpl implements SessionService {
             throw ApiError.notFound("This student is not registered to this course!");
         }
         if(course.getNumOfCategories() != sessionsIds.size()) {
-            throw ApiError.badRequest("Number of sessions is not enough to this course");
+            throw ApiError.badRequest("Number of sessions is not accurate to this course");
         }
 
 
@@ -133,6 +133,10 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public List<SessionDto> getSessionsOfCourseOfStudent(Long studentId, Long courseId) {
         Student student = studentService.getStudentById(studentId);
+        Course course = courseService.findById(courseId);
+        if(!course.getStudents().contains(student)) {
+            throw ApiError.notFound("This Student is not registered to this course");
+        }
         List<Session> sessions = sessionRepository.findByStudentsAndCourseId(student,courseId);
         List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),
                 session.getDay(),
@@ -150,7 +154,7 @@ public class SessionServiceImpl implements SessionService {
         Student student = studentService.getStudentById(studentId);
         List<Session> sessions = sessionRepository.findByStudentsAndCourseId(student,courseId);
         student.getSessions().removeAll(sessions);
-        return "A number of " + sessions.size() + " Sessions deleted";
+        return "A number of " + sessions.size() + " Sessions removed from student " + student.getEmail();
     }
 
     @Override

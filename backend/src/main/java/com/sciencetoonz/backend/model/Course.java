@@ -54,4 +54,8 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
     private List<Student> students;
+
+    @OneToMany
+    @JoinColumn(name = "course_id")
+    private List<Session> sessions;
 }

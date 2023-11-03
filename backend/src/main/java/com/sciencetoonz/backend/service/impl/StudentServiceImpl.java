@@ -86,11 +86,11 @@ public class StudentServiceImpl implements StudentService {
             throw ApiError.badRequest("Number of sessions is not enough to this course");
         }
 
-        for(int i = 0;i<course.getNumOfCategories();i++) {
-            if (sessionsIds.get(i) != i+1) {
-                throw ApiError.badRequest("Arrangement of session categories is not valid!");
-            }
-        }
+//        for(int i = 0;i<course.getNumOfCategories();i++) {
+//            if (sessionsIds.get(i) != i+1) {
+//                throw ApiError.badRequest("Arrangement of session categories is not valid!");
+//            }
+//        }
 
         studentCourses.add(course);
         List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);

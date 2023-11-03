@@ -55,4 +55,10 @@ public class CourseController {
         String success = courseService.editCourse(courseId,courseDto);
         return ResponseEntity.ok(success);
     }
+
+    @DeleteMapping("/deleteCourse/{courseId}")
+    public ResponseEntity<String> deleteCourse(@PathVariable("courseId") Long courseId) {
+        String success = courseService.deleteCourse(courseId);
+        return ResponseEntity.ok(success);
+    }
 }

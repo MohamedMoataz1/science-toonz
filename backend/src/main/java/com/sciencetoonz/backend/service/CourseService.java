@@ -15,4 +15,5 @@ public interface CourseService {
     public CourseDetailsDto findCourseDetailsById(Long courseId);
     public String editCourse(Long courseId, CourseDto courseDto);
     public void save(Course course);
+    public String deleteCourse(Long courseId);
 }

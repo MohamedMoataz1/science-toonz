@@ -7,6 +7,7 @@ import com.sciencetoonz.backend.dto.SessionDto;
 import com.sciencetoonz.backend.dto.StudentDto;
 import com.sciencetoonz.backend.exception.ApiError;
 import com.sciencetoonz.backend.model.Course;
+import com.sciencetoonz.backend.model.Session;
 import com.sciencetoonz.backend.model.Teacher;
 import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
@@ -118,6 +119,18 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void save(Course course) {
         courseRepository.save(course);
+    }
+
+    @Override
+    public String deleteCourse(Long courseId) {
+        Optional<Course> savedCourse = courseRepository.findById(courseId);
+        if(!savedCourse.isPresent()) {
+            throw ApiError.notFound("Course not found!");
+        }
+        Course course = savedCourse.get();
+        sessionService.deleteSessions(course.getSessions());
+        courseRepository.delete(course);
+        return "Course deleted!";
     }
 
 

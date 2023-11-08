@@ -1,5 +1,6 @@
 package com.sciencetoonz.backend.controller;
 
+import com.sciencetoonz.backend.dto.StudentDetailsDto;
 import com.sciencetoonz.backend.dto.StudentDto;
 import com.sciencetoonz.backend.dto.StudentEmailDto;
 import com.sciencetoonz.backend.model.Session;
@@ -48,4 +49,8 @@ public class StudentController {
         return ResponseEntity.ok(success);
     }
 
+    @GetMapping("/getStudentDetails/{studentId}")
+    public ResponseEntity<StudentDetailsDto> getStudentDetails(@PathVariable("studentId") Long studentId) {
+        return ResponseEntity.ok(studentService.getStudentDetails(studentId));
+    }
 }

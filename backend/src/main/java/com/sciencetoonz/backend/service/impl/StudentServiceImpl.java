@@ -1,7 +1,7 @@
 package com.sciencetoonz.backend.service.impl;
 
 import com.sciencetoonz.backend.Repository.StudentRepo;
-import com.sciencetoonz.backend.dto.StudentDto;
+import com.sciencetoonz.backend.dto.*;
 import com.sciencetoonz.backend.exception.ApiError;
 import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Session;
@@ -152,6 +152,31 @@ public class StudentServiceImpl implements StudentService {
         courseService.save(course);
         saveStudent(student);
         return "Student "+student.getEmail()+" removed from course "+course.getName();
+    }
+
+    @Override
+    public StudentDetailsDto getStudentDetails(Long studentId) {
+        Student student = getStudentById(studentId);
+        List<CourseDto> courseDtos = courseService.getCoursesOfStudent(studentId);
+        List<CoursesWithSessionsOfStudentDto> coursesWithSessionsOfStudentDtos = courseDtos.stream().map(courseDto -> new CoursesWithSessionsOfStudentDto(courseDto.getId(),
+                courseDto.getName(),
+                courseDto.getStartDate(),
+                courseDto.getEndDate(),
+                courseDto.getNumOfCategories(),
+                courseDto.getMaterialLink(),
+                sessionService.getSessionsOfCourseOfStudent(studentId,courseDto.getId()))).toList();
+        StudentDetailsDto studentDetailsDto = new StudentDetailsDto(student.getId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getFatherName(),
+                student.getSchool(),
+                student.getEmail(),
+                student.getOfficialEmail(),
+                student.getYear(),
+                student.getFees(),
+                coursesWithSessionsOfStudentDtos
+        );
+        return studentDetailsDto;
     }
 
 }

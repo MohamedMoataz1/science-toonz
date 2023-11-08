@@ -1,5 +1,6 @@
 package com.sciencetoonz.backend.service;
 
+import com.sciencetoonz.backend.dto.StudentDetailsDto;
 import com.sciencetoonz.backend.dto.StudentDto;
 import com.sciencetoonz.backend.model.Student;
 
@@ -16,4 +17,5 @@ public interface StudentService {
     public Student getStudentByEmail(String studentEmail);
     public void saveStudent(Student student);
     public String removeStudentFromCourse(Long studentId, Long courseId);
+    public StudentDetailsDto getStudentDetails(Long studentId);
 }

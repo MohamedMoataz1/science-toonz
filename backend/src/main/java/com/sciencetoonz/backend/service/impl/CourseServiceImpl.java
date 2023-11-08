@@ -8,6 +8,7 @@ import com.sciencetoonz.backend.dto.StudentDto;
 import com.sciencetoonz.backend.exception.ApiError;
 import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Session;
+import com.sciencetoonz.backend.model.Student;
 import com.sciencetoonz.backend.model.Teacher;
 import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
@@ -46,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
         return course;
     }
 
-    public List<CourseDto> getCourses(Long teacherId) {
+    public List<CourseDto> getCoursesOfTeacher(Long teacherId) {
          List<Course> courses = courseRepository.findAllByTeacherId(teacherId);
          List<CourseDto> courseDtos = courses.stream().map(course -> new CourseDto(
                  course.getId(),
@@ -131,6 +132,19 @@ public class CourseServiceImpl implements CourseService {
         sessionService.deleteSessions(course.getSessions());
         courseRepository.delete(course);
         return "Course deleted!";
+    }
+
+    @Override
+    public List<CourseDto> getCoursesOfStudent(Long studentId) {
+        Student student = studentService.getStudentById(studentId);
+        List<Course> courses = courseRepository.findAllByStudents(student);
+        List<CourseDto> courseDtos = courses.stream().map(course -> new CourseDto(course.getId(),
+                course.getName(),
+                course.getStartDate(),
+                course.getEndDate(),
+                course.getNumOfCategories(),
+                course.getMaterialLink())).toList();
+        return courseDtos;
     }
 
 

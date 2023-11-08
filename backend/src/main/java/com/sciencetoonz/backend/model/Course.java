@@ -58,4 +58,8 @@ public class Course {
     @OneToMany
     @JoinColumn(name = "course_id")
     private List<Session> sessions;
+
+    @OneToMany
+    @JoinColumn(name = "course_id")
+    private List<VimeoSession> vimeoSessions;
 }

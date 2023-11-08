@@ -35,7 +35,7 @@ public class CourseController {
     public ResponseEntity<List<CourseDto>> getCoursesOfTeacher(Authentication authentication) {
         Teacher teacher = (Teacher) AuthenticationUser.get(authentication);
         Long teacherId = teacher.getId();
-        return ResponseEntity.ok(courseService.getCourses(teacherId));
+        return ResponseEntity.ok(courseService.getCoursesOfTeacher(teacherId));
     }
 
     @GetMapping("/getCourseById/{id}")

@@ -13,8 +13,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -58,7 +58,7 @@ public class SessionServiceImpl implements SessionService {
     public List<SessionDto> getSessionsByCourseId(Long courseId) {
         List<Session> sessions = sessionRepository.findSessionsByCourseId(courseId);
         List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),session.getDay(), session.getStartTime(),
-                session.getEndTime(),session.getDate().substring(0,10), session.getLink(), session.getCategory())).toList();
+                session.getEndTime(),session.getDate(), session.getLink(), session.getCategory())).toList();
         return sessionDtos;
     }
 
@@ -104,7 +104,41 @@ public class SessionServiceImpl implements SessionService {
             throw ApiError.notFound("This Student is not registered to this course");
         }
         List<Session> sessions = sessionRepository.findByStudentsAndCourseId(student,courseId);
-        List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),
+        // Get the current date
+        Date currentDate = new Date();
+
+        // Set the time of date variable to be the same as the endTime
+        sessions.forEach(session -> {
+            Date endTime = session.getEndTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(session.getDate());
+            calendar.set(Calendar.HOUR_OF_DAY, endTime.getHours());
+            calendar.set(Calendar.MINUTE, endTime.getMinutes());
+            calendar.set(Calendar.SECOND, endTime.getSeconds());
+            session.setDate(calendar.getTime());
+        });
+
+        // Sort sessions based on the date
+        List<Session> sortedSessions = sessions.stream()
+                .filter(session -> session.getDate().after(currentDate)) // Filter past sessions
+                .sorted(Comparator.comparing(Session::getDate)) // Sort by date
+                .collect(Collectors.toList());
+
+        // Set the time of date variable to be the same as the endTime
+        sortedSessions.forEach(session -> {
+            Date endTime = session.getEndTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(session.getDate());
+            calendar.set(Calendar.HOUR_OF_DAY, endTime.getHours());
+            calendar.set(Calendar.MINUTE, endTime.getMinutes());
+            calendar.set(Calendar.SECOND, endTime.getSeconds());
+            session.setDate(calendar.getTime());
+        });
+
+        // Print the sorted sessions
+        sortedSessions.forEach(session -> System.out.println(session.getId() + ": " + session.getDate()));
+        System.out.println(sortedSessions.size());
+        List<SessionDto> sessionDtos = sortedSessions.stream().map(session -> new SessionDto(session.getId(),
                 session.getDay(),
                 session.getStartTime(),
                 session.getEndTime(),

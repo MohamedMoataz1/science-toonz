@@ -24,7 +24,7 @@ public class SessionDto {
 
     private Time endTime;
 
-    private String date;
+    private Date date;
 
     private String link;
 

@@ -38,7 +38,7 @@ public class Session {
 
     @NotEmpty
     @Column(nullable = false)
-    private String date;
+    private Date date;
 
     @NotEmpty
     @Column(nullable = false)

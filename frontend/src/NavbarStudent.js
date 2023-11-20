@@ -1,25 +1,33 @@
 import Logo from './images/ST Transparent.png';
-import { Link, useLocation ,useHistory} from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 const Navbar = () => {
+    const Token = localStorage.getItem("userToken")
+    const loc = useLocation();
     const history = useHistory();
-    const loc = useLocation()
     const logoutHandler = (e) => {
+
         localStorage.removeItem("userToken");
         history.push('/');
 
-        
     }
     return (
-
+        <div>
+            {Token &&
                 <div className="navbar">
                     <img src={Logo} alt="LOGO" className='logoimage' />
                     <div className='buttons'>
-                        <Link to="/home" className='homebutton'> Home </Link>
 
-                        {/* <button className='Coursesbutton'> Courses </button> */}
+
                         <button className='Logoutbutton' onClick={logoutHandler}> Logout </button>
                     </div>
                 </div>
+
+            }
+
+        </div>
+
+
 
     );
 }

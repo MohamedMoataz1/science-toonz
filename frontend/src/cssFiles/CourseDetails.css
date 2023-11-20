@@ -8,21 +8,23 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
-    
-    
+
+
+
 }
+
 .vitolo h1 {
     font-size: 60px;
 }
+
 .session-item {
     /* border: 1px solid black; */
     display: flex;
     justify-content: start;
 
 }
-.sessions-container 
-{
+
+.sessions-container {
     margin: 30px;
 
     max-height: 450px;
@@ -32,6 +34,7 @@
     border-radius: 60px;
     width: 85%;
 }
+
 .nav-bar-session-details {
     display: flex;
     flex-direction: row;
@@ -42,13 +45,16 @@
 body.active-modal {
     overflow-y: hidden;
 }
+
 .btn-modal {
     padding: 10px;
     display: block;
     margin: 100px auto 0;
     font-size: 18px;
 }
-.modal , .overlay {
+
+.modal,
+.overlay {
     width: 100vw;
     height: 100vh;
     top: 0;
@@ -56,29 +62,33 @@ body.active-modal {
     right: 0;
     bottom: 0;
     position: fixed;
+    overflow: hidden;
+
 }
+
 .overlay {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(270deg,#00223e,#ae796a);
-    
+    /* background: linear-gradient(270deg,#00223e,#ae796a); */
+    backdrop-filter: blur(2px);
+
 }
 
 .modal-content {
     background-color: white;
-    border: 10px solid black;
-    box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 1);
+    border: 1px solid black;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
     width: 50%;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
-    border-radius: 35px;
+    border-radius: 15px;
+    overflow-y: auto;
+    max-height: 83%;
 
-    
+
+
 }
-.close-btn{
+
+.close-btn {
 
     display: flex;
     justify-content: space-between;
@@ -86,8 +96,12 @@ body.active-modal {
     padding-top: 15px;
     margin-right: 1px;
     margin-left: 31px;
-    
-} 
+    position: sticky;
+    top: 0;
+    background-color: white;
+
+}
+
 .add-course-form {
     /* border: 1px solid black; */
     display: flex;
@@ -97,12 +111,126 @@ body.active-modal {
     margin: 22px;
     padding: 10px;
 }
+
 .logoimage-popup {
     height: 50%;
     width: 15%;
 }
+
 .thead {
     position: sticky;
     top: 0;
     background-color: #f2f2f2;
+}
+
+.non-sticky {
+    position: static;
+    top: auto;
+    
+}
+
+.thead2 {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+}
+
+.non-sticky2 {
+    position: static;
+    /* Set to "static" for non-sticky positioning */
+    top: auto;
+    /* Set to "auto" to remove top positioning */
+}
+
+.addingbutton {
+    margin-bottom: 20px;
+    border-radius: 10px;
+
+    display: block;
+    font-size: 1.466vw;
+    font-weight: 600;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+
+}
+
+.addingbutton:hover {
+    background-color: #ae796a;
+    transition: 0.2s;
+}
+
+/* Define the button style */
+.exit-button {
+    background-color: transparent;
+    border: 2px solid #000;
+    /* Black border */
+    color: #000;
+    /* Black text color */
+    font-size: 20px;
+    /* Adjust the font size as needed */
+    width: 40px;
+    /* Adjust the button width as needed */
+    height: 40px;
+    /* Adjust the button height as needed */
+    border-radius: 50%;
+    /* Make the button circular */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    /* Remove focus outline */
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* Change the button appearance on hover */
+.exit-button:hover {
+    background-color: #000;
+    /* Black background on hover */
+    color: #fff;
+    /* White text color on hover */
+    border-color: #fff;
+    /* White border on hover */
+}
+
+.dropdownboxesforsessiontostudent {
+    border-radius: 5px;
+    margin: 20px;
+    padding: 5px;
+
+}
+
+.dropdownboxesforsessiontostudentparentdiv {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: start;
+    margin-left: 3%;
+
+}
+
+.studentemailtobeaddedtocourse {
+    margin: 10px;
+    border-radius: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+
+.studentpopupinputs {
+    border-radius: 5px;
+    margin: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+
+}
+.search-studnet {
+    padding: 1%;
+    margin-bottom: 1%;
+    border-radius: 19px;
+    width: 20%;
 }

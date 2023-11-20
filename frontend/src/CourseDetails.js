@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import Logo from '../src/images/ST Transparent.png'
+import Logo from '../src/images/ST Transparent.png';
 import './cssFiles/CourseDetails.css'
 import { useEffect, useState } from "react";
 import * as React from 'react';
@@ -14,6 +14,10 @@ import { DataGrid } from '@mui/x-data-grid';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Popupsession from "./components/popupsession"
+import PopupStudents from "./components/PopupStudents";
+import PopupUpdateSession from "./components/PopupUpdateSession";
+import Popupeditstudent from "./components/Popupeditstudent";
 
 const CourseDetails = () => {
     const [AllDetails, setAllDetails] = useState('nothing to show');
@@ -22,78 +26,194 @@ const CourseDetails = () => {
     const [Students, setstudents] = useState([]);
     const [Sessions, setSessions] = useState([{}]);
     const [modal, setmodal] = useState(false);
+    const [modal2, setmodal2] = useState(false);
+    const [modal3, setmodal3] = useState(false);
     const [day, setday] = useState(null);
     const [startTime, setstartTime] = useState(null);
     const [endTime, setendTime] = useState(null);
     const [link, setlink] = useState(null);
     const [category, setcategory] = useState(null);
-    const [Date, setDate] = useState(null);
-    // const [AddedSession ,setAddedSession] = useState(null);
+    const [date, setdate] = useState(null);
+    const [AddedEmail, setAddedEmail] = useState();
+    const [AddedSessionsToStudent, setAddedSessionsToStudent] = useState([]);
+    const [SessionId, SetSessionID] = useState(null);
+    const [StudentSearch, setStudentSearch] = useState('');
+    const [modal4forstudentEdit , setmodal4forstudentEdit] = useState(false);
+    const [studentid , setstudentid] = useState()
+    const [sessionofstudent, setsessionofstudent] = useState([]);
+
+    const AppendSessions = (newsessionid) => {
+        const Sessionsid = [...AddedSessionsToStudent];
+        Sessionsid.push(parseInt(newsessionid, 10));
+        setAddedSessionsToStudent(Sessionsid);
+
+
+    }
 
     const togglemodal = () => {
-        setmodal(!modal)
+        setmodal(!modal);
+        const theadElement = document.querySelector('.thead'); // Get the .thead element
+        const theadElement2 = document.querySelector('.thead2');
+        if (modal) {
+            theadElement.classList.remove('non-sticky'); // Remove the non-sticky class
+            theadElement2.classList.remove('non-sticky2');
+        } else {
+            theadElement.classList.add('non-sticky'); // Add the non-sticky class
+            theadElement2.classList.add('non-sticky2');
+        }
+
     }
+    
+    
+
     const headers = {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
     };
-    
+
 
 
 
     useEffect(() => {
-        const getall = async () => {
-          await fetch(`http://localhost:8080/api/course/getCourseDetailsById/1`, {
-            headers: headers,
-          })
-            .then((res) => {
-              return res.json();
-            })
-            .then((data) => {
-                console.log(data.sessions);
-              setAllDetails(data);
-              setstudents(data.students);
-              setSessions(data.sessions);
-            });
-        };
-      
-        getall(); 
-      
-      }, [] );
-      
 
-    if (modal) {
+        const getall = async () => {
+            await fetch(`http://localhost:8080/api/course/getCourseDetailsById/${id}`, {
+                headers: headers,
+            })
+                .then((res) => {
+                    return res.json();
+                })
+                .then((data) => {
+
+                    setAllDetails(data);
+                    setstudents(data.students);
+                    setSessions(data.sessions);
+                });
+        };
+
+        getall();
+
+    }, [AddedSessionsToStudent]);
+
+
+    if (modal || modal2 || modal3 || modal4forstudentEdit) {
         document.body.classList.add('active-modal')
     }
     else {
         document.body.classList.remove('active-modal')
     }
 
-    const HandleAddCourse = () => {
+    const HandleAddSession = () => {
         setmodal(!modal);
-        const AddedSession = { day, startTime, endTime, link, category };
+        const AddedSession = { day, startTime, endTime, date, link, category, "vimeoLink": "viemeolink.com" };
         console.log(AddedSession);
 
-        fetch(`http://localhost:8080/api/session/createSession/${AllDetails.name}`, {
+        fetch(`http://localhost:8080/api/session/createSession/${AllDetails.id}`, {
             method: 'POST',
             body: JSON.stringify(AddedSession),
             headers: headers,
-        }).then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-            })
+        })
+        window.location.reload();
+
+
+
 
 
     }
 
 
 
+    const HandleAddStudent = () => {
+        console.log("  hi inside function  ");
+        setmodal2(!modal2);
+        console.log("  bobeeeeeeeeeeeeeeeeeeeee   ");
+        fetch(`http://localhost:8080/api/student/addStudentToCourseWithSessions/${AllDetails.id}/${AddedEmail}`, {
+            method: 'POST',
+            body: JSON.stringify(AddedSessionsToStudent),
+            headers: headers,
+
+        }).then((res) => res.json())
+
+            .then((data) => {
+                console.log(AddedSessionsToStudent);
+            })
+
+        window.location.reload();
 
 
 
 
 
 
+    }
+    const togglemodal2 = () => {
+        setmodal2(!modal2);
+        const theadElement = document.querySelector('.thead2'); // Get the .thead element
+
+        if (modal2) {
+            theadElement.classList.remove('non-sticky2'); // Remove the non-sticky class
+        } else {
+            theadElement.classList.add('non-sticky2'); // Add the non-sticky class
+        }
+
+    }
+    const HandleDeleteSession = (SessionID) => {
+        console.log(SessionID);
+        fetch(`http://localhost:8080/api/session/deleteSession/${SessionID}`, {
+            method: 'DELETE',
+            headers: headers,
+        }).then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+
+            })
+        window.location.reload();
+
+
+    }
+
+  
+    const togglemodal3 = (session) => {
+        setmodal3(!modal3);
+        SetSessionID(session.id);
+        setday(session.day);
+        setstartTime(session.startTime);
+        setendTime(session.endTime);
+        setdate(session.date);
+        setlink(session.link);
+        setcategory(session.category);
+        const theadElement = document.querySelector('.thead2'); // Get the .thead element
+
+        if (modal2) {
+            theadElement.classList.remove('non-sticky2'); // Remove the non-sticky class
+        } else {
+            theadElement.classList.add('non-sticky2'); // Add the non-sticky class
+        }
+
+
+
+
+
+    }
+    const HandleDeleteStudent= (StudentId) => {
+        fetch(`http://localhost:8080/api/student/removeStudentFromCourse/${AllDetails.id}/${StudentId}` , {
+            method: 'DELETE' ,
+            headers: headers , 
+        }).then((res) => res.json())
+        .then((data)=>{
+            console.log(data);
+        })
+        window.location.reload();
+    }
+
+    const togllemodal4forstudentEdit = (studentid) => {
+        setmodal4forstudentEdit(!modal4forstudentEdit);
+        //setstudentid(studentid);
+        
+        
+        
+    }
+    
 
     return (
 
@@ -105,81 +225,75 @@ const CourseDetails = () => {
             <h2>Start Date:  {AllDetails.startDate}</h2>
             <h2>end Date:  {AllDetails.endDate}</h2>
 
+
             <div className="sessions-container">
                 <div className="nav-bar-session-details">
                     <h2>sessions : </h2>
-                    <button onClick={togglemodal}>Add Session</button>
-                    {modal && <div className="modal">
-                        <div className="overlay">
-                            <div className="modal-content">
-                                <div className="close-btn">
-                                    <img src={Logo} alt="LOGO" className='logoimage-popup' />
-                                    <button onClick={togglemodal}> Exit</button>
-                                </div>
-
-                                <form className="add-course-form" onSubmit={HandleAddCourse}>
-
-                                    <label >Day: </label> <br />
-                                    <input type="text" name="day " required onChange={(e) => setday(e.target.value)} /> <br />
-
-                                    <label >Start Time: </label> <br />
-                                    <input type="time" required onChange={(e) => setstartTime("12:12:47")} /> <br />
-
-                                    <label >End Time</label><br />
-                                    <input type="time" required onChange={(e) => setendTime("12:12:47")} /> <br />
-
-                                    <label >Link: </label><br />
-                                    <input type="text" required onChange={(e) => setlink(e.target.value)} /><br />
-
-
-                                    <label >Category : </label><br />
-                                    <input type="text" required onChange={(e) => setcategory(e.target.value)} /><br />
-
-                                    <label >Category : </label><br />
-                                    <input type="Date" required onChange={(e) => setDate(e.target.value)} /><br />
-
-                                    <button className="close-modal" >
-                                        Add Course
-                                    </button>
-
-
-
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>}
-
-
-
-
-
-
+                    <button onClick={togglemodal} className="addingbutton">Add Session</button>
+                    {modal && <Popupsession togglemodal={togglemodal} HandleAddSession={HandleAddSession} setday={setday} setstartTime={setstartTime} setendTime={setendTime} setlink={setlink} setcategory={setcategory} setdate={setdate} Logo={Logo} />}
                 </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow className="thead">
-                                <TableCell>Name</TableCell>
-                                <TableCell >Start Date</TableCell>
-                                <TableCell >End Date</TableCell>
-                                <TableCell  >Link   </TableCell>
+                                <TableCell> </TableCell>
+                                <TableCell>Name      </TableCell>
+                                <TableCell>Start Date</TableCell>
+                                <TableCell>End Date  </TableCell>
+                                <TableCell>Link      </TableCell>
+                                <TableCell> </TableCell>
+                                <TableCell> </TableCell>
                                 {/* <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {Sessions.map((session) => (
+                            {Sessions.map((session, index) => (
                                 <TableRow
                                     key={session.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
+                                    <TableCell component="th" scope="row">
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell component="th" scope="row">
                                         {session.day}
                                     </TableCell>
                                     <TableCell >{session.startTime}</TableCell>
                                     <TableCell >{session.endTime}</TableCell>
                                     <TableCell >{session.link}</TableCell>
+                                    <TableCell >
+                                        <button onClick={() => HandleDeleteSession(session.id)}> Delete </button>
+                                    </TableCell>
+                                    <TableCell >
+                                        <button onClick={() => togglemodal3(session)}> Edit </button>
+                                        {modal3 &&
+
+                                            <PopupUpdateSession
+                                                modal3={modal3}
+                                                togglemodal3={togglemodal3}
+                                                id={SessionId}
+                                                day={day}
+                                                startTime={startTime}
+                                                endTime={endTime}
+                                                date={date}
+                                                link={link}
+                                                category={category}
+                                                Logo={Logo}
+                                                setday={setday}
+                                                setstartTime={setstartTime}
+                                                setendTime={setendTime}
+                                                setdate={setdate}
+                                                setlink={setlink}
+                                                setcategory={setcategory}
+                                                setmodal3={setmodal3}
+                                                headers={headers}
+                                                sessionofstudent={sessionofstudent}
+
+
+                                            />
+                                        }
+                                    </TableCell>
+
 
                                 </TableRow>
                             ))}
@@ -193,45 +307,19 @@ const CourseDetails = () => {
             <div className="sessions-container">
                 <div className="nav-bar-session-details">
                     <h2>Students : </h2>
-                    <button onClick={togglemodal}>Add Student</button>
-                    {modal && <div className="modal">
-                        <div className="overlay">
-                            <div className="modal-content">
-                                <div className="close-btn">
-                                    <img src={Logo} alt="LOGO" className='logoimage-popup' />
-                                    <button onClick={togglemodal}> Exit</button>
-                                </div>
-
-                                <form className="add-course-form" onSubmit={HandleAddCourse}>
-
-                                    <label >Day: </label> <br />
-                                    <input type="text" name="day " required onChange={(e) => setday(e.target.value)} /> <br />
-
-                                    <label >Start Time: </label> <br />
-                                    <input type="time" required onChange={(e) => setstartTime("12:12:47")} /> <br />
-
-                                    <label >End Time</label><br />
-                                    <input type="time" required onChange={(e) => setendTime("12:12:47")} /> <br />
-
-                                    <label >Link: </label><br />
-                                    <input type="text" required onChange={(e) => setlink(e.target.value)} /><br />
-
-
-                                    <label >Category : </label><br />
-                                    <input type="text" required onChange={(e) => setcategory(e.target.value)} /><br />
-
-                                    <button className="close-modal" >
-                                        Add Course
-                                    </button>
-
-
-
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>}
+                    
+                    <button onClick={togglemodal2} className="addingbutton">Add Student</button>
+                    {modal2 && <PopupStudents 
+                    togglemodal2={togglemodal2} 
+                    Logo={Logo} 
+                    AppendSessions={AppendSessions} 
+                    HandleAddStudent={HandleAddStudent} 
+                    togglemodal={togglemodal} 
+                    setAddedEmail={setAddedEmail} 
+                    setAddedSession={setAddedSessionsToStudent} 
+                    id={AllDetails.id} 
+                    Categories={AllDetails.numOfCategories} 
+                    Sessions={Sessions} />}
 
 
 
@@ -239,29 +327,50 @@ const CourseDetails = () => {
 
 
                 </div>
+                <div>
+                <input type="text" className="search-studnet" onChange={(e)=> setStudentSearch(e.target.value)} placeholder="Search Student" />
+                </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
-                            <TableRow>
+                            <TableRow className="thead2">
+                                <TableCell> </TableCell>
                                 <TableCell>FirstName</TableCell>
                                 <TableCell >LastName</TableCell>
                                 <TableCell >Email</TableCell>
                                 <TableCell  >school</TableCell>
+                                <TableCell> </TableCell>
+                                <TableCell> </TableCell>
+                                <TableCell> </TableCell>
                                 {/* <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {Students.map((Student) => (
+                            {Students.filter((Student) => {
+                                return StudentSearch.toLowerCase() === '' ? Student : Student.email.toLowerCase().includes(StudentSearch)
+                            }).map((Student, index) => (
                                 <TableRow
                                     key={Student.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
+                                ><TableCell component="th" scope="row">
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell component="th" scope="row">
                                         {Student.firstName}
                                     </TableCell>
                                     <TableCell >{Student.lastName}</TableCell>
                                     <TableCell >{Student.email}</TableCell>
                                     <TableCell >{Student.school}</TableCell>
+                                    <TableCell>
+                                    <button onClick={() => HandleDeleteStudent(Student.id)} > Delete </button>
+                                         </TableCell>
+                                <TableCell> 
+                                <button > Show </button>
+                                </TableCell>
+                                <TableCell> 
+                                <button onClick={() => togllemodal4forstudentEdit(Student.id) } > Edit </button>
+                                
+                                </TableCell>
 
                                 </TableRow>
                             ))}
@@ -272,11 +381,29 @@ const CourseDetails = () => {
 
             </div>
 
+            <div>
+            {
+                                        modal4forstudentEdit && 
+                                        
+                                        <Popupeditstudent
 
+                                        studentid = {studentid}
+                                        courseid = {AllDetails.id}
+                                        togllemodal4forstudentEdit = {togllemodal4forstudentEdit}
+                                        Logo = {Logo}
+                                        Categories={AllDetails.numOfCategories}
+                                        AppendSessions = {AppendSessions}
+                                        Sessions = {Sessions}
+                                        headers = {headers}
+
+                                        />
+            }
+            </div>
         </div>
 
 
     );
+    
 
 }
 

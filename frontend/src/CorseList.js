@@ -6,16 +6,16 @@ const CorseList = ({ corses, headers }) => {
         <div className='showcourses'>
             {
                 corses.map(course => (
-                    <Link to={`/home/course/${course.id}`} className='corse-prieview' tabindex="0" key={course.id} >
-                        <h1>{course.id} <br /> </h1>
-                        <h1> {course.name} </h1>
+                    <Link to={`/home/course/${course.id}`} className='corse-prieview' tabindex="0" key={course.id} title={course.name}>
+                        
+                        <h1> {course.name.slice(0,3).toUpperCase() } </h1>
 
                     </Link>
 
 
 
                 ))}
-            <Link to="/home/addcourse" className='corse-prieview' tabindex="0"  >
+            <Link to="/home/addcourse" className='corse-prieview' tabindex="0" title="AddCourse" >
                 <div className='addCourse'></div>
 
 

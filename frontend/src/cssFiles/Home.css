@@ -1,5 +1,5 @@
 .back {
-    
+    min-height: 100vh;
     background:linear-gradient(270deg,#00223e,#ae796a);
     display: flex;
     flex-direction: column;
@@ -8,6 +8,7 @@
 
 .embdedbox
 {
+    min-height: 90vh;
     width: 95%;
     margin: 35px auto;
     height: auto;

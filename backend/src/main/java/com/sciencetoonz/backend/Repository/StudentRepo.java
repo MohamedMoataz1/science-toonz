@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface StudentRepo extends JpaRepository<Student,Long> {
 
-    public Student findByEmail(String username);
+    public Student findByEmail(String email);
     public List<Student> findAllByCoursesId(Long courseId);
     public List<Student> findStudentsByCoursesContains(Course course);
 }

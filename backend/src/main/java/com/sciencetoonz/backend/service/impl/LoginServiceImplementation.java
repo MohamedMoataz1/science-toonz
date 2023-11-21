@@ -44,6 +44,7 @@ public class LoginServiceImplementation implements LoginService {
         }
         else {
             user_type = false;
+            System.out.println("User Student");
         }
         return new LoginResponse(user, accessToken, user_type);
     }

@@ -82,9 +82,9 @@ public class StudentServiceImpl implements StudentService {
             throw ApiError.notFound("Student Already Assigned to this course before");
         }
 
-        if(course.getNumOfCategories() != sessionsIds.size()) {
-            throw ApiError.badRequest("Number of sessions is not enough to this course");
-        }
+//        if(course.getNumOfCategories() != sessionsIds.size()) {
+//            throw ApiError.badRequest("Number of sessions is not enough to this course");
+//        }
 
 //        for(int i = 0;i<course.getNumOfCategories();i++) {
 //            if (sessionsIds.get(i) != i+1) {
@@ -96,6 +96,10 @@ public class StudentServiceImpl implements StudentService {
         List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
         if(sessions.stream().count()==0) {
             throw ApiError.notFound("No sessions with those ids");
+        }
+
+        if(sessions.size() != sessionsIds.size()) {
+            throw ApiError.notFound("There are sessions could not be found!");
         }
 
         for(Session session:sessions) {

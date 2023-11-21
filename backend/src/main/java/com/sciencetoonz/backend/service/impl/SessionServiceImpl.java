@@ -167,9 +167,9 @@ public class SessionServiceImpl implements SessionService {
         if(!student.getCourses().contains(course)) {
             throw ApiError.notFound("This student is not registered to this course!");
         }
-        if(course.getNumOfCategories() != sessionsIds.size()) {
-            throw ApiError.badRequest("Number of sessions is not accurate to this course");
-        }
+//        if(course.getNumOfCategories() != sessionsIds.size()) {
+//            throw ApiError.badRequest("Number of sessions is not accurate to this course");
+//        }
 
         List<Session> sessions = getSessionsbySessionsIds(sessionsIds);
 

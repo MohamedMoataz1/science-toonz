@@ -30,13 +30,6 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         } else {
             Optional<Student> studentOptional = Optional.ofNullable(studentRepo.findByEmail(username));
             Student student = studentOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            System.out.println(student.getPassword());
-            System.out.println(student.getId());
-            System.out.println(student.getFirstName());
-            System.out.println(student.getOfficialEmail());
-            System.out.println(student.getUsername());
-            System.out.println(student.getFees());
-            // Assuming that you have a custom UserDetails implementation for Student
             Student student1 = Student.builder()
                     .id(student.getId())
                     .firstName(student.getFirstName())

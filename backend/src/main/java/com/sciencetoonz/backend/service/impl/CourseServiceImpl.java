@@ -1,10 +1,7 @@
 package com.sciencetoonz.backend.service.impl;
 
 import com.sciencetoonz.backend.Repository.CourseRepository;
-import com.sciencetoonz.backend.dto.CourseDetailsDto;
-import com.sciencetoonz.backend.dto.CourseDto;
-import com.sciencetoonz.backend.dto.SessionDto;
-import com.sciencetoonz.backend.dto.StudentDto;
+import com.sciencetoonz.backend.dto.*;
 import com.sciencetoonz.backend.exception.ApiError;
 import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Session;
@@ -83,6 +80,19 @@ public class CourseServiceImpl implements CourseService {
 
         List<StudentDto> studentDtos = studentService.getStudentsByCourseId(course.getId());
 
+        List<StudentWithSessionsDto> studentWithSessionsDtos = studentDtos.stream().map(studentDto -> new StudentWithSessionsDto(
+                studentDto.getId(),
+                studentDto.getFirstName(),
+                studentDto.getLastName(),
+                studentDto.getFatherName(),
+                studentDto.getSchool(),
+                studentDto.getEmail(),
+                studentDto.getPassword(),
+                studentDto.getOfficialEmail(),
+                studentDto.getYear(),
+                studentDto.getFees(),
+                sessionService.getSessionsOfCourseOfStudent(studentDto.getId(),courseId)
+        )).toList();
 
         List<SessionDto> sessionDtos = sessionService.getSessionsByCourseId(course.getId());
 
@@ -92,7 +102,7 @@ public class CourseServiceImpl implements CourseService {
                 course.getEndDate(),
                 course.getNumOfCategories(),
                 course.getMaterialLink(),
-                studentDtos,
+                studentWithSessionsDtos,
                 sessionDtos);
         return courseDetailsDto;
     }

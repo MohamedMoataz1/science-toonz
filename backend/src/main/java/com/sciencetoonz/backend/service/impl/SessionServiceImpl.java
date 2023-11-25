@@ -179,10 +179,10 @@ public class SessionServiceImpl implements SessionService {
 
         List<Session> sessionList = student.getSessions();
 
-        boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
-        if(hasOverlap) {
-            throw ApiError.badRequest("There is a session already assigned before");
-        }
+//        boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
+//        if(hasOverlap) {
+//            throw ApiError.badRequest("There is a session already assigned before");
+//        }
 
         System.out.println(removeSessionsOfCourseOfStudent(studentId,courseId));
         System.out.println(addSessionsToStudent(sessionList, sessions, student));

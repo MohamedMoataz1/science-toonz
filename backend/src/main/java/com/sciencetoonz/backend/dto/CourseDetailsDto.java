@@ -22,6 +22,6 @@ public class CourseDetailsDto {
     private Date endDate;
     private Long numOfCategories;
     private String materialLink;
-    private List<StudentDto> students;
+    private List<StudentWithSessionsDto> studentWithSessionsDtos;
     private List<SessionDto> sessions;
 }

@@ -10,7 +10,6 @@ import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
 import com.sciencetoonz.backend.service.StudentService;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -181,6 +180,42 @@ public class StudentServiceImpl implements StudentService {
                 coursesWithSessionsOfStudentDtos
         );
         return studentDetailsDto;
+    }
+
+    @Override
+    public List<StudentDto> getStudentsWithoutCourse(Long courseId) {
+        Course course = courseService.findById(courseId);
+        if (course == null) {
+            throw ApiError.notFound("Course Not Found!");
+        }
+        List<Student> students = studentRepo.findStudentsNotInCourse(course);
+        List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(student.getId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getFatherName(),
+                student.getSchool(),
+                student.getEmail(),
+                student.getPassword(),
+                student.getOfficialEmail(),
+                student.getYear(),
+                student.getFees())).toList();
+        return studentDtos;
+    }
+
+    @Override
+    public List<StudentDto> getAllStudents() {
+        List<Student> students = studentRepo.findAll();
+        List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(student.getId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getFatherName(),
+                student.getSchool(),
+                student.getEmail(),
+                student.getPassword(),
+                student.getOfficialEmail(),
+                student.getYear(),
+                student.getFees())).toList();
+        return studentDtos;
     }
 
 }

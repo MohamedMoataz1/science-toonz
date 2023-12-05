@@ -18,4 +18,6 @@ public interface StudentService {
     public void saveStudent(Student student);
     public String removeStudentFromCourse(Long studentId, Long courseId);
     public StudentDetailsDto getStudentDetails(Long studentId);
+    public List<StudentDto> getStudentsWithoutCourse(Long courseId);
+    public List<StudentDto> getAllStudents();
 }

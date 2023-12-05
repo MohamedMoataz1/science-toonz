@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import Logo from './images/ST Transparent.png';
 import { Link, useLocation ,useHistory} from 'react-router-dom';
 const Navbar = () => {
@@ -13,12 +14,13 @@ const Navbar = () => {
 
                 <div className="navbar">
                     <img src={Logo} alt="LOGO" className='logoimage' />
-                    <div className='buttons'>
-                        <Link to="/home" className='homebutton'> Home </Link>
+                    <ul className='buttonlist'>
+                        <Link to="/home"className='navbuttons' > Home </Link>
+                        <Link  to= "/home/RegisterStudent" className='navbuttons'> Register Student </Link>
+                        <a  onClick={logoutHandler} className='navbuttons'> Logout </a>
 
-                        {/* <button className='Coursesbutton'> Courses </button> */}
-                        <button className='Logoutbutton' onClick={logoutHandler}> Logout </button>
-                    </div>
+                        
+                    </ul>
                 </div>
 
     );

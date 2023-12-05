@@ -28,11 +28,10 @@
 
 .navbar {
 
-    height: 140px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 50px;
+    margin: 35px 50px;
     
 }
 .logoimage {
@@ -43,28 +42,20 @@
     margin: 43px;
 
 }
-.buttons {
-    background-color: transparent;
-    height: 110px;
-    position: relative;
-    padding-right: 300px;
+.buttonlist {
     display: flex;
-    position: relative;
-    border-radius: 50px;
-    
+    margin-right: 200px;
+
 }
-.homebutton {
-    background-color: transparent;
-    border-color: transparent;
+.navbuttons {
+    text-decoration: none;
+    margin: 55px;
     cursor: pointer;
     font-size: 20px;
-    padding-right: 100px;
     color:  coral;
-    position: relative;
-    top: 39px;
-    text-decoration: none;
+    
 }
-.homebutton:hover {
+.navbuttons:hover {
     
     text-decoration: underline;
     transform: translateY(-5px);
@@ -172,4 +163,38 @@
     align-items: center;
     align-content: center;
 
+}
+.Registerinputs {
+    border-radius: 5px;
+    margin: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    width: 100%;
+    height: 25px;
+    border-color:coral;
+
+}
+.RegisterForm {
+    width: 50vh;
+    
+}
+.Registerbutton {
+    margin-bottom: 20px;
+    border-radius: 10px;
+
+    display: block;
+    font-size: 1.466vw;
+    font-weight: 600;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    left: 29%;
+
+}
+.Registerbutton:hover {
+    background-color: #ae796a;
+    transition: 0.2s;
 }

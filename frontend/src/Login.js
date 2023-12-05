@@ -36,7 +36,8 @@ const Login = () => {
                 }
                 else if(data.user_role === false) {
                     localStorage.setItem('userToken', data.token);
-                    history.push('/StudentHome');
+                    console.log(data.user.id);
+                    history.push(`/StudentHome?id=${data.user.id}`);
                     
 
                 }

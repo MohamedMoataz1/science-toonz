@@ -226,6 +226,7 @@ body.active-modal {
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 20px;
+    width: 35%;
 
 }
 .search-studnet {
@@ -233,4 +234,24 @@ body.active-modal {
     margin-bottom: 1%;
     border-radius: 19px;
     width: 20%;
+}
+.showingstudentdetails 
+{
+    
+    margin: 5%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+.SubmitSessionsEdit{
+    
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-size: 1.466vw;
+    font-weight: 600;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
 }

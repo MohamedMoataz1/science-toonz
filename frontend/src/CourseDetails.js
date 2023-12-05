@@ -41,14 +41,22 @@ const CourseDetails = () => {
     const [modal4forstudentEdit , setmodal4forstudentEdit] = useState(false);
     const [studentid , setstudentid] = useState()
     const [sessionofstudent, setsessionofstudent] = useState([]);
+    const [showedStudent , setshowedStudent] = useState(null);
+    const [showButton, setShowButton] = useState(false);
 
-    const AppendSessions = (newsessionid) => {
-        const Sessionsid = [...AddedSessionsToStudent];
-        Sessionsid.push(parseInt(newsessionid, 10));
+    const AppendSessions = (newsessionid,index) => {
+        
+        setShowButton(true);
+        let Sessionsid = [...AddedSessionsToStudent];
+        Sessionsid[index] = newsessionid;
+        console.log(Sessionsid);
         setAddedSessionsToStudent(Sessionsid);
-
+        
+        
 
     }
+    
+   
 
     const togglemodal = () => {
         setmodal(!modal);
@@ -75,7 +83,7 @@ const CourseDetails = () => {
 
 
     useEffect(() => {
-
+        
         const getall = async () => {
             await fetch(`http://localhost:8080/api/course/getCourseDetailsById/${id}`, {
                 headers: headers,
@@ -84,16 +92,18 @@ const CourseDetails = () => {
                     return res.json();
                 })
                 .then((data) => {
+                    
 
                     setAllDetails(data);
-                    setstudents(data.students);
+                    setstudents(data.studentWithSessionsDtos);
                     setSessions(data.sessions);
+                    setAddedSessionsToStudent(new Array(data.numOfCategories).fill(0));
                 });
         };
 
         getall();
 
-    }, [AddedSessionsToStudent]);
+    }, []);
 
 
     if (modal || modal2 || modal3 || modal4forstudentEdit) {
@@ -206,9 +216,11 @@ const CourseDetails = () => {
         window.location.reload();
     }
 
-    const togllemodal4forstudentEdit = (studentid) => {
+    const togllemodal4forstudentEdit = (student) => {
         setmodal4forstudentEdit(!modal4forstudentEdit);
-        //setstudentid(studentid);
+        setshowedStudent(student);
+       
+       
         
         
         
@@ -238,8 +250,8 @@ const CourseDetails = () => {
                             <TableRow className="thead">
                                 <TableCell> </TableCell>
                                 <TableCell>Name      </TableCell>
-                                <TableCell>Start Date</TableCell>
-                                <TableCell>End Date  </TableCell>
+                                <TableCell>Start Time</TableCell>
+                                <TableCell>End Time</TableCell>
                                 <TableCell>Link      </TableCell>
                                 <TableCell> </TableCell>
                                 <TableCell> </TableCell>
@@ -348,7 +360,7 @@ const CourseDetails = () => {
                         <TableBody>
                             {Students.filter((Student) => {
                                 return StudentSearch.toLowerCase() === '' ? Student : Student.email.toLowerCase().includes(StudentSearch)
-                            }).map((Student, index) => (
+                            }).map((Student , index) => (
                                 <TableRow
                                     key={Student.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -364,11 +376,9 @@ const CourseDetails = () => {
                                     <TableCell>
                                     <button onClick={() => HandleDeleteStudent(Student.id)} > Delete </button>
                                          </TableCell>
+                             
                                 <TableCell> 
-                                <button > Show </button>
-                                </TableCell>
-                                <TableCell> 
-                                <button onClick={() => togllemodal4forstudentEdit(Student.id) } > Edit </button>
+                                <button  onClick={()=>togllemodal4forstudentEdit(Student)}> Show </button>
                                 
                                 </TableCell>
 
@@ -386,16 +396,18 @@ const CourseDetails = () => {
                                         modal4forstudentEdit && 
                                         
                                         <Popupeditstudent
-
-                                        studentid = {studentid}
-                                        courseid = {AllDetails.id}
-                                        togllemodal4forstudentEdit = {togllemodal4forstudentEdit}
+                                        showedStudent = {showedStudent} 
                                         Logo = {Logo}
                                         Categories={AllDetails.numOfCategories}
                                         AppendSessions = {AppendSessions}
-                                        Sessions = {Sessions}
+                                        togllemodal4forstudentEdit={ togllemodal4forstudentEdit}
+                                        Sessions={Sessions}
+                                        setAddedSessionsToStudent = {setAddedSessionsToStudent}
+                                        AddedSessionsToStudent = {AddedSessionsToStudent}
+                                        showButton = {showButton}
+                                        setShowButton = { setShowButton}
+                                        AllDetails = {AllDetails}
                                         headers = {headers}
-
                                         />
             }
             </div>

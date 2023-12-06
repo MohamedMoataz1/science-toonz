@@ -1,27 +1,54 @@
 import { Modal } from "@mui/material";
-import { useEffect } from "react";
-const Popupeditstudent = ({ togllemodal4forstudentEdit, showedStudent, Logo, AppendSessions, Categories, Sessions, AddedSessionsToStudent, setAddedSessionsToStudent, showButton, setShowButton ,AllDetails , headers}) => {
-
+import { useEffect, useState } from "react";
+const Popupeditstudent = ({ togllemodal4forstudentEdit, showedStudent, Logo, AppendSessions, Categories, Sessions, AddedSessionsToStudent, setAddedSessionsToStudent, showButton, setShowButton, AllDetails, headers }) => {
+    const [studentsession , setstudentsession] = useState(null);
     useEffect(() => {
-        setShowButton(false);
-        let temp = []
-        for (let index = 0; index < Categories; index++) {
-            temp.push(showedStudent.sessionDtos[index].id)
-            console.log(temp);
+        let temp = Array(Categories).fill("no selected sessions");
+        let zerosArray = Array(Categories).fill(0);
+        const sortedSessions = [...showedStudent.sessionDtos].sort((a, b) => a.category - b.category);
+        console.log(sortedSessions);
+        for (let i = 0; i < sortedSessions.length; i++) {
+
+            temp[sortedSessions[i].category - 1] = sortedSessions[i].day
+            zerosArray[sortedSessions[i].category - 1] = sortedSessions[i].id
+
+
         }
-        setAddedSessionsToStudent(temp);
-        console.log(showedStudent.sessionDtos);
+        setstudentsession(temp);
+        console.log(zerosArray);
+        console.log(temp);
+        setAddedSessionsToStudent(zerosArray);
+        //setAddedSessionsToStudent(zerosArray);
+        
+
 
     }, []);
-
+    
+    console.log(AddedSessionsToStudent);
     const HandleEditStudentSession = () => {
-        fetch(`http://localhost:8080/api/session/updateSessionsOfStudent/${showedStudent.id}/${AllDetails.id}` , {
-            headers : headers , 
-        }).then((res)=>{
-            return res.json();
-            console.log("gt salema");
-        })
-        
+        console.log(AddedSessionsToStudent);
+        for (let i = 0; i < AddedSessionsToStudent.length; i++) {
+            if (AddedSessionsToStudent[i] === 0) {
+                AddedSessionsToStudent.splice(i, 1);
+                i--; 
+            }
+            
+            
+        }
+        console.log(AddedSessionsToStudent);
+        fetch(`http://localhost:8080/api/session/updateSessionsOfStudent/${showedStudent.id}/${AllDetails.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(AddedSessionsToStudent),
+            headers: headers,
+
+        }).then((res) => res.json())
+
+            .then((data) => {
+                console.log(AddedSessionsToStudent);
+            })
+
+        window.location.reload();
+
     }
 
 
@@ -46,11 +73,12 @@ const Popupeditstudent = ({ togllemodal4forstudentEdit, showedStudent, Logo, App
                         <h1>Sesssions : </h1>
                         <div className="dropdownboxesforsessiontostudentparentdiv">
                             {Array.from({ length: Categories }, (_, index) => (
-                                <select key={index} onChange={(e) => AppendSessions(parseInt(e.target.value, 10), index)} className="dropdownboxesforsessiontostudent" required>
-                                    <option disabled selected>{showedStudent.sessionDtos[index].day
-                                    } </option>
+                                <select key={index} onChange={(e) => AppendSessions(parseInt(e.target.value, 10), index)} className="dropdownboxesforsessiontostudent" >
+                                    <option disabled selected>
+                                    { studentsession && studentsession[index]}  
+                                     </option>
                                     {Sessions.map((session) => (
-                                        session.category == (index + 1) ?
+                                        session.category === (index + 1) && studentsession && studentsession[index] && session.day !== studentsession[index] ?
                                             <option value={session.id} > {session.day} </option>
 
                                             : null
@@ -59,6 +87,11 @@ const Popupeditstudent = ({ togllemodal4forstudentEdit, showedStudent, Logo, App
 
 
                                     ))}
+                                    {
+                                        studentsession && studentsession[index] != "no selected sessions"  ?
+                                        <option value={0} > Diselect Session </option> : null
+
+                                    }
 
 
                                 </select>

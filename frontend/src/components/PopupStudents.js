@@ -20,7 +20,7 @@ const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSess
                         <label>Choose Student Sessions : </label>
                         <div className="dropdownboxesforsessiontostudentparentdiv">
                             {Array.from({ length: Categories }, (_, index) => (
-                                <select key={index} onChange={(e) => AppendSessions(parseInt(e.target.value, 10) , index)} className="dropdownboxesforsessiontostudent"required>
+                                <select key={index} onChange={(e) => AppendSessions(parseInt(e.target.value, 10) , index)} className="dropdownboxesforsessiontostudent">
                                     <option disabled selected>Select Session {index+1} </option>
                                     {Sessions.map((session) => (
                                         session.category == (index + 1) ?

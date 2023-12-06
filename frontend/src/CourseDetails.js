@@ -134,9 +134,17 @@ const CourseDetails = () => {
 
 
     const HandleAddStudent = () => {
-        console.log("  hi inside function  ");
+        
         setmodal2(!modal2);
-        console.log("  bobeeeeeeeeeeeeeeeeeeeee   ");
+        console.log(AddedSessionsToStudent);
+        for (let i = 0; i < AddedSessionsToStudent.length; i++) {
+            if (AddedSessionsToStudent[i] === 0) {
+                AddedSessionsToStudent.splice(i, 1);
+                i--; // Adjust index after removing an element
+            }
+            
+        }
+        console.log(AddedSessionsToStudent);
         fetch(`http://localhost:8080/api/student/addStudentToCourseWithSessions/${AllDetails.id}/${AddedEmail}`, {
             method: 'POST',
             body: JSON.stringify(AddedSessionsToStudent),

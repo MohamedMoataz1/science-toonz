@@ -20,9 +20,7 @@ public class CourseDto {
 
     private long id;
     private String name;
-    @JsonFormat(pattern = "MM/dd/yyyy")
     private Date startDate;
-    @JsonFormat(pattern = "MM/dd/yyyy")
     private Date endDate;
     private Long numOfCategories;
 

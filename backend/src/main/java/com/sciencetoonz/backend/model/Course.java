@@ -26,12 +26,10 @@ public class Course {
 
     @NotEmpty
     @Column(nullable = false)
-    @JsonFormat(pattern = "MM/dd/yyyy")
     private Date startDate;
 
     @NotEmpty
     @Column(nullable = false)
-    @JsonFormat(pattern = "MM/dd/yyyy")
     private Date endDate;
 
     @NotEmpty

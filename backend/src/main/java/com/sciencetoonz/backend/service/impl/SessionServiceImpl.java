@@ -38,7 +38,7 @@ public class SessionServiceImpl implements SessionService {
 
         Course course = courseService.findById(courseId);
         if (course == null) {
-            throw ApiError.badRequest("This course doesn't exist");
+            throw ApiError.notFound("This course doesn't exist!");
         }
 
         String dayS = session.getDay().substring(0,3).toLowerCase();
@@ -47,7 +47,7 @@ public class SessionServiceImpl implements SessionService {
         session.setCourse(course);
         Session savedSession = sessionRepository.findBySessionName(session.getSessionName());
         if (savedSession != null) {
-            throw ApiError.notFound("This session was added in this course before");
+            throw ApiError.badRequest("This session was added in this course before!");
         }
 
         sessionRepository.save(session);
@@ -80,7 +80,7 @@ public class SessionServiceImpl implements SessionService {
     public String updateCourseSession(Long sessionId, SessionDto sessionDto) {
         Optional<Session> optionalSession = sessionRepository.findById(sessionId);
         if(!optionalSession.isPresent()) {
-            throw ApiError.notFound("Session you want to update not found!");
+            throw ApiError.notFound("This session is not found!");
         }
         Session session = optionalSession.get();
         session.setDay(sessionDto.getDay());
@@ -101,7 +101,7 @@ public class SessionServiceImpl implements SessionService {
         Student student = studentService.getStudentById(studentId);
         Course course = courseService.findById(courseId);
         if(!course.getStudents().contains(student)) {
-            throw ApiError.notFound("This Student is not registered to this course");
+            throw ApiError.notFound("This Student is not registered in this course");
         }
         List<Session> sessions = sessionRepository.findByStudentsAndCourseId(student,courseId);
         // Get the current date
@@ -161,7 +161,7 @@ public class SessionServiceImpl implements SessionService {
         Course course = courseService.findById(courseId);
         Student student = studentService.getStudentById(studentId);
         if(student == null) {
-            throw ApiError.notFound("Student Not Found");
+            throw ApiError.notFound("Student Not Found!");
         }
 
         if(!student.getCourses().contains(course)) {
@@ -174,7 +174,7 @@ public class SessionServiceImpl implements SessionService {
         List<Session> sessions = getSessionsbySessionsIds(sessionsIds);
 
         if(sessions.stream().count()==0) {
-            throw ApiError.notFound("No sessions with those ids");
+            throw ApiError.notFound("No sessions found!");
         }
 
         List<Session> sessionList = student.getSessions();
@@ -188,7 +188,7 @@ public class SessionServiceImpl implements SessionService {
     public String deleteSession(Long sessionId) {
         Optional<Session> optionalSession = sessionRepository.findById(sessionId);
         if(!optionalSession.isPresent()) {
-            throw ApiError.notFound("Session not found");
+            throw ApiError.notFound("Session not found!");
         }
         sessionRepository.deleteById(sessionId);
         return "Session Deleted";

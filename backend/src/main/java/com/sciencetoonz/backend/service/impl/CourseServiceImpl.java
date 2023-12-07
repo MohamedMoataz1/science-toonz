@@ -36,7 +36,7 @@ public class CourseServiceImpl implements CourseService {
     public Course createCourse(CourseDto courseDto, Teacher teacher) {
         Course savedCourse = courseRepository.findByName(courseDto.getName());
         if(savedCourse != null) {
-            throw ApiError.badRequest("Course already exists with this name");
+            throw ApiError.badRequest("Course already exists with this name!");
         }
         Course course = modelMapper.map(courseDto, Course.class);
         course.setTeacher(teacher);
@@ -64,7 +64,7 @@ public class CourseServiceImpl implements CourseService {
     public Course findById(Long courseId) {
         Optional<Course> course = courseRepository.findById(courseId);
         if (!course.isPresent()) {
-            throw ApiError.notFound("Course not found");
+            throw ApiError.notFound("Course not found!");
         }
         return course.get();
     }
@@ -73,7 +73,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseDetailsDto findCourseDetailsById(Long courseId) {
         Optional<Course> c = courseRepository.findById(courseId);
         if(!c.isPresent()){
-            throw ApiError.notFound("Course Not found");
+            throw ApiError.notFound("Course Not found!");
         }
 
         Course course = c.get();
@@ -111,11 +111,11 @@ public class CourseServiceImpl implements CourseService {
     public String editCourse(Long courseId, CourseDto courseDto) {
         Optional<Course> courseOptional = courseRepository.findById(courseId);
         if(!courseOptional.isPresent()) {
-            throw ApiError.notFound("Course not found");
+            throw ApiError.notFound("Course not found!");
         }
         Course savedCourse = courseRepository.findByName(courseDto.getName());
         if(savedCourse != null) {
-            throw ApiError.badRequest("Course already exists with this name");
+            throw ApiError.badRequest("Course already exists with this name!");
         }
         Course course = courseOptional.get();
         course.setName(courseDto.getName());

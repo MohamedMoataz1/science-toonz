@@ -37,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
 
         Student savedStudent = studentRepo.findByEmail(studentDto.getEmail());
         if( savedStudent != null) {
-            throw ApiError.badRequest("This email exists");
+            throw ApiError.badRequest("A student is registered before with this email!");
         }
 
         Student student = modelMapper.map(studentDto, Student.class);
@@ -68,17 +68,17 @@ public class StudentServiceImpl implements StudentService {
         System.out.println(studentEmail);
         Student student = studentRepo.findByEmail(studentEmail);
         if(student == null) {
-            throw ApiError.notFound("You must create a new user koty");
+            throw ApiError.notFound("Student not found!");
         }
 
         Course course = courseService.findById(courseId);
         if(course == null) {
-            throw ApiError.notFound("Course not found");
+            throw ApiError.notFound("Course not found!");
         }
 
         List<Course> studentCourses = student.getCourses();
         if (studentCourses.contains(course)){
-            throw ApiError.notFound("Student Already Assigned to this course before");
+            throw ApiError.badRequest("Student Already Assigned to this course before!");
         }
 
 //        if(course.getNumOfCategories() != sessionsIds.size()) {
@@ -103,7 +103,7 @@ public class StudentServiceImpl implements StudentService {
 
         for(Session session:sessions) {
             if (session.getCourse()!=course) {
-                throw ApiError.badRequest("This Session with id "+ session.getId() + " is not related to this course");
+                throw ApiError.badRequest("The Session \""+ session.getDay() + "\" is not related to this course");
             }
         }
 
@@ -122,7 +122,7 @@ public class StudentServiceImpl implements StudentService {
     public Student getStudentById(Long studentId) {
         Optional<Student> student = studentRepo.findById(studentId);
         if (!student.isPresent()) {
-            throw ApiError.notFound("Student not found");
+            throw ApiError.notFound("Student not found!");
         }
         return student.get();
     }

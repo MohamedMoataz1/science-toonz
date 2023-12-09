@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import './cssFiles/Login.css';
 import { useHistory } from 'react-router-dom';
+import './cssFiles/Registerstudent.css'
 
 const Login = () => {
     const [email, setusername] = useState(null);
     const [password, setpassword] = useState(null);
     const history = useHistory();
+    const [errormsge, seterrormsg] = useState(false);
 
     const handlesubmit = (e) => {
         e.preventDefault();
@@ -19,14 +21,18 @@ const Login = () => {
                 'Content-Type': 'application/json'
             }
 
-        }).then((res) => res.json()) // Parse the response as JSON
-            .then((data) => {
-                // Log the parsed JSON data
-                // console.log("Response Data:", data.user_role);
+        }).then((res) => {
+            if(!res.ok)
+            {
+                seterrormsg(true);
+            }
+            return res.json();
+            
+
+        }
+        ).then((data) => {
+                console.log(data);
                 if (data.user_role === true) {
-
-
-
 
                     localStorage.setItem('userToken', data.token);
                     localStorage.setItem('userName', data.user.firstName);
@@ -34,11 +40,11 @@ const Login = () => {
                     history.push('/home');
 
                 }
-                else if(data.user_role === false) {
+                else if (data.user_role === false) {
                     localStorage.setItem('userToken', data.token);
                     console.log(data.user.id);
                     history.push(`/StudentHome?id=${data.user.id}`);
-                    
+
 
                 }
 
@@ -54,9 +60,19 @@ const Login = () => {
     return (
         <div className="background">
             <div className='form'>
-                <div className='sciencetoonzphoto'></div>
+                <div className='sciencetoonzphoto' >
+
+                </div>
+                
                 <form className="loginform" onSubmit={handlesubmit} >
-                    <h1>User Login</h1>
+                    <h1>Sign In</h1>
+
+                    {
+                        errormsge &&
+                        <p className='wrongemaildiv'> Incorrect email or password. Please try again</p>
+
+                    }
+
                     <input
                         type="text"
                         placeholder='Enter Username'
@@ -69,7 +85,7 @@ const Login = () => {
                         required
                         onChange={(e) => setpassword(e.target.value)}
                     />
-                    <button className='submit'>Login</button>
+                    <button className='submit'>sign in</button>
 
 
                 </form>

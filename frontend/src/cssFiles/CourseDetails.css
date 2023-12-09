@@ -1,9 +1,8 @@
 .Details {
     margin: 50px;
     padding: 50px;
-    /* border: 1px solid black; */
     border-radius: 40px;
-    background-color: white;
+    background-color: #e4e2e2;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -25,8 +24,7 @@
 }
 
 .sessions-container {
-    margin: 30px;
-
+    margin: 2px;
     max-height: 450px;
     flex-direction: column;
     display: flex;
@@ -39,7 +37,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     margin-right: 5%;
+
 }
 
 body.active-modal {
@@ -83,8 +83,7 @@ body.active-modal {
     border-radius: 15px;
     overflow-y: auto;
     max-height: 83%;
-
-
+    background-color: #1d2b3a;
 
 }
 
@@ -98,7 +97,8 @@ body.active-modal {
     margin-left: 31px;
     position: sticky;
     top: 0;
-    background-color: white;
+    background-color: #1d2b3a;
+
 
 }
 
@@ -111,7 +111,9 @@ body.active-modal {
     margin: 22px;
     padding: 10px;
 }
-
+.add-course-form label{
+    color: #fff;
+}
 .logoimage-popup {
     height: 50%;
     width: 15%;
@@ -145,7 +147,7 @@ body.active-modal {
 .addingbutton {
     margin-bottom: 20px;
     border-radius: 10px;
-
+    
     display: block;
     font-size: 1.466vw;
     font-weight: 600;
@@ -154,19 +156,23 @@ body.active-modal {
     text-align: center;
     cursor: pointer;
 
+
 }
 
 .addingbutton:hover {
-    background-color: #ae796a;
+    background-color:  #00dfc4;;
     transition: 0.2s;
-}
+    color: white;
+    
+    
+    }
 
 /* Define the button style */
 .exit-button {
     background-color: transparent;
-    border: 2px solid #000;
+    border: 2px solid #fff;
     /* Black border */
-    color: #000;
+    color: #fff;
     /* Black text color */
     font-size: 20px;
     /* Adjust the font size as needed */
@@ -237,12 +243,16 @@ body.active-modal {
 }
 .showingstudentdetails 
 {
-    
     margin: 5%;
     display: flex;
     flex-flow: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
+}
+.showingstudentdetails h1{
+    padding: 1%;
+    font-size: 20px;
+    color: #fff;
 }
 .SubmitSessionsEdit{
     

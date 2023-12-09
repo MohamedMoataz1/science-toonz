@@ -56,11 +56,12 @@ const StudentHome = () => {
                             {coursesWithSessionsOfStudentDtos.map(course => (
                                 <div className='Details' key={course.id}>
                                     <h1>{course.name}</h1>
-                                    {course.sessionDtoList.map( (session,index)  => (
-                                        <a href={session.link} key={session.id}>
+                                    {/* {course.sessionDtoList.map( (session,index)  => (
+                                        <a href={session.link} key={session.id} target='blank' rel="noopener noreferrer">
                                             Session {index+1}
                                         </a>
-                                    ))}
+                                    ))} */}
+                                    <a href={course.sessionDtoList[0]} className='button'>Upcoming Session</a>
                                 </div>
                             ))}
                         </div>

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import '../cssFiles/Registerstudent.css';
+import Swal from "sweetalert2";
 
 const RegisterStudent = () => {
     const userToken = localStorage.getItem('userToken');
@@ -23,25 +25,72 @@ const RegisterStudent = () => {
             body: JSON.stringify(Student),
             headers: headers,
 
-        }) 
-        window.location.reload();
+        }).then((res) => {
+            if (res.ok) {
+                Swal.fire({
+                    title: "Succefully Added",
+                    text: `student with email '${email}' is added`,
+                    icon: "success",
+                    confirmButtonText: "OK",
+                }).then((result)=> {
+                    if(result.isConfirmed){
+                        window.location.reload();
+                    }
+                });
+            }
+            else {
+                // Handle non-successful responses (status codes other than 2xx)
+                res.json().then((data) => {
+                    // You can show an error message to the user or handle it as needed
+                    Swal.fire({
+                        title: "Oh Oh",
+                        text: data.message || "Unknown error",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                });
+            }
+            
+        })
+
+        
 
 
     }
     return (
-        <div className="Details">
-            <form className="RegisterForm" onSubmit={handleRegister}>
-                <input type="text" className="Registerinputs" placeholder="First Name" required onChange={(e) => setfirstNAme(e.target.value)} />
-                <input type="text" className="Registerinputs" placeholder="Last Name" required onChange={(e) => setlastName(e.target.value)} />
-                <input type="text" className="Registerinputs" placeholder="Fathers Name" required onChange={(e) => setfatherName(e.target.value)} />
-                <input type="text" className="Registerinputs" placeholder="School" required onChange={(e) => setschool(e.target.value)} />
-                <input type="text" className="Registerinputs" placeholder="Email" required onChange={(e) => setemail(e.target.value)} />
-                <input type="text" className="Registerinputs" placeholder="Password" value={123456} />
-                <input type="text" className="Registerinputs" placeholder="Official Email" required onChange={(e) => setofficialEmail(e.target.value)} />
-                <input type="text" className="Registerinputs" placeholder="Year" required onChange={(e) => setyear(e.target.value)} />
-                <button className='Registerbutton'>Register Student</button>
-            </form>
+        <div className="body">
+            
+                <form className="inputBox" onSubmit={handleRegister}>
 
+                    <input type="text" required onChange={(e) => setfirstNAme(e.target.value)} />
+                    <span>First Name</span>
+
+                    <input type="text" required onChange={(e) => setlastName(e.target.value)} />
+                    <span>Last Name</span>
+
+                    <input type="text" required onChange={(e) => setfatherName(e.target.value)} />
+                    <span>Father's Name</span>
+
+                    <input type="text" required onChange={(e) => setschool(e.target.value)} />
+                    <span>School</span>
+
+                    <input type="text" required onChange={(e) => setemail(e.target.value)} />
+                    <span>Email</span>
+
+                    <input type="text" value={123456} />
+                    
+
+                    <input type="text" required onChange={(e) => setofficialEmail(e.target.value)} />
+                    <span>Official Email</span>
+
+                    <input type="text" required onChange={(e) => setyear(e.target.value)} />
+                    <span>Year</span>
+
+                    <button className='RegisterbuttonS'>Register Student</button>
+
+                </form>
+
+            
         </div>
     );
 }

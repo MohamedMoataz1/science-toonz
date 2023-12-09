@@ -15,6 +15,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import RegisterStudent from './components/RegisterStudent';
+import ShowStudents from './components/ShowStudents';
 
 
 const Home = () => {
@@ -64,6 +65,9 @@ const Home = () => {
                     </Route>
                     <Route exact path="/home/RegisterStudent">
                         <RegisterStudent />
+                    </Route>
+                    <Route exact path="/home/ShowStudents">
+                        <ShowStudents />
                     </Route>
 
                 </switch>

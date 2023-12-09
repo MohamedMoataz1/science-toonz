@@ -18,6 +18,7 @@ import Popupsession from "./components/popupsession"
 import PopupStudents from "./components/PopupStudents";
 import PopupUpdateSession from "./components/PopupUpdateSession";
 import Popupeditstudent from "./components/Popupeditstudent";
+import { useHistory} from 'react-router-dom';
 
 const CourseDetails = () => {
     const [AllDetails, setAllDetails] = useState('nothing to show');
@@ -34,29 +35,30 @@ const CourseDetails = () => {
     const [link, setlink] = useState(null);
     const [category, setcategory] = useState(null);
     const [date, setdate] = useState(null);
-    const [AddedEmail, setAddedEmail] = useState();
+    const [AddedEmail, setAddedEmail] = useState('');
     const [AddedSessionsToStudent, setAddedSessionsToStudent] = useState([]);
     const [SessionId, SetSessionID] = useState(null);
     const [StudentSearch, setStudentSearch] = useState('');
-    const [modal4forstudentEdit , setmodal4forstudentEdit] = useState(false);
-    const [studentid , setstudentid] = useState()
+    const [modal4forstudentEdit, setmodal4forstudentEdit] = useState(false);
+    const [studentid, setstudentid] = useState()
     const [sessionofstudent, setsessionofstudent] = useState([]);
-    const [showedStudent , setshowedStudent] = useState(null);
+    const [showedStudent, setshowedStudent] = useState(null);
     const [showButton, setShowButton] = useState(false);
+    const history = useHistory();
 
-    const AppendSessions = (newsessionid,index) => {
-        
+    const AppendSessions = (newsessionid, index) => {
+
         setShowButton(true);
         let Sessionsid = [...AddedSessionsToStudent];
         Sessionsid[index] = newsessionid;
         console.log(Sessionsid);
         setAddedSessionsToStudent(Sessionsid);
-        
-        
+
+
 
     }
-    
-   
+
+
 
     const togglemodal = () => {
         setmodal(!modal);
@@ -71,8 +73,8 @@ const CourseDetails = () => {
         }
 
     }
-    
-    
+
+
 
     const headers = {
         Authorization: `Bearer ${userToken}`,
@@ -83,28 +85,39 @@ const CourseDetails = () => {
 
 
     useEffect(() => {
-        
+
         const getall = async () => {
             await fetch(`http://localhost:8080/api/course/getCourseDetailsById/${id}`, {
                 headers: headers,
             })
                 .then((res) => {
-                    return res.json();
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    else {
+                        // Handle non-successful responses (status codes other than 2xx)
+                        res.json().then((data) => {
+                            console.log("Error:", data.message);
+                            history.push('/');
+                        });
+                    }
+
                 })
                 .then((data) => {
-                    
+
 
                     setAllDetails(data);
                     setstudents(data.studentWithSessionsDtos);
                     setSessions(data.sessions);
                     setAddedSessionsToStudent(new Array(data.numOfCategories).fill(0));
                 });
+
         };
 
         getall();
 
     }, []);
-
+   
 
     if (modal || modal2 || modal3 || modal4forstudentEdit) {
         document.body.classList.add('active-modal')
@@ -134,7 +147,7 @@ const CourseDetails = () => {
 
 
     const HandleAddStudent = () => {
-        
+
         setmodal2(!modal2);
         console.log(AddedSessionsToStudent);
         for (let i = 0; i < AddedSessionsToStudent.length; i++) {
@@ -142,7 +155,7 @@ const CourseDetails = () => {
                 AddedSessionsToStudent.splice(i, 1);
                 i--; // Adjust index after removing an element
             }
-            
+
         }
         console.log(AddedSessionsToStudent);
         fetch(`http://localhost:8080/api/student/addStudentToCourseWithSessions/${AllDetails.id}/${AddedEmail}`, {
@@ -190,7 +203,7 @@ const CourseDetails = () => {
 
     }
 
-  
+
     const togglemodal3 = (session) => {
         setmodal3(!modal3);
         SetSessionID(session.id);
@@ -213,27 +226,28 @@ const CourseDetails = () => {
 
 
     }
-    const HandleDeleteStudent= (StudentId) => {
-        fetch(`http://localhost:8080/api/student/removeStudentFromCourse/${AllDetails.id}/${StudentId}` , {
-            method: 'DELETE' ,
-            headers: headers , 
+    const HandleDeleteStudent = (StudentId) => {
+        fetch(`http://localhost:8080/api/student/removeStudentFromCourse/${AllDetails.id}/${StudentId}`, {
+            method: 'DELETE',
+            headers: headers,
         }).then((res) => res.json())
-        .then((data)=>{
-            console.log(data);
-        })
+            .then((data) => {
+                console.log(data);
+            })
         window.location.reload();
     }
 
     const togllemodal4forstudentEdit = (student) => {
         setmodal4forstudentEdit(!modal4forstudentEdit);
         setshowedStudent(student);
-       
-       
-        
-        
-        
+
+
+
+
+
     }
-    
+    console.log(AllDetails.materialLink);
+
 
     return (
 
@@ -244,13 +258,14 @@ const CourseDetails = () => {
             <h1>Course Name:  {AllDetails.name}</h1>
             <h2>Start Date:  {AllDetails.startDate}</h2>
             <h2>end Date:  {AllDetails.endDate}</h2>
+            <a className="addingbutton" href={AllDetails.materialLink} target="_blank" rel="noopener noreferrer" >  Material Link </a>
 
 
             <div className="sessions-container">
                 <div className="nav-bar-session-details">
                     <h2>sessions : </h2>
                     <button onClick={togglemodal} className="addingbutton">Add Session</button>
-                    {modal && <Popupsession togglemodal={togglemodal} HandleAddSession={HandleAddSession} setday={setday} setstartTime={setstartTime} setendTime={setendTime} setlink={setlink} setcategory={setcategory} setdate={setdate} Logo={Logo} />}
+                    {modal && <Popupsession date={date} endTime = {endTime}  startTime = {startTime} togglemodal={togglemodal} HandleAddSession={HandleAddSession} setday={setday} setstartTime={setstartTime} setendTime={setendTime} setlink={setlink} setcategory={setcategory} setdate={setdate} Logo={Logo} />}
                 </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -327,28 +342,26 @@ const CourseDetails = () => {
             <div className="sessions-container">
                 <div className="nav-bar-session-details">
                     <h2>Students : </h2>
-                    
+
                     <button onClick={togglemodal2} className="addingbutton">Add Student</button>
-                    {modal2 && <PopupStudents 
-                    togglemodal2={togglemodal2} 
-                    Logo={Logo} 
-                    AppendSessions={AppendSessions} 
-                    HandleAddStudent={HandleAddStudent} 
-                    togglemodal={togglemodal} 
-                    setAddedEmail={setAddedEmail} 
-                    setAddedSession={setAddedSessionsToStudent} 
-                    id={AllDetails.id} 
-                    Categories={AllDetails.numOfCategories} 
-                    Sessions={Sessions} />}
-
-
-
-
-
+                    {modal2 && <PopupStudents
+                        togglemodal2={togglemodal2}
+                        Logo={Logo}
+                        AppendSessions={AppendSessions}
+                        HandleAddStudent={HandleAddStudent}
+                        togglemodal={togglemodal}
+                        setAddedEmail={setAddedEmail}
+                        setAddedSession={setAddedSessionsToStudent}
+                        id={AllDetails.id}
+                        Categories={AllDetails.numOfCategories}
+                        Sessions={Sessions} 
+                        headers={headers}
+                        AddedEmail = {AddedEmail}
+                        />}
 
                 </div>
                 <div>
-                <input type="text" className="search-studnet" onChange={(e)=> setStudentSearch(e.target.value)} placeholder="Search Student" />
+                    <input type="text" className="search-studnet" onChange={(e) => setStudentSearch(e.target.value)} placeholder="Search Student" />
                 </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -358,7 +371,7 @@ const CourseDetails = () => {
                                 <TableCell>FirstName</TableCell>
                                 <TableCell >LastName</TableCell>
                                 <TableCell >Email</TableCell>
-                                <TableCell  >school</TableCell>
+                                <TableCell >school</TableCell>
                                 <TableCell> </TableCell>
                                 <TableCell> </TableCell>
                                 <TableCell> </TableCell>
@@ -368,7 +381,7 @@ const CourseDetails = () => {
                         <TableBody>
                             {Students.filter((Student) => {
                                 return StudentSearch.toLowerCase() === '' ? Student : Student.email.toLowerCase().includes(StudentSearch)
-                            }).map((Student , index) => (
+                            }).map((Student, index) => (
                                 <TableRow
                                     key={Student.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -382,13 +395,13 @@ const CourseDetails = () => {
                                     <TableCell >{Student.email}</TableCell>
                                     <TableCell >{Student.school}</TableCell>
                                     <TableCell>
-                                    <button onClick={() => HandleDeleteStudent(Student.id)} > Delete </button>
-                                         </TableCell>
-                             
-                                <TableCell> 
-                                <button  onClick={()=>togllemodal4forstudentEdit(Student)}> Show </button>
-                                
-                                </TableCell>
+                                        <button onClick={() => HandleDeleteStudent(Student.id)} > Delete </button>
+                                    </TableCell>
+
+                                    <TableCell>
+                                        <button onClick={() => togllemodal4forstudentEdit(Student)}> Show </button>
+
+                                    </TableCell>
 
                                 </TableRow>
                             ))}
@@ -400,30 +413,30 @@ const CourseDetails = () => {
             </div>
 
             <div>
-            {
-                                        modal4forstudentEdit && 
-                                        
-                                        <Popupeditstudent
-                                        showedStudent = {showedStudent} 
-                                        Logo = {Logo}
-                                        Categories={AllDetails.numOfCategories}
-                                        AppendSessions = {AppendSessions}
-                                        togllemodal4forstudentEdit={ togllemodal4forstudentEdit}
-                                        Sessions={Sessions}
-                                        setAddedSessionsToStudent = {setAddedSessionsToStudent}
-                                        AddedSessionsToStudent = {AddedSessionsToStudent}
-                                        showButton = {showButton}
-                                        setShowButton = { setShowButton}
-                                        AllDetails = {AllDetails}
-                                        headers = {headers}
-                                        />
-            }
+                {
+                    modal4forstudentEdit &&
+
+                    <Popupeditstudent
+                        showedStudent={showedStudent}
+                        Logo={Logo}
+                        Categories={AllDetails.numOfCategories}
+                        AppendSessions={AppendSessions}
+                        togllemodal4forstudentEdit={togllemodal4forstudentEdit}
+                        Sessions={Sessions}
+                        setAddedSessionsToStudent={setAddedSessionsToStudent}
+                        AddedSessionsToStudent={AddedSessionsToStudent}
+                        showButton={showButton}
+                        setShowButton={setShowButton}
+                        AllDetails={AllDetails}
+                        headers={headers}
+                    />
+                }
             </div>
         </div>
 
 
     );
-    
+
 
 }
 

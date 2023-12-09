@@ -1,7 +1,7 @@
 .background {
     width: 100%;
     height: 100vh;
-    background-color: aqua;
+    background-color: darkred;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,40 +17,41 @@
     display: flex;
     justify-content: start;
     border-radius: 15px;
-    
+    background-color: black;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.8);
 
 
 }
 .sciencetoonzphoto {
     /* border: 1px solid black; */
-    width: 700px;
-    height: 520px;
-    background-image: url('../images/ScienceToonz.png') ;
-    background-size: cover;
+    width: 75%;
+    height: 100%;
+    background-image: url('../images/ST\ Transparent.png') ;
+    background-size: 100%;
     background-position: center;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
-    
-
+    background-color: black;
     
 }
 .loginform {
     /* border: 0.5px solid black;  */
     width: 450px;
     height: 520px;
-    background-color: white;
+    background-color: black;
     display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: center;
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
+
+
     
 }
 .loginform h1{
-    color: darkred;
-    background-color: white;
+    color : white;
+    /* background-color: white; */
 }
 .loginform input {
     padding: 8px;
@@ -89,4 +90,15 @@
     font-size: 20px;
     color: white; 
     cursor: pointer;
+}
+.wrongemaildiv {
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #e87c03;;
+    width: fit-content;
+    margin: 10px;
+    width: 200px;
+    color: white;
+    padding: 6px;
+    
 }

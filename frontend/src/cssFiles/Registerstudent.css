@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    
+}
+
+.body {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 20vh;
+    flex-direction: column;
+
+
+}
+
+
+.inputBox {
+
+    position: relative;
+    width: 250px;
+}
+
+.inputBox input {
+
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: #1d2b3a;
+    border-radius: 5px;
+    outline: none;
+    color: #fff;
+    font-size: 1em;
+    transition: 0.3s;
+    margin-bottom: 10px;
+}
+
+.inputBox span {
+    position: absolute;
+    margin: 5px;
+    left: 0;
+    padding: 10px;
+    pointer-events: none;
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.25);
+    text-transform: uppercase;
+    transition: 0.3s;
+
+}
+
+.inputBox input:valid+span,
+.inputBox input:focus+span {
+    color: #00dfc4;
+    transform: translatex(10px) translateY(-7px);
+    font-size: 0.70em;
+    padding: 0 10px;
+    background-color: #1d2b3a;
+    border-left: 1px solid #00dfc4;
+    border-right: 1px solid #00dfc4;
+    letter-spacing: 0.2em;
+
+}
+
+.inputBox input:valid,
+.inputBox input:focus {
+    border: 1px solid #00dfc4;
+}
+
+.RegisterbuttonS {
+
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    display: block;
+    font-size: 1.466vw;
+    font-weight: 600;
+    margin-top: 20px;
+    padding: 8px 8px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    
+
+
+}
+
+.RegisterbuttonS:hover {
+    background-color: #00dfc4;
+
+    transition: 0.5s;
+}

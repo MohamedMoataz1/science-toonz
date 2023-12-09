@@ -45,7 +45,7 @@ const Popupsession = ({ endTime,startTime,togglemodal, HandleAddSession, setday,
                                 <input
                                     type="time"
                                     value={startTime}
-                                    onChange={(e) => setstartTime("12:12:47")}
+                                    onChange={(e) => setstartTime(e.target.value)}
                                     onFocus={handleFocus2}
                                     onBlur={handleBlur2}
                                 />
@@ -54,7 +54,7 @@ const Popupsession = ({ endTime,startTime,togglemodal, HandleAddSession, setday,
                                     type="text"
                                     required
                                     value={startTime}
-                                    onChange={(e) => setstartTime("12:12:47")}
+                                    onChange={(e) => setstartTime(e.target.value)}
                                     onFocus={handleFocus2}
                                     onBlur={handleBlur2}
                                 />
@@ -67,7 +67,7 @@ const Popupsession = ({ endTime,startTime,togglemodal, HandleAddSession, setday,
                                     type="time"
                                     name="endDate"
                                     value={endTime}
-                                    onChange={(e) => setendTime("12:12:47")}
+                                    onChange={(e) => setendTime(e.target.value)}
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
                                 />
@@ -76,7 +76,7 @@ const Popupsession = ({ endTime,startTime,togglemodal, HandleAddSession, setday,
                                     type="text"
                                     required
                                     value={endTime}
-                                    onChange={(e) => setendTime("12:12:47")}
+                                    onChange={(e) => setendTime(e.target.value)}
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
                                 />
@@ -113,7 +113,7 @@ const Popupsession = ({ endTime,startTime,togglemodal, HandleAddSession, setday,
                                     onBlur={handleBlur3}
                                 />
                             )}
-                            <span>End time</span>
+                            <span>Date</span>
                             
                             
                             

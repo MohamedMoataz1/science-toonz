@@ -16,10 +16,10 @@ const Navbar = () => {
                 <Link to="/home" className='navbuttons' > Home </Link>
                 <Link to="/home/RegisterStudent" className='navbuttons'> Register Student </Link>
                 <Link to="/home/addcourse" className='navbuttons' tabindex="0" title="AddCourse" >
-                    AddCourse
+                    Create Course
                 </Link>
 
-                <Link to = "/home/ShowStudents" className='navbuttons' tabindex="0" >Show Students</Link>
+                <Link to = "/home/ShowStudents" className='navbuttons' tabindex="0" >Students</Link>
                 <a onClick={logoutHandler} className='navbuttons'> Logout </a>
 
 

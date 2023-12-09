@@ -1,7 +1,7 @@
 .background {
     width: 100%;
     height: 100vh;
-    background-color: darkred;
+    background-color:  #a3e7df;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +17,7 @@
     display: flex;
     justify-content: start;
     border-radius: 15px;
-    background-color: black;
+    background-color: #1d2b3a;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.8);
 
 
@@ -31,14 +31,14 @@
     background-position: center;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
-    background-color: black;
+    background-color: #1d2b3a;
     
 }
 .loginform {
     /* border: 0.5px solid black;  */
     width: 450px;
     height: 520px;
-    background-color: black;
+    background-color: #1d2b3a;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -50,7 +50,7 @@
     
 }
 .loginform h1{
-    color : white;
+    color : cornsilk;
     /* background-color: white; */
 }
 .loginform input {
@@ -58,11 +58,11 @@
     border-radius: 8px;
     margin: 17px;
     width: 200px;
-    background-color: white;
+    background-color: cornsilk;
     
 }
 .loginform input[type = "text" ]::placeholder {
-    color: rgba(139, 0, 0, 0.8);
+    color: #1d2b3a;
 
 
 }
@@ -70,7 +70,7 @@
     color: transparent; /* Hide the placeholder text on focus */
 }
 .loginform input[type = "password" ]::placeholder {
-    color: rgba(139, 0, 0, 0.8);
+    color: #1d2b3a;
 
 }
 .loginform input[type = "password" ]:focus::placeholder {
@@ -86,19 +86,19 @@
     top: 25px;
     padding: 5px;
     width: 100px;
-    background-color: darkred;
+    background-color: gold;
     font-size: 20px;
-    color: white; 
+    color: #1d2b3a; 
     cursor: pointer;
 }
 .wrongemaildiv {
     border: 1px solid black;
     border-radius: 10px;
-    background-color: #e87c03;;
+    background-color: darkred;;
     width: fit-content;
     margin: 10px;
     width: 200px;
-    color: white;
+    color: cornsilk;
     padding: 6px;
     
 }

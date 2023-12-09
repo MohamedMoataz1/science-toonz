@@ -46,7 +46,7 @@ const AddCourse = () => {
                 res.json().then((data) => {
                     // You can show an error message to the user or handle it as needed
                     Swal.fire({
-                        title: "Oh Oh",
+                        title: "Failed",
                         text: data.message || "Unknown error",
                         icon: "error",
                         confirmButtonText: "OK",
@@ -133,7 +133,7 @@ const AddCourse = () => {
                     required
                     onChange={(e) => setnumOfCategories(e.target.value)}
                 />
-                <span>Number of Categories:</span>
+                <span>Number of Sessions:</span>
 
 
 

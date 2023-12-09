@@ -7,7 +7,7 @@ const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSess
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/student/getStudentsWithoutCourse/1', {
+                const response = await fetch('http://localhost:8080/api/student/getStudentsWithoutCourse/2', {
                     method: 'GET',
                     headers: headers,
                 });

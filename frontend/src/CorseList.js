@@ -11,9 +11,10 @@ const CorseList = ({ corses, headers }) => {
 
                         <h1> {course.name.toUpperCase()} </h1>
                         <div>
-                            <p>{course.startDate.slice(0, course.startDate.indexOf('T'))}</p>
-                            <p>{course.endDate.slice(0, course.startDate.indexOf('T'))}</p>
+                            <p>Start Date: {formatDate(course.startDate)}</p>
+                            <p>End Date: {formatDate(course.endDate)}</p>
                         </div>
+
 
                     </Link>
 
@@ -26,5 +27,12 @@ const CorseList = ({ corses, headers }) => {
 
     );
 }
+
+function formatDate(dateString) {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  }
+  
 
 export default CorseList;

@@ -18,7 +18,7 @@ import Popupsession from "./components/popupsession"
 import PopupStudents from "./components/PopupStudents";
 import PopupUpdateSession from "./components/PopupUpdateSession";
 import Popupeditstudent from "./components/Popupeditstudent";
-import { useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const CourseDetails = () => {
     const [AllDetails, setAllDetails] = useState('nothing to show');
@@ -117,7 +117,7 @@ const CourseDetails = () => {
         getall();
 
     }, []);
-   
+
 
     if (modal || modal2 || modal3 || modal4forstudentEdit) {
         document.body.classList.add('active-modal')
@@ -126,23 +126,44 @@ const CourseDetails = () => {
         document.body.classList.remove('active-modal')
     }
 
-    const HandleAddSession = () => {
-        setmodal(!modal);
-        const AddedSession = { day, startTime, endTime, date, link, category, "vimeoLink": "viemeolink.com" };
-        console.log(AddedSession);
+    const HandleAddSession = async () => {
+        try {
+            setmodal(!modal);
+            let addedSession = {
+                day,
+                startTime,
+                endTime,
+                date,
+                link,
+                category
+            };
+            addedSession.startTime += ":00"
+            addedSession.endTime += ":00"
+            console.log(addedSession);
 
-        fetch(`http://localhost:8080/api/session/createSession/${AllDetails.id}`, {
-            method: 'POST',
-            body: JSON.stringify(AddedSession),
-            headers: headers,
-        })
-        window.location.reload();
+            const response = await fetch(`http://localhost:8080/api/session/createSession/${AllDetails.id}`, {
+                method: 'POST',
+                body: JSON.stringify(addedSession),
+                headers: headers,
+            });
 
+            if (!response.ok) {
+                console.error('Failed to add session:', response.statusText);
+                // Handle the error here, show a message to the user, etc.
+                return;
+            }
 
+            console.log('Session added successfully');
+            // Optionally, you can handle the success case here
 
+            // Reload the page (though it's better to use React state/props to update UI without a full page reload)
+            window.location.reload();
+        } catch (error) {
+            console.error('Error while adding session:', error);
+            // Handle the error here, show a message to the user, etc.
+        }
+    };
 
-
-    }
 
 
 
@@ -265,7 +286,7 @@ const CourseDetails = () => {
                 <div className="nav-bar-session-details">
                     <h2>sessions : </h2>
                     <button onClick={togglemodal} className="addingbutton">Add Session</button>
-                    {modal && <Popupsession date={date} endTime = {endTime}  startTime = {startTime} togglemodal={togglemodal} HandleAddSession={HandleAddSession} setday={setday} setstartTime={setstartTime} setendTime={setendTime} setlink={setlink} setcategory={setcategory} setdate={setdate} Logo={Logo} />}
+                    {modal && <Popupsession date={date} endTime={endTime} startTime={startTime} togglemodal={togglemodal} HandleAddSession={HandleAddSession} setday={setday} setstartTime={setstartTime} setendTime={setendTime} setlink={setlink} setcategory={setcategory} setdate={setdate} Logo={Logo} />}
                 </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -354,10 +375,10 @@ const CourseDetails = () => {
                         setAddedSession={setAddedSessionsToStudent}
                         id={AllDetails.id}
                         Categories={AllDetails.numOfCategories}
-                        Sessions={Sessions} 
+                        Sessions={Sessions}
                         headers={headers}
-                        AddedEmail = {AddedEmail}
-                        />}
+                        AddedEmail={AddedEmail}
+                    />}
 
                 </div>
                 <div>

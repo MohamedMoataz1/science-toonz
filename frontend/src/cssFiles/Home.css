@@ -43,7 +43,7 @@
     position: relative;
     left: 20px;
     margin: 43px;
-
+    margin-right: 400px;
 }
 .buttonlist {
     display: flex;
@@ -56,13 +56,16 @@
     cursor: pointer;
     font-size: 17px;
     color: #00dfc4;
+    padding: 20px; 
+    white-space: nowrap;
     
 }
 .navbuttons:hover {
     
-    text-decoration: underline;
-    transform: translateY(-5px);
-    
+    /* text-decoration: underline; */
+    /* transform: translateY(-5px); */
+    border-radius: 10%;
+    background-color: cornsilk;
 
 }
 .Logoutbutton {
@@ -124,7 +127,7 @@
 .corse-prieview {
     
     height: 200px;
-    width: 80%;
+    width: 90%;
     margin-top: 1%;
     margin-bottom: 3%;
     border-radius: 45px;

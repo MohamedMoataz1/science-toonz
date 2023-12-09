@@ -11,7 +11,7 @@ const RegisterStudent = () => {
     const [email, setemail] = useState(null);
     const [officialEmail, setofficialEmail] = useState(null);
     const [year, setyear] = useState(null);
-    const [password, setpassword] = useState("123456");
+    const [password, setpassword] = useState(null);
     const headers = {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const RegisterStudent = () => {
                 res.json().then((data) => {
                     // You can show an error message to the user or handle it as needed
                     Swal.fire({
-                        title: "Oh Oh",
+                        title: "Failed",
                         text: data.message || "Unknown error",
                         icon: "error",
                         confirmButtonText: "OK",
@@ -77,7 +77,8 @@ const RegisterStudent = () => {
                     <input type="text" required onChange={(e) => setemail(e.target.value)} />
                     <span>Email</span>
 
-                    <input type="text" value={123456} />
+                    <input type="text" required onChange={(e) => setpassword(e.target.value)} />
+                    <span>Password</span>
                     
 
                     <input type="text" required onChange={(e) => setofficialEmail(e.target.value)} />

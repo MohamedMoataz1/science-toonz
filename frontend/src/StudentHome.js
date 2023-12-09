@@ -28,14 +28,17 @@ const StudentHome = () => {
                     // Handle error, for example:
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-    
+                
+                if(response.data == null) {
+                    
+                }
+
                 const data = await response.json();
                 setcoursesWithSessionsOfStudentDtos(data.coursesWithSessionsOfStudentDtos);
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setLoading(false);
-                
             }
         };
     

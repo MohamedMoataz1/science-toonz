@@ -23,6 +23,5 @@ public class CourseDto {
     private Date startDate;
     private Date endDate;
     private Long numOfCategories;
-
     private String materialLink;
 }

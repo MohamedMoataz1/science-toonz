@@ -10,22 +10,45 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentDetailsDto {
-    private long id;
+    private Long id;
+
+    private String serial;
 
     private String firstName;
 
-    private String lastName;
-
     private String fatherName;
 
-    private String school;
+    private String lastName;
 
-    private String email;
+    private String arabic;
 
     private String officialEmail;
 
-    private long year;
+    private String email;
+
+    private String password;
+
+    private Long studentNumber;
+
+    private Long parentNumber;
+
+    private String gClassroomEmail;
+
+    private String gClassroomName;
+
+    private String schoolName;
+
+    private String gender;
+
+    private int year;
 
     private long fees;
+
+    private long firstInstalment;
+
+    private long secondInstalment;
+
+    private String paymentNotes;
+
     private List<CoursesWithSessionsOfStudentDto> coursesWithSessionsOfStudentDtos;
 }

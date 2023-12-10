@@ -35,12 +35,12 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
                     .firstName(student.getFirstName())
                     .lastName(student.getLastName())
                     .firstName(student.getFatherName())
-                            .school(student.getSchool())
-                                    .email(student.getEmail())
-                                            .password(student.getPassword())
-                                                    .officialEmail(student.getOfficialEmail())
-                                                            .year(student.getYear())
-                                                                    .fees(student.getFees())
+                    .schoolName(student.getSchoolName())
+                    .email(student.getEmail())
+                    .password(student.getPassword())
+                    .officialEmail(student.getOfficialEmail())
+                    .year(student.getYear())
+                    .fees(student.getFees())
                     .build();
             return student1;
         }

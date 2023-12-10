@@ -24,11 +24,11 @@ public class Student implements UserDetails {
 
     @NotEmpty
     @Column(nullable = false)
-    private String firstName;
+    private String serial;
 
     @NotEmpty
     @Column(nullable = false)
-    private String lastName;
+    private String firstName;
 
     @NotEmpty
     @Column(nullable = false)
@@ -36,7 +36,15 @@ public class Student implements UserDetails {
 
     @NotEmpty
     @Column(nullable = false)
-    private String school;
+    private String lastName;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String arabic;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String officialEmail;
 
     @NotEmpty
     @Column(nullable = false)
@@ -48,15 +56,47 @@ public class Student implements UserDetails {
 
     @NotEmpty
     @Column(nullable = false)
-    private String officialEmail;
+    private Long studentNumber;
 
     @NotEmpty
     @Column(nullable = false)
-    private long year;
+    private Long parentNumber;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String classEmail;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String className;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String schoolName;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String gender;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private int year;
 
     @NotEmpty
     @Column(nullable = false)
     private long fees;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private long firstInstalment;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private long secondInstalment;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String paymentNotes;
 
     @ManyToMany
     @JoinTable(

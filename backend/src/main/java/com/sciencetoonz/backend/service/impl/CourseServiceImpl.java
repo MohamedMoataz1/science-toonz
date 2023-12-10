@@ -82,15 +82,25 @@ public class CourseServiceImpl implements CourseService {
 
         List<StudentWithSessionsDto> studentWithSessionsDtos = studentDtos.stream().map(studentDto -> new StudentWithSessionsDto(
                 studentDto.getId(),
+                studentDto.getSerial(),
                 studentDto.getFirstName(),
-                studentDto.getLastName(),
                 studentDto.getFatherName(),
-                studentDto.getSchool(),
+                studentDto.getLastName(),
+                studentDto.getArabic(),
+                studentDto.getOfficialEmail(),
                 studentDto.getEmail(),
                 studentDto.getPassword(),
-                studentDto.getOfficialEmail(),
+                studentDto.getStudentNumber(),
+                studentDto.getParentNumber(),
+                studentDto.getClassEmail(),
+                studentDto.getClassName(),
+                studentDto.getSchoolName(),
+                studentDto.getGender(),
                 studentDto.getYear(),
                 studentDto.getFees(),
+                studentDto.getFirstInstalment(),
+                studentDto.getSecondInstalment(),
+                studentDto.getPaymentNotes(),
                 sessionService.getSessionsOfCourseOfStudent(studentDto.getId(),courseId)
         )).toList();
 

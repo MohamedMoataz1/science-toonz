@@ -8,24 +8,44 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDto {
-    private long id;
+
+    private Long id;
+
+    private String serial;
 
     private String firstName;
 
-    private String lastName;
-
     private String fatherName;
 
-    private String school;
+    private String lastName;
+
+    private String arabic;
+
+    private String officialEmail;
 
     private String email;
 
     private String password;
 
-    private String officialEmail;
+    private Long studentNumber;
 
-    private long year;
+    private Long parentNumber;
+
+    private String classEmail;
+
+    private String className;
+
+    private String schoolName;
+
+    private String gender;
+
+    private int year;
 
     private long fees;
 
+    private long firstInstalment;
+
+    private long secondInstalment;
+
+    private String paymentNotes;
 }

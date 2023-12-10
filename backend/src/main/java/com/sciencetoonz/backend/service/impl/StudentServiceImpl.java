@@ -35,7 +35,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void addStudent(StudentDto studentDto) {
 
-        Student savedStudent = studentRepo.findByEmail(studentDto.getEmail());
+        Student savedStudent = studentRepo.findBySerial(studentDto.getSerial());
+        if(savedStudent != null) {
+            throw ApiError.badRequest("A student is registered before with this serial!\n" +
+                    "Suggested to be in this format coursename+numbers");
+        }
+
+        savedStudent = studentRepo.findByEmail(studentDto.getEmail());
         if( savedStudent != null) {
             throw ApiError.badRequest("A student is registered before with this email!");
         }
@@ -50,15 +56,25 @@ public class StudentServiceImpl implements StudentService {
         List<Student> students = studentRepo.findAllByCoursesId(courseId);
         List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(
                 student.getId(),
+                student.getSerial(),
                 student.getFirstName(),
-                student.getLastName(),
                 student.getFatherName(),
-                student.getSchool(),
+                student.getLastName(),
+                student.getArabic(),
+                student.getOfficialEmail(),
                 student.getEmail(),
                 student.getPassword(),
-                student.getOfficialEmail(),
+                student.getStudentNumber(),
+                student.getParentNumber(),
+                student.getClassEmail(),
+                student.getClassName(),
+                student.getSchoolName(),
+                student.getGender(),
                 student.getYear(),
-                student.getFees()
+                student.getFees(),
+                student.getFirstInstalment(),
+                student.getSecondInstalment(),
+                student.getPaymentNotes()
         )).toList();
         return studentDtos;
     }
@@ -168,15 +184,27 @@ public class StudentServiceImpl implements StudentService {
                 courseDto.getNumOfCategories(),
                 courseDto.getMaterialLink(),
                 sessionService.getSessionsOfCourseOfStudent(studentId,courseDto.getId()))).toList();
-        StudentDetailsDto studentDetailsDto = new StudentDetailsDto(student.getId(),
+        StudentDetailsDto studentDetailsDto = new StudentDetailsDto(
+                student.getId(),
+                student.getSerial(),
                 student.getFirstName(),
-                student.getLastName(),
                 student.getFatherName(),
-                student.getSchool(),
-                student.getEmail(),
+                student.getLastName(),
+                student.getArabic(),
                 student.getOfficialEmail(),
+                student.getEmail(),
+                student.getPassword(),
+                student.getStudentNumber(),
+                student.getParentNumber(),
+                student.getClassEmail(),
+                student.getFirstName(),
+                student.getSchoolName(),
+                student.getGender(),
                 student.getYear(),
                 student.getFees(),
+                student.getFirstInstalment(),
+                student.getSecondInstalment(),
+                student.getPaymentNotes(),
                 coursesWithSessionsOfStudentDtos
         );
         return studentDetailsDto;
@@ -189,32 +217,56 @@ public class StudentServiceImpl implements StudentService {
             throw ApiError.notFound("Course Not Found!");
         }
         List<Student> students = studentRepo.findStudentsNotInCourse(course);
-        List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(student.getId(),
+        List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(
+                student.getId(),
+                student.getSerial(),
                 student.getFirstName(),
-                student.getLastName(),
                 student.getFatherName(),
-                student.getSchool(),
+                student.getLastName(),
+                student.getArabic(),
+                student.getOfficialEmail(),
                 student.getEmail(),
                 student.getPassword(),
-                student.getOfficialEmail(),
+                student.getStudentNumber(),
+                student.getParentNumber(),
+                student.getClassEmail(),
+                student.getClassName(),
+                student.getSchoolName(),
+                student.getGender(),
                 student.getYear(),
-                student.getFees())).toList();
+                student.getFees(),
+                student.getFirstInstalment(),
+                student.getSecondInstalment(),
+                student.getPaymentNotes()
+        )).toList();
         return studentDtos;
     }
 
     @Override
     public List<StudentDto> getAllStudents() {
         List<Student> students = studentRepo.findAll();
-        List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(student.getId(),
+        List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(
+                student.getId(),
+                student.getSerial(),
                 student.getFirstName(),
-                student.getLastName(),
                 student.getFatherName(),
-                student.getSchool(),
+                student.getLastName(),
+                student.getArabic(),
+                student.getOfficialEmail(),
                 student.getEmail(),
                 student.getPassword(),
-                student.getOfficialEmail(),
+                student.getStudentNumber(),
+                student.getParentNumber(),
+                student.getClassEmail(),
+                student.getClassName(),
+                student.getSchoolName(),
+                student.getGender(),
                 student.getYear(),
-                student.getFees())).toList();
+                student.getFees(),
+                student.getFirstInstalment(),
+                student.getSecondInstalment(),
+                student.getPaymentNotes()
+        )).toList();
         return studentDtos;
     }
 

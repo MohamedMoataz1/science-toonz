@@ -14,5 +14,5 @@ public interface StudentRepo extends JpaRepository<Student,Long> {
     public List<Student> findAllByCoursesId(Long courseId);
     @Query("SELECT s FROM Student s WHERE :course NOT MEMBER OF s.courses")
     List<Student> findStudentsNotInCourse(@Param("course") Course course);
-
+    public Student findBySerial(String serial);
 }

@@ -33,7 +33,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void addStudent(StudentDto studentDto) {
+    public String addStudent(StudentDto studentDto) {
 
         Student savedStudent = studentRepo.findBySerial(studentDto.getSerial());
         if(savedStudent != null) {
@@ -49,6 +49,7 @@ public class StudentServiceImpl implements StudentService {
         Student student = modelMapper.map(studentDto, Student.class);
         student.setPassword(passwordEncoder.encode(student.getPassword()));
         studentRepo.save(student);
+        return "Student Added Successfully";
     }
 
     @Override

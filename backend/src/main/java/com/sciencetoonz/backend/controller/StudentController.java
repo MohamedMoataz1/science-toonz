@@ -25,8 +25,8 @@ public class StudentController {
     }
 
     @PostMapping("/addStudent")
-    public void addStudent(@Valid @RequestBody StudentDto studentDto, Authentication authentication) {
-        studentService.addStudent(studentDto);
+    public ResponseEntity<String> addStudent(@Valid @RequestBody StudentDto studentDto, Authentication authentication) {
+        return ResponseEntity.ok(studentService.addStudent(studentDto));
     }
 
     @GetMapping("/getStudents/{courseId}")

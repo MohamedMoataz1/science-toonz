@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StudentService {
 
-    public void addStudent(StudentDto studentDto);
+    public String addStudent(StudentDto studentDto);
 //    public String addStudentToCourse(String studentEmail, Long courseId);
 //    public String addSessionsToStudentsionsToStudent(String studentEmail, List<Long> sessions);
     public List<StudentDto> getStudentsByCourseId(Long courseId);

@@ -6,6 +6,7 @@ import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Teacher;
 import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.util.AuthenticationUser;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -51,7 +52,7 @@ public class CourseController {
 
     @PutMapping("/editCourse/{courseId}")
     public ResponseEntity<String> editCourse(@PathVariable("courseId") Long courseId,
-                                             @RequestBody CourseDto courseDto) {
+                                             @Valid @RequestBody CourseDto courseDto) {
         String success = courseService.editCourse(courseId,courseDto);
         return ResponseEntity.ok(success);
     }

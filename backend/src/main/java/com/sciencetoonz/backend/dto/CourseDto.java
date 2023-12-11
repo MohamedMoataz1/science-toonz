@@ -22,6 +22,7 @@ public class CourseDto {
     private String name;
     private Date startDate;
     private Date endDate;
+    private Boolean active;
     private Long numOfCategories;
     private String materialLink;
 }

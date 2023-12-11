@@ -51,6 +51,7 @@ public class CourseServiceImpl implements CourseService {
                  course.getName(),
                  course.getStartDate(),
                  course.getEndDate(),
+                 course.getActive(),
                  course.getNumOfCategories(),
                  course.getMaterialLink()
          )).toList();
@@ -110,6 +111,7 @@ public class CourseServiceImpl implements CourseService {
                 course.getName(),
                 course.getStartDate(),
                 course.getEndDate(),
+                course.getActive(),
                 course.getNumOfCategories(),
                 course.getMaterialLink(),
                 studentWithSessionsDtos,
@@ -132,6 +134,7 @@ public class CourseServiceImpl implements CourseService {
         course.setStartDate(courseDto.getStartDate());
         course.setEndDate(courseDto.getEndDate());
         course.setNumOfCategories(courseDto.getNumOfCategories());
+        course.setActive(courseDto.getActive());
         course.setMaterialLink(courseDto.getMaterialLink());
         courseRepository.save(course);
         return "Course Updated";
@@ -162,6 +165,7 @@ public class CourseServiceImpl implements CourseService {
                 course.getName(),
                 course.getStartDate(),
                 course.getEndDate(),
+                course.getActive(),
                 course.getNumOfCategories(),
                 course.getMaterialLink())).toList();
         return courseDtos;

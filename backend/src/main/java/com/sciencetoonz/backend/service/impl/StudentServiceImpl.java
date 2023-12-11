@@ -181,6 +181,7 @@ public class StudentServiceImpl implements StudentService {
                 courseDto.getName(),
                 courseDto.getStartDate(),
                 courseDto.getEndDate(),
+                courseDto.getActive(),
                 courseDto.getNumOfCategories(),
                 courseDto.getMaterialLink(),
                 sessionService.getSessionsOfCourseOfStudent(studentId,courseDto.getId()))).toList();

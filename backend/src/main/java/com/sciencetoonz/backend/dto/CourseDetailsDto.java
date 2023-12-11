@@ -20,6 +20,7 @@ public class CourseDetailsDto {
     private Date startDate;
     @JsonFormat(pattern = "MM/dd/yyyy")
     private Date endDate;
+    private Boolean active;
     private Long numOfCategories;
     private String materialLink;
     private List<StudentWithSessionsDto> studentWithSessionsDtos;

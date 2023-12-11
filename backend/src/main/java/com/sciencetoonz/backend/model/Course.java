@@ -34,6 +34,10 @@ public class Course {
 
     @NotEmpty
     @Column(nullable = false)
+    private Boolean active;
+
+    @NotEmpty
+    @Column(nullable = false)
     private Long numOfCategories;
 
     @NotEmpty

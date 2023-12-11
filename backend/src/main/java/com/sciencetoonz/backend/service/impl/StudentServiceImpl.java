@@ -98,9 +98,9 @@ public class StudentServiceImpl implements StudentService {
             throw ApiError.badRequest("Student Already Assigned to this course before!");
         }
 
-//        if(course.getNumOfCategories() != sessionsIds.size()) {
-//            throw ApiError.badRequest("Number of sessions is not enough to this course");
-//        }
+        if(course.getNumOfCategories() != sessionsIds.size()) {
+            throw ApiError.badRequest("Number of sessions is not accurate to this course");
+        }
 
 //        for(int i = 0;i<course.getNumOfCategories();i++) {
 //            if (sessionsIds.get(i) != i+1) {

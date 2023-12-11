@@ -70,7 +70,6 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public String addSessionsToStudent(List<Session> sessionList, List<Session> sessions, Student student) {
 
-
         sessionList.addAll(sessions);
         studentService.saveStudent(student);
         return sessions.size() + " sessions added to " + student.getFirstName();
@@ -177,10 +176,14 @@ public class SessionServiceImpl implements SessionService {
             throw ApiError.notFound("No sessions found!");
         }
 
-        List<Session> sessionList = student.getSessions();
+        if(sessions.size() != sessionsIds.size()) {
+            throw ApiError.notFound("There are sessions could not be found!");
+        }
 
-        System.out.println(removeSessionsOfCourseOfStudent(studentId,courseId));
-        System.out.println(addSessionsToStudent(sessionList, sessions, student));
+        List<Session> sessionList = student.getSessions();
+        removeSessionsOfCourseOfStudent(studentId,courseId);
+        sessionList.addAll(sessions);
+        studentService.saveStudent(student);
         return "Sessions Updated Successfully";
     }
 

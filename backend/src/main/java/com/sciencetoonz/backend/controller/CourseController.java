@@ -62,4 +62,11 @@ public class CourseController {
         String success = courseService.deleteCourse(courseId);
         return ResponseEntity.ok(success);
     }
+
+    @GetMapping("/mergeCourses")
+    public ResponseEntity<String> mergeCourses(@RequestParam Long deletedCourseId,
+                                               @RequestParam Long mainCourseId) {
+        return ResponseEntity.ok(courseService.mergeCourses(deletedCourseId, mainCourseId));
+    }
+
 }

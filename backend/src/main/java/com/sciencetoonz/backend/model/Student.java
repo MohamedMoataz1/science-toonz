@@ -98,7 +98,7 @@ public class Student implements UserDetails {
     @Column(nullable = false)
     private String paymentNotes;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "students_courses",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -106,7 +106,7 @@ public class Student implements UserDetails {
     )
     private List<Course> courses;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "students_sessions",
             joinColumns = @JoinColumn(name = "student_id"),

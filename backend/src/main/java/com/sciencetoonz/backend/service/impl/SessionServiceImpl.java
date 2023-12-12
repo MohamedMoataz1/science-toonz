@@ -55,12 +55,18 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public List<SessionDto> getSessionsByCourseId(Long courseId) {
+    public List<SessionDto> getSessionsDtoByCourseId(Long courseId) {
         List<Session> sessions = sessionRepository.findSessionsByCourseId(courseId);
         List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),session.getDay(), session.getStartTime(),
                 session.getEndTime(),session.getDate(), session.getLink(), session.getCategory())).toList();
         return sessionDtos;
     }
+
+    @Override
+    public List<Session> getSessionsByCourseId(Long courseId) {
+        return sessionRepository.findSessionsByCourseId(courseId);
+    }
+
 
     @Override
     public List<Session> getSessionsbySessionsIds(List<Long> sessionsIds) {
@@ -201,4 +207,6 @@ public class SessionServiceImpl implements SessionService {
     public void deleteSessions(List<Session> sessions) {
         sessionRepository.deleteAll(sessions);
     }
+
+
 }

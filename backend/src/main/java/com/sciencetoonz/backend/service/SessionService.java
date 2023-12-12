@@ -9,8 +9,8 @@ import java.util.List;
 public interface SessionService {
     public Session createSession(SessionDto sessionDto, Long courseId);
 
-    public List<SessionDto> getSessionsByCourseId(Long courseId);
-
+    public List<SessionDto> getSessionsDtoByCourseId(Long courseId);
+    public List<Session> getSessionsByCourseId(Long courseId);
     public List<Session> getSessionsbySessionsIds(List<Long> sessionsIds);
     public List<SessionDto> getSessionsOfCourseOfStudent(Long studentId, Long courseId);
     public String addSessionsToStudent(List<Session> sessionList, List<Session> sessions, Student student);

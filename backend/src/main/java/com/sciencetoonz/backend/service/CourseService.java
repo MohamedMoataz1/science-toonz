@@ -17,4 +17,5 @@ public interface CourseService {
     public void save(Course course);
     public String deleteCourse(Long courseId);
     public List<CourseDto> getCoursesOfStudent(Long studentId);
+    public String mergeCourses(Long deletedCourseId, Long mainCourseId);
 }

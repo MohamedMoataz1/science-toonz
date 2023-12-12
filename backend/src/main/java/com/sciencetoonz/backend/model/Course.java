@@ -44,12 +44,12 @@ public class Course {
     @Column(nullable = false)
     private String materialLink;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "students_courses",
             joinColumns = @JoinColumn(name = "course_id"),
@@ -57,11 +57,11 @@ public class Course {
     )
     private List<Student> students;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private List<Session> sessions;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private List<VimeoSession> vimeoSessions;
 }

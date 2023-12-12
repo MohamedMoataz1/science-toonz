@@ -79,7 +79,7 @@ public class CourseServiceImpl implements CourseService {
 
         Course course = c.get();
 
-        List<StudentDto> studentDtos = studentService.getStudentsByCourseId(course.getId());
+        List<StudentDto> studentDtos = studentService.getStudentsDtoByCourseId(course.getId());
 
         List<StudentWithSessionsDto> studentWithSessionsDtos = studentDtos.stream().map(studentDto -> new StudentWithSessionsDto(
                 studentDto.getId(),
@@ -105,7 +105,7 @@ public class CourseServiceImpl implements CourseService {
                 sessionService.getSessionsOfCourseOfStudent(studentDto.getId(),courseId)
         )).toList();
 
-        List<SessionDto> sessionDtos = sessionService.getSessionsByCourseId(course.getId());
+        List<SessionDto> sessionDtos = sessionService.getSessionsDtoByCourseId(course.getId());
 
         CourseDetailsDto courseDetailsDto = new CourseDetailsDto(course.getId(),
                 course.getName(),
@@ -125,12 +125,7 @@ public class CourseServiceImpl implements CourseService {
         if(!courseOptional.isPresent()) {
             throw ApiError.notFound("Course not found!");
         }
-        Course savedCourse = courseRepository.findByName(courseDto.getName());
-        if(savedCourse != null) {
-            throw ApiError.badRequest("Course already exists with this name!");
-        }
         Course course = courseOptional.get();
-        course.setName(courseDto.getName());
         course.setStartDate(courseDto.getStartDate());
         course.setEndDate(courseDto.getEndDate());
         course.setNumOfCategories(courseDto.getNumOfCategories());
@@ -171,5 +166,26 @@ public class CourseServiceImpl implements CourseService {
         return courseDtos;
     }
 
+    @Override
+    public String mergeCourses(Long deletedCourseId, Long mainCourseId) {
+        Optional<Course> savedMainCourse = courseRepository.findById(mainCourseId);
+        if(!savedMainCourse.isPresent()) {
+            throw ApiError.notFound("Course not found!");
+        }
+        Optional<Course> savedDeletedCourse = courseRepository.findById(deletedCourseId);
+        if(!savedDeletedCourse.isPresent()) {
+            throw ApiError.notFound("Course not found!");
+        }
+        Course mainCourse = savedMainCourse.get();
+        Course deletedCourse = savedDeletedCourse.get();
+        List<Student> students = studentService.getStudentsByCourseId(deletedCourseId);
+        List<Session> sessions = sessionService.getSessionsByCourseId(deletedCourseId);
+        mainCourse.getSessions().addAll(sessions);
+        mainCourse.getStudents().addAll(students);
+        courseRepository.save(mainCourse);
 
+        deleteCourse(deletedCourseId);
+        return "Course " + deletedCourse.getName() + " merged and deleted to be with " + mainCourse.getName();
+
+    }
 }

@@ -48,11 +48,11 @@ public class Session {
     @Column(nullable = false)
     private int category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "students_sessions",
             joinColumns = @JoinColumn(name = "session_id"),

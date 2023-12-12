@@ -27,7 +27,7 @@ public class SessionController {
 
     @GetMapping("/getSessionsByCourse/{courseId}")
     public ResponseEntity<List<SessionDto>> getSessionsByCourse(@PathVariable("courseId") Long courseId) {
-        return ResponseEntity.ok(sessionService.getSessionsByCourseId(courseId));
+        return ResponseEntity.ok(sessionService.getSessionsDtoByCourseId(courseId));
     }
 
     @GetMapping("/getSessionsOfStudentOfCourse/{studentId}/{courseId}")

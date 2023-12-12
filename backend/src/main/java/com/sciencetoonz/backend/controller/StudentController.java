@@ -2,11 +2,7 @@ package com.sciencetoonz.backend.controller;
 
 import com.sciencetoonz.backend.dto.StudentDetailsDto;
 import com.sciencetoonz.backend.dto.StudentDto;
-import com.sciencetoonz.backend.dto.StudentEmailDto;
-import com.sciencetoonz.backend.model.Session;
-import com.sciencetoonz.backend.model.Student;
 import com.sciencetoonz.backend.service.StudentService;
-import com.sciencetoonz.backend.util.AuthenticationUser;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,7 +27,7 @@ public class StudentController {
 
     @GetMapping("/getStudents/{courseId}")
     public ResponseEntity<List<StudentDto>> getStudentsByCourseName (@PathVariable("courseId") Long courseId) {
-        List<StudentDto> students = studentService.getStudentsByCourseId(courseId);
+        List<StudentDto> students = studentService.getStudentsDtoByCourseId(courseId);
         return ResponseEntity.ok(students);
     }
 

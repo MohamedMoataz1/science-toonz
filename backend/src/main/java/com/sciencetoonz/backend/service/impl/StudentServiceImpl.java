@@ -53,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> getStudentsByCourseId(Long courseId) {
+    public List<StudentDto> getStudentsDtoByCourseId(Long courseId) {
         List<Student> students = studentRepo.findAllByCoursesId(courseId);
         List<StudentDto> studentDtos = students.stream().map(student -> new StudentDto(
                 student.getId(),
@@ -79,6 +79,12 @@ public class StudentServiceImpl implements StudentService {
         )).toList();
         return studentDtos;
     }
+
+    @Override
+    public List<Student> getStudentsByCourseId(Long courseId) {
+        return studentRepo.findAllByCoursesId(courseId);
+    }
+
 
     @Override
     public String addStudentToCourseWithSessions(String studentEmail, Long courseId, List<Long> sessionsIds) {

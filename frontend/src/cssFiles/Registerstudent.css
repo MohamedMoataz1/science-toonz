@@ -16,14 +16,29 @@
 
 
 }
-
+.inputRow {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .inputGroup {
+    flex: 1;
+    margin-right: 10px; /* Adjust the spacing between input groups as needed */
+  }
+  .inputGroup:last-child {
+    margin-right: 0;
+  }
 
 .inputBox {
 
     position: relative;
-    width: 250px;
+    width: 370px;
 }
-
+.inputGroup {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 .inputBox input {
 
     width: 100%;

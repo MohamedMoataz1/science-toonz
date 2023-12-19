@@ -103,6 +103,7 @@ body.active-modal {
 }
 
 .add-course-form {
+    color: #fff;
     /* border: 1px solid black; */
     display: flex;
     flex-flow: column;
@@ -111,9 +112,11 @@ body.active-modal {
     margin: 22px;
     padding: 10px;
 }
-.add-course-form label{
+
+.add-course-form label {
     color: #fff;
 }
+
 .logoimage-popup {
     height: 50%;
     width: 15%;
@@ -128,7 +131,7 @@ body.active-modal {
 .non-sticky {
     position: static;
     top: auto;
-    
+
 }
 
 .thead2 {
@@ -147,7 +150,7 @@ body.active-modal {
 .addingbutton {
     margin-bottom: 20px;
     border-radius: 10px;
-    
+
     display: block;
     font-size: 1.466vw;
     font-weight: 600;
@@ -160,12 +163,13 @@ body.active-modal {
 }
 
 .addingbutton:hover {
-    background-color:  #00dfc4;;
+    background-color: #00dfc4;
+    ;
     transition: 0.2s;
     color: white;
-    
-    
-    }
+
+
+}
 
 /* Define the button style */
 .exit-button {
@@ -193,9 +197,9 @@ body.active-modal {
 
 /* Change the button appearance on hover */
 .exit-button:hover {
-    background-color: #000;
+    background-color: #fff;
     /* Black background on hover */
-    color: #fff;
+    color: #000;
     /* White text color on hover */
     border-color: #fff;
     /* White border on hover */
@@ -235,27 +239,30 @@ body.active-modal {
     width: 35%;
 
 }
+
 .search-studnet {
     padding: 1%;
     margin-bottom: 1%;
     border-radius: 19px;
     width: 20%;
 }
-.showingstudentdetails 
-{
+
+.showingstudentdetails {
     margin: 5%;
     display: flex;
     flex-flow: column;
     justify-content: start;
     align-items: start;
 }
-.showingstudentdetails h1{
+
+.showingstudentdetails h1 {
     padding: 1%;
     font-size: 20px;
     color: #fff;
 }
-.SubmitSessionsEdit{
-    
+
+.SubmitSessionsEdit {
+
     margin-bottom: 20px;
     border-radius: 10px;
     font-size: 1.466vw;
@@ -265,3 +272,49 @@ body.active-modal {
     text-align: center;
     cursor: pointer;
 }
+
+.show-button {
+    background-color: #4caf50;
+    /* Green background color */
+    color: white;
+    /* White text color */
+    padding: 10px 20px;
+    /* Padding for better visual */
+    font-size: 16px;
+    /* Font size */
+    border: none;
+    /* No border */
+    border-radius: 5px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Cursor style on hover */
+    outline: none;
+    /* Remove default focus outline */
+}
+
+.show-button:hover {
+    background-color: #45a049;
+    /* Darker green on hover */
+}
+.above-table2 {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+.above-table2 select {
+    border-radius: 15px;
+    padding: 8px;
+    margin: 8px;
+}
+.above-table2 input {
+    border-radius: 15px;
+    padding: 8px;
+    margin: 8px;
+}
+.for-adding-button{
+    width: 85%;
+    display: flex;
+    justify-content: end;
+    
+}
+

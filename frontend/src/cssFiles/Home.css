@@ -33,21 +33,23 @@
 .navbar {
 
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
-    margin: 11px 50px;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-left: 20px;
     
 }
 .logoimage {
-    width: 170px;
-    height: 88px;
-    position: relative;
-    left: 20px;
-    margin: 43px;
-    margin-right: 400px;
+    width: 12%;
+    height: 6%;
+    margin-top: 20px;
+
 }
 .buttonlist {
     display: flex;
-    margin-right: 40px;
+    
 
 }
 .navbuttons {
@@ -206,4 +208,32 @@
 .Registerbutton:hover {
     background-color: #ae796a;
     transition: 0.2s;
+}
+.corse-prieview-false {
+    
+    height: 200px;
+    width: 90%;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    border-radius: 45px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 40px;
+    cursor: pointer;
+    /* background-color: rgb(217, 215, 250); */
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #00dfc4;
+    background-color: darkgray;
+    
+    
+}
+.corse-prieview-false h1{
+    font-size: 40px;
+    color: #fff;
+} 
+.corse-prieview-false p{
+    font-size: 25px;
+    color: #fff;
 }

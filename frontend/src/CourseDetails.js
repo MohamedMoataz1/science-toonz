@@ -45,6 +45,7 @@ const CourseDetails = () => {
     const [showedStudent, setshowedStudent] = useState(null);
     const [showButton, setShowButton] = useState(false);
     const history = useHistory();
+    const [searchBy, setsearchBy] = useState('email');
 
     const AppendSessions = (newsessionid, index) => {
 
@@ -261,20 +262,70 @@ const CourseDetails = () => {
     const togllemodal4forstudentEdit = (student) => {
         setmodal4forstudentEdit(!modal4forstudentEdit);
         setshowedStudent(student);
-
-
-
-
-
     }
     console.log(AllDetails.materialLink);
+    console.log('Request Payload:', JSON.stringify({
+        name: AllDetails.name,
+        startDate: AllDetails.startDate,
+        endDate: AllDetails.endDate,
+        active: !AllDetails.active,
+        numOfCategories: AllDetails.numOfCategories,
+        materialLink: AllDetails.materialLink
+    }));
+    const formatDate = (inputDate) => {
+        const [month, day, year] = inputDate.split('/');
+        return `${year}-${month}-${day}`;
+    };
+    const HandleActivationCourse = async () => {
+        const formattedStartDate = formatDate(AllDetails.startDate);
+        const formattedEndDate = formatDate(AllDetails.endDate);
+        try {
+            const response = await fetch(`http://localhost:8080/api/course/editCourse/${AllDetails.id}`, {
+                method: 'PUT',
+                headers: headers,
+                body: JSON.stringify({
+                    name: AllDetails.name,
+                    startDate: formattedStartDate,
+                    endDate: formattedEndDate,
+                    active: !AllDetails.active,
+                    numOfCategories: AllDetails.numOfCategories,
+                    materialLink: AllDetails.materialLink
+                }),
+            });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Check if the response content type is JSON
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                // Handle the response data here
+                console.log('PUT request successful:', data);
+            } else {
+                // Handle non-JSON response (e.g., "Course Updated")
+                const textData = await response.text();
+                console.log('Non-JSON response:', textData);
+            }
+        } catch (error) {
+            // Handle errors here
+            console.error('Error making PUT request:', error);
+        }
+        history.push('/home');
+        window.location.reload();
+    };
+    console.log(AllDetails.active);
 
     return (
 
 
 
         <div className="Details">
+            <div className="for-adding-button">
+
+                <button className="addingbutton" onClick={HandleActivationCourse}>{AllDetails.active ? 'Active' : 'Deactive'}</button>
+            </div>
 
             <h1>Course Name:  {AllDetails.name}</h1>
             <h2>Start Date:  {AllDetails.startDate}</h2>
@@ -381,51 +432,85 @@ const CourseDetails = () => {
                     />}
 
                 </div>
-                <div>
-                    <input type="text" className="search-studnet" onChange={(e) => setStudentSearch(e.target.value)} placeholder="Search Student" />
+                <div className="above-table2">
+                    <input type="text" onChange={(e) => setStudentSearch(e.target.value)} placeholder={`searh by ${searchBy}`} />
+
+                    <select onChange={(e) => setsearchBy(e.target.value)}>
+                        <option value="" disabled selected>Search by: </option>
+                        <option value="email">email</option>
+                        <option value="firstName">First Name</option>
+                        <option value="studentNumber">Student Number</option>
+                        <option value="year">year</option>
+                    </select>
                 </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow className="thead2">
-                                <TableCell> </TableCell>
+                                <TableCell>Serial</TableCell>
                                 <TableCell>FirstName</TableCell>
                                 <TableCell >LastName</TableCell>
                                 <TableCell >Email</TableCell>
-                                <TableCell >school</TableCell>
-                                <TableCell> </TableCell>
+                                <TableCell >Year</TableCell>
+
+                                <TableCell> Student Number</TableCell>
                                 <TableCell> </TableCell>
                                 <TableCell> </TableCell>
                                 {/* <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {Students.filter((Student) => {
-                                return StudentSearch.toLowerCase() === '' ? Student : Student.email.toLowerCase().includes(StudentSearch)
-                            }).map((Student, index) => (
-                                <TableRow
-                                    key={Student.id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                ><TableCell component="th" scope="row">
-                                        {index + 1}
-                                    </TableCell>
-                                    <TableCell component="th" scope="row">
-                                        {Student.firstName}
-                                    </TableCell>
-                                    <TableCell >{Student.lastName}</TableCell>
-                                    <TableCell >{Student.email}</TableCell>
-                                    <TableCell >{Student.school}</TableCell>
-                                    <TableCell>
-                                        <button onClick={() => HandleDeleteStudent(Student.id)} > Delete </button>
-                                    </TableCell>
+                            {Students.filter((student) => {
+                                if (StudentSearch.trim() === '') {
+                                    return true;
+                                } else {
+                                    const searchField = searchBy.toString();
 
-                                    <TableCell>
-                                        <button onClick={() => togllemodal4forstudentEdit(Student)}> Show </button>
+                                    if (!(searchField in student)) {
+                                        console.error(`Invalid searchBy field: ${searchField}`);
+                                        return false;
+                                    }
 
-                                    </TableCell>
+                                    const fieldValue = student[searchField];
 
-                                </TableRow>
-                            ))}
+                                    if (typeof fieldValue === 'number') {
+                                        return fieldValue.toString().includes(StudentSearch);
+                                    } else if (typeof fieldValue === 'string') {
+                                        // Handle other string fields
+                                        return fieldValue.toLowerCase().includes(StudentSearch.toLowerCase());
+                                    } else {
+                                        console.error(`Unsupported field type for search: ${searchField}`);
+                                        return false;
+                                    }
+                                }
+                            })
+                                .map((Student, index) => (
+                                    <TableRow
+                                        key={Student.id}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {Student.serial}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row">
+                                            {Student.firstName}
+                                        </TableCell>
+                                        <TableCell >{Student.lastName}</TableCell>
+                                        <TableCell >{Student.email}</TableCell>
+                                        <TableCell >{Student.year}</TableCell>
+
+                                        <TableCell >{Student.studentNumber}</TableCell>
+                                        <TableCell>
+                                            <button onClick={() => HandleDeleteStudent(Student.id)} > Delete </button>
+                                        </TableCell>
+
+                                        <TableCell>
+                                            <button onClick={() => togllemodal4forstudentEdit(Student)}> Show </button>
+
+                                        </TableCell>
+
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>

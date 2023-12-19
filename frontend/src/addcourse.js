@@ -10,6 +10,7 @@ const AddCourse = () => {
     const [endDate, setEndDate] = useState('');
     const [numOfCategories, setnumOfCategories] = useState('');
     const [materialLink, setmaterialLink] = useState('');
+    const [active , setactive] = useState(true);
     const headers = {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
@@ -19,7 +20,7 @@ const AddCourse = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const course = { name, startDate, endDate, numOfCategories, materialLink }
+        const course = { name ,startDate, endDate,active, numOfCategories, materialLink }
         console.log(JSON.stringify(course));
         fetch('http://localhost:8080/api/course/createCourse', {
             method: 'POST',

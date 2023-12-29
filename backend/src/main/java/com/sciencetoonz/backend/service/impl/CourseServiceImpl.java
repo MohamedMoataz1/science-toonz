@@ -188,4 +188,47 @@ public class CourseServiceImpl implements CourseService {
         return "Course " + deletedCourse.getName() + " merged and deleted to be with " + mainCourse.getName();
 
     }
+
+    @Override
+    public String addStudentsToCourse(Long courseId, List<StudentBulkDto> studentBulkDtos) {
+        Course course = findById(courseId);
+        if(course == null) {
+            throw ApiError.notFound("Course Not Found");
+        }
+
+        for(StudentBulkDto studentBulkDto: studentBulkDtos) {
+            StudentDto studentDto = new StudentDto().builder().serial(studentBulkDto.getSerial())
+                    .firstName(studentBulkDto.getFirstName())
+                    .fatherName(studentBulkDto.getFatherName())
+                    .lastName(studentBulkDto.getLastName())
+                    .arabic(studentBulkDto.getArabic())
+                    .officialEmail(studentBulkDto.getOfficialEmail())
+                    .email(studentBulkDto.getEmail())
+                    .password(studentBulkDto.getPassword())
+                    .studentNumber(studentBulkDto.getStudentNumber())
+                    .parentNumber(studentBulkDto.getParentNumber())
+                    .classEmail(studentBulkDto.getClassEmail())
+                    .className(studentBulkDto.getClassName())
+                    .schoolName(studentBulkDto.getSchoolName())
+                    .gender(studentBulkDto.getGender())
+                    .year(studentBulkDto.getYear())
+                    .fees((studentBulkDto.getFees()))
+                    .firstInstalment(studentBulkDto.getFirstInstalment())
+                    .secondInstalment(studentBulkDto.getSecondInstalment())
+                    .paymentNotes(studentBulkDto.getPaymentNotes()).build();
+
+            if(studentService.getStudentByEmail(studentBulkDto.getEmail()) == null) {
+                studentService.addStudent(studentDto);
+            }
+
+            if(studentService.getStudentsByCourseId(courseId).contains(studentDto)) {
+                throw ApiError.badRequest("Student "+studentDto.getEmail()+" is registered to this course before!");
+            }
+            List<Long> sessionsIds = studentBulkDto.getSessionsId();
+            studentService.addStudentToCourseWithSessions(studentDto.getEmail(),courseId,sessionsIds);
+
+        }
+        return "Students added successfully!";
+
+    }
 }

@@ -2,6 +2,7 @@ package com.sciencetoonz.backend.controller;
 
 import com.sciencetoonz.backend.dto.CourseDetailsDto;
 import com.sciencetoonz.backend.dto.CourseDto;
+import com.sciencetoonz.backend.dto.StudentBulkDto;
 import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Teacher;
 import com.sciencetoonz.backend.service.CourseService;
@@ -67,6 +68,12 @@ public class CourseController {
     public ResponseEntity<String> mergeCourses(@RequestParam Long deletedCourseId,
                                                @RequestParam Long mainCourseId) {
         return ResponseEntity.ok(courseService.mergeCourses(deletedCourseId, mainCourseId));
+    }
+
+    @PostMapping("/addBulkStudents/{courseId}")
+    public ResponseEntity<String> addStudentsToCourse(@PathVariable Long courseId, @RequestBody List<StudentBulkDto> studentBulkDtos) {
+        courseService.addStudentsToCourse(courseId, studentBulkDtos);
+        return ResponseEntity.ok("Students added to the course successfully");
     }
 
 }

@@ -1,6 +1,7 @@
 package com.sciencetoonz.backend.service;
 
 import com.sciencetoonz.backend.dto.CourseDetailsDto;
+import com.sciencetoonz.backend.dto.StudentBulkDto;
 import com.sciencetoonz.backend.dto.CourseDto;
 import com.sciencetoonz.backend.model.Course;
 import com.sciencetoonz.backend.model.Teacher;
@@ -18,4 +19,6 @@ public interface CourseService {
     public String deleteCourse(Long courseId);
     public List<CourseDto> getCoursesOfStudent(Long studentId);
     public String mergeCourses(Long deletedCourseId, Long mainCourseId);
+
+    public String addStudentsToCourse(Long courseId, List<StudentBulkDto> studentBulkDtos);
 }

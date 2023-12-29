@@ -101,7 +101,7 @@ public class StudentServiceImpl implements StudentService {
 
         List<Course> studentCourses = student.getCourses();
         if (studentCourses.contains(course)){
-            throw ApiError.badRequest("Student Already Assigned to this course before!");
+            throw ApiError.badRequest("Student "+student.getEmail() +" already Assigned to this course before!");
         }
 
         if(course.getNumOfCategories() != sessionsIds.size()) {

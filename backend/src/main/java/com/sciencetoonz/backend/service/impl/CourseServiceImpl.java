@@ -10,10 +10,13 @@ import com.sciencetoonz.backend.model.Teacher;
 import com.sciencetoonz.backend.service.CourseService;
 import com.sciencetoonz.backend.service.SessionService;
 import com.sciencetoonz.backend.service.StudentService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -190,45 +193,51 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public String addStudentsToCourse(Long courseId, List<StudentBulkDto> studentBulkDtos) {
         Course course = findById(courseId);
-        if(course == null) {
+        if (course == null) {
             throw ApiError.notFound("Course Not Found");
         }
 
-        for(StudentBulkDto studentBulkDto: studentBulkDtos) {
-            StudentDto studentDto = new StudentDto().builder().serial(studentBulkDto.getSerial())
-                    .firstName(studentBulkDto.getFirstName())
-                    .fatherName(studentBulkDto.getFatherName())
-                    .lastName(studentBulkDto.getLastName())
-                    .arabic(studentBulkDto.getArabic())
-                    .officialEmail(studentBulkDto.getOfficialEmail())
-                    .email(studentBulkDto.getEmail())
-                    .password(studentBulkDto.getPassword())
-                    .studentNumber(studentBulkDto.getStudentNumber())
-                    .parentNumber(studentBulkDto.getParentNumber())
-                    .classEmail(studentBulkDto.getClassEmail())
-                    .className(studentBulkDto.getClassName())
-                    .schoolName(studentBulkDto.getSchoolName())
-                    .gender(studentBulkDto.getGender())
-                    .year(studentBulkDto.getYear())
-                    .fees((studentBulkDto.getFees()))
-                    .firstInstalment(studentBulkDto.getFirstInstalment())
-                    .secondInstalment(studentBulkDto.getSecondInstalment())
-                    .paymentNotes(studentBulkDto.getPaymentNotes()).build();
+        for (StudentBulkDto studentBulkDto : studentBulkDtos) {
+            StudentDto studentDto = buildStudentDto(studentBulkDto);
 
-            if(studentService.getStudentByEmail(studentBulkDto.getEmail()) == null) {
+            if (studentService.getStudentByEmail(studentBulkDto.getEmail()) == null) {
                 studentService.addStudent(studentDto);
             }
-
-            if(studentService.getStudentsByCourseId(courseId).contains(studentDto)) {
-                throw ApiError.badRequest("Student "+studentDto.getEmail()+" is registered to this course before!");
-            }
+            
             List<Long> sessionsIds = studentBulkDto.getSessionsId();
-            studentService.addStudentToCourseWithSessions(studentDto.getEmail(),courseId,sessionsIds);
-
+            String status = studentService.addStudentToCourseWithSessions(studentDto.getEmail(), courseId, sessionsIds);
+            System.out.println(status);
         }
         return "Students added successfully!";
+    }
 
+
+
+
+    private StudentDto buildStudentDto(StudentBulkDto studentBulkDto) {
+        return StudentDto.builder()
+                .serial(studentBulkDto.getSerial())
+                .firstName(studentBulkDto.getFirstName())
+                .fatherName(studentBulkDto.getFatherName())
+                .lastName(studentBulkDto.getLastName())
+                .arabic(studentBulkDto.getArabic())
+                .officialEmail(studentBulkDto.getOfficialEmail())
+                .email(studentBulkDto.getEmail())
+                .password(studentBulkDto.getPassword())
+                .studentNumber(studentBulkDto.getStudentNumber())
+                .parentNumber(studentBulkDto.getParentNumber())
+                .classEmail(studentBulkDto.getClassEmail())
+                .className(studentBulkDto.getClassName())
+                .schoolName(studentBulkDto.getSchoolName())
+                .gender(studentBulkDto.getGender())
+                .year(studentBulkDto.getYear())
+                .fees(studentBulkDto.getFees())
+                .firstInstalment(studentBulkDto.getFirstInstalment())
+                .secondInstalment(studentBulkDto.getSecondInstalment())
+                .paymentNotes(studentBulkDto.getPaymentNotes())
+                .build();
     }
 }

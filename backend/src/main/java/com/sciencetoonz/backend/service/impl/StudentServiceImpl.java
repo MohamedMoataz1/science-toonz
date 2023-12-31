@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,6 +101,10 @@ public class StudentServiceImpl implements StudentService {
         }
 
         List<Course> studentCourses = student.getCourses();
+        if (studentCourses == null) {
+            studentCourses = new ArrayList<>();
+            student.setCourses(studentCourses);
+        }
         if (studentCourses.contains(course)){
             throw ApiError.badRequest("Student "+student.getEmail() +" already Assigned to this course before!");
         }
@@ -107,12 +112,6 @@ public class StudentServiceImpl implements StudentService {
         if(course.getNumOfCategories() != sessionsIds.size()) {
             throw ApiError.badRequest("Number of sessions is not accurate to this course");
         }
-
-//        for(int i = 0;i<course.getNumOfCategories();i++) {
-//            if (sessionsIds.get(i) != i+1) {
-//                throw ApiError.badRequest("Arrangement of session categories is not valid!");
-//            }
-//        }
 
         studentCourses.add(course);
         List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
@@ -129,13 +128,17 @@ public class StudentServiceImpl implements StudentService {
                 throw ApiError.badRequest("The Session \""+ session.getDay() + "\" is not related to this course");
             }
         }
-
-        List<Session> sessionList = student.getSessions();
-        boolean hasOverlap = sessions.stream().anyMatch(sessionList::contains);
+        List<Session> studentSessions = student.getSessions();
+        if (studentSessions == null) {
+            studentSessions = new ArrayList<>();
+            student.setSessions(studentSessions);
+        }
+        boolean hasOverlap = sessions.stream().anyMatch(studentSessions::contains);
         if(hasOverlap) {
             throw ApiError.badRequest("There is a session already assigned before");
         }
-        sessionList.addAll(sessions);
+
+        studentSessions.addAll(sessions);
         studentRepo.save(student);
         return sessions.size() + " sessions added to " + student.getFirstName() +
                 " with Course " + course.getName();

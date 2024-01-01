@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface StudentRepo extends JpaRepository<Student,Long> {
+public interface StudentRepository extends JpaRepository<Student,Long> {
 
     public Student findByEmail(String email);
     public List<Student> findAllByCoursesId(Long courseId);

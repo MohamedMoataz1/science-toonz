@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,10 +60,6 @@ public class CourseServiceImpl implements CourseService {
          return courseDtos;
     }
 
-    public Course findByName(String courseName) {
-        return courseRepository.findByName(courseName);
-    }
-
     public Course findById(Long courseId) {
         Optional<Course> course = courseRepository.findById(courseId);
         if (!course.isPresent()) {
@@ -75,15 +70,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDetailsDto findCourseDetailsById(Long courseId) {
-        Optional<Course> c = courseRepository.findById(courseId);
-        if(!c.isPresent()){
+        Optional<Course> savedCourse = courseRepository.findById(courseId);
+        if(!savedCourse.isPresent()){
             throw ApiError.notFound("Course Not found!");
         }
 
-        Course course = c.get();
-
+        Course course = savedCourse.get();
         List<StudentDto> studentDtos = studentService.getStudentsDtoByCourseId(course.getId());
-
         List<StudentWithSessionsDto> studentWithSessionsDtos = studentDtos.stream().map(studentDto -> new StudentWithSessionsDto(
                 studentDto.getId(),
                 studentDto.getSerial(),
@@ -109,7 +102,52 @@ public class CourseServiceImpl implements CourseService {
         )).toList();
 
         List<SessionDto> sessionDtos = sessionService.getSessionsDtoByCourseId(course.getId());
+        CourseDetailsDto courseDetailsDto = new CourseDetailsDto(course.getId(),
+                course.getName(),
+                course.getStartDate(),
+                course.getEndDate(),
+                course.getActive(),
+                course.getNumOfCategories(),
+                course.getMaterialLink(),
+                studentWithSessionsDtos,
+                sessionDtos);
+        return courseDetailsDto;
+    }
 
+    @Override
+    public CourseDetailsDto findCourseDetailsFilteredById(Long courseId) {
+        Optional<Course> savedCourse = courseRepository.findById(courseId);
+        if(!savedCourse.isPresent()){
+            throw ApiError.notFound("Course Not found!");
+        }
+
+        Course course = savedCourse.get();
+        List<StudentDto> studentDtos = studentService.getStudentsDtoByCourseId(course.getId());
+        List<StudentWithSessionsDto> studentWithSessionsDtos = studentDtos.stream().map(studentDto -> new StudentWithSessionsDto(
+                studentDto.getId(),
+                studentDto.getSerial(),
+                studentDto.getFirstName(),
+                studentDto.getFatherName(),
+                studentDto.getLastName(),
+                studentDto.getArabic(),
+                studentDto.getOfficialEmail(),
+                studentDto.getEmail(),
+                studentDto.getPassword(),
+                studentDto.getStudentNumber(),
+                studentDto.getParentNumber(),
+                studentDto.getClassEmail(),
+                studentDto.getClassName(),
+                studentDto.getSchoolName(),
+                studentDto.getGender(),
+                studentDto.getYear(),
+                studentDto.getFees(),
+                studentDto.getFirstInstalment(),
+                studentDto.getSecondInstalment(),
+                studentDto.getPaymentNotes(),
+                sessionService.getFilteredSessionsOfCourseOfStudent(studentDto.getId(),courseId)
+        )).toList();
+
+        List<SessionDto> sessionDtos = sessionService.getSessionsDtoByCourseId(course.getId());
         CourseDetailsDto courseDetailsDto = new CourseDetailsDto(course.getId(),
                 course.getName(),
                 course.getStartDate(),
@@ -139,11 +177,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void save(Course course) {
-        courseRepository.save(course);
-    }
-
-    @Override
     public String deleteCourse(Long courseId) {
         Optional<Course> savedCourse = courseRepository.findById(courseId);
         if(!savedCourse.isPresent()) {
@@ -167,6 +200,76 @@ public class CourseServiceImpl implements CourseService {
                 course.getNumOfCategories(),
                 course.getMaterialLink())).toList();
         return courseDtos;
+    }
+
+
+    @Override
+    public String addStudentToCourseWithSessions(String studentEmail, Long courseId, List<Long> sessionsIds) {
+        Student student = studentService.getStudentByEmail(studentEmail);
+        if(student == null) {
+            throw ApiError.notFound("Student not found!");
+        }
+
+        Course course = findById(courseId);
+        if(course == null) {
+            throw ApiError.notFound("Course not found!");
+        }
+
+        List<Course> studentCourses = student.getCourses();
+        if (studentCourses.contains(course)){
+            throw ApiError.badRequest("Student "+student.getEmail() +" already Assigned to this course before!");
+        }
+
+        if(course.getNumOfCategories() != sessionsIds.size()) {
+            throw ApiError.badRequest("Number of sessions is not accurate to this course");
+        }
+
+        studentCourses.add(course);
+        List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
+        if(sessions.stream().count()==0) {
+            throw ApiError.notFound("No sessions with those ids");
+        }
+
+        if(sessions.size() != sessionsIds.size()) {
+            throw ApiError.notFound("There are sessions could not be found!");
+        }
+
+        for(Session session:sessions) {
+            if (session.getCourse()!=course) {
+                throw ApiError.badRequest("There is a session is not related to this course");
+            }
+        }
+
+        List<Session> studentSessions = student.getSessions();
+        //To check if there is a session assigned to before, but it must never execute
+        boolean hasOverlap = sessions.stream().anyMatch(studentSessions::contains);
+        if(hasOverlap) {
+            throw ApiError.badRequest("There is a session already assigned before");
+        }
+
+        studentSessions.addAll(sessions);
+        studentService.saveStudent(student);
+        return sessions.size() + " sessions added to " + student.getFirstName() +
+                " with Course " + course.getName();
+    }
+
+    @Override
+    public String removeStudentFromCourse(Long studentId, Long courseId) {
+        Student student = studentService.getStudentById(studentId);
+        if(student == null) {
+            throw ApiError.notFound("Student Not Found!");
+        }
+        Course course = findById(courseId);
+
+        if(!course.getStudents().contains(student)) {
+            throw ApiError.notFound("Student is not registered to this course!");
+        }
+
+        course.getStudents().remove(student);
+        System.out.println(sessionService.removeSessionsOfCourseOfStudent(studentId,courseId));
+        courseRepository.save(course);
+        studentService.saveStudent(student);
+        return "Student "+student.getEmail()+" removed from course "+course.getName();
     }
 
     @Override
@@ -206,9 +309,9 @@ public class CourseServiceImpl implements CourseService {
             if (studentService.getStudentByEmail(studentBulkDto.getEmail()) == null) {
                 studentService.addStudent(studentDto);
             }
-            
+
             List<Long> sessionsIds = studentBulkDto.getSessionsId();
-            String status = studentService.addStudentToCourseWithSessions(studentDto.getEmail(), courseId, sessionsIds);
+            String status = addStudentToCourseWithSessions(studentDto.getEmail(), courseId, sessionsIds);
             System.out.println(status);
         }
         return "Students added successfully!";

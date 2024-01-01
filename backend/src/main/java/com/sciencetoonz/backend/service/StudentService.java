@@ -13,11 +13,9 @@ public interface StudentService {
 //    public String addSessionsToStudentsionsToStudent(String studentEmail, List<Long> sessions);
     public List<StudentDto> getStudentsDtoByCourseId(Long courseId);
     public List<Student> getStudentsByCourseId(Long courseId);
-    public String addStudentToCourseWithSessions(String studentEmail, Long courseId, List<Long> sessionsIds);
     public Student getStudentById(Long studentId);
     public Student getStudentByEmail(String studentEmail);
     public void saveStudent(Student student);
-    public String removeStudentFromCourse(Long studentId, Long courseId);
     public StudentDetailsDto getStudentDetails(Long studentId);
     public List<StudentDto> getStudentsWithoutCourse(Long courseId);
     public List<StudentDto> getAllStudents();

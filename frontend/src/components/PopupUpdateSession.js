@@ -16,13 +16,13 @@ const PopupUpdateSession = ({
     link,
     category,
     id,
-    Logo ,
-    headers 
- }) => {
+    Logo,
+    headers
+}) => {
 
 
 
- 
+
     const functiontemp = () => {
         console.log(day);
         console.log(startTime);
@@ -32,15 +32,15 @@ const PopupUpdateSession = ({
         console.log(category);
         console.log("viemolik.com");
         setmodal3(!modal3);
-        const UpdatesData = {day , startTime , endTime , date , link , category }
+        const UpdatesData = { day, startTime, endTime, date, link, category }
         fetch(`http://localhost:8080/api/session/updateCourseSession/${id}`, {
             method: 'PUT',
             body: JSON.stringify(UpdatesData),
             headers: headers,
         })
         window.location.reload();
-        
-        
+
+
 
 
     }
@@ -49,6 +49,7 @@ const PopupUpdateSession = ({
         e.preventDefault(); // Prevent the default form submission behavior
         functiontemp(); // Call your function here
     }
+    console.log(date);
     return (
         <div className="modal">
             <div className="overlay">
@@ -58,7 +59,7 @@ const PopupUpdateSession = ({
                         <button onClick={togglemodal3} className="exit-button">X</button>
                     </div>
 
-                    <form className="add-course-form"  onSubmit={handleFormSubmit}>
+                    <form className="add-course-form" onSubmit={handleFormSubmit}>
                         <h1>Update For Session </h1>
                         <h1>"{day}"</h1>
                         <label >day :</label>
@@ -81,9 +82,15 @@ const PopupUpdateSession = ({
                         <input className="studentpopupinputs" type="text" required value={category} onChange={(e) => setcategory(e.target.value)} />
 
 
-                        <input className="studentpopupinputs" type="date" required value={date} onChange={(e) => setdate(e.target.value)} />
+                        {/* <input className="studentpopupinputs" type="date" required value={date} onChange={(e) => setdate(e.target.value)} /> */}
 
-
+                        <input
+                            className="studentpopupinputs"
+                            type="date"
+                            required
+                            value={date ? new Date(date).toISOString().split('T')[0] : ''}
+                            onChange={(e) => setdate(e.target.value)}
+                        />
                         <button className="addingbutton" >
                             Apply Changes
                         </button>

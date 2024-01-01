@@ -250,7 +250,7 @@ const CourseDetails = () => {
 
     }
     const HandleDeleteStudent = (StudentId) => {
-        fetch(`http://localhost:8080/api/student/${AllDetails.id}/students/${StudentId}`, {
+        fetch(`http://localhost:8080/api/courses/${AllDetails.id}/students/${StudentId}`, {
             method: 'DELETE',
             headers: headers,
         }).then((res) => res.json())

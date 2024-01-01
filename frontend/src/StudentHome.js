@@ -20,7 +20,7 @@ const StudentHome = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/student/getStudentDetails/${studentid}`, {
+                const response = await fetch(`http://localhost:8080/api/students/details/${studentid}`, {
                     headers: headers,
                 });
     

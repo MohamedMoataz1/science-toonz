@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/student")
+@RequestMapping("/api/students")
 public class StudentController {
 
     StudentService studentService;
@@ -20,28 +20,28 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/addStudent")
+    @PostMapping("/")
     public ResponseEntity<String> addStudent(@Valid @RequestBody StudentDto studentDto, Authentication authentication) {
         return ResponseEntity.ok(studentService.addStudent(studentDto));
     }
 
-    @GetMapping("/getStudents/{courseId}")
-    public ResponseEntity<List<StudentDto>> getStudentsByCourseName (@PathVariable("courseId") Long courseId) {
+    @GetMapping("/byCourseId/{courseId}")
+    public ResponseEntity<List<StudentDto>> getStudentsByCourseId (@PathVariable("courseId") Long courseId) {
         List<StudentDto> students = studentService.getStudentsDtoByCourseId(courseId);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("/getStudentDetails/{studentId}")
+    @GetMapping("/details/{studentId}")
     public ResponseEntity<StudentDetailsDto> getStudentDetails(@PathVariable("studentId") Long studentId) {
         return ResponseEntity.ok(studentService.getStudentDetails(studentId));
     }
 
-    @GetMapping("/getStudentsWithoutCourse/{courseId}")
+    @GetMapping("/notInCourse/{courseId}")
     public ResponseEntity<List<StudentDto>> getStudentsWithoutCourse(@PathVariable("courseId") Long courseId) {
         return ResponseEntity.ok(studentService.getStudentsWithoutCourse(courseId));
     }
 
-    @GetMapping("/getAllStudents")
+    @GetMapping("/")
     public ResponseEntity<List<StudentDto>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }

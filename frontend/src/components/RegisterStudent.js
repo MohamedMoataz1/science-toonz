@@ -40,7 +40,7 @@ const RegisterStudent = () => {
         e.preventDefault();
         const Student = { serial, firstName, lastName, fatherName, lastName, arabic, officialEmail, email, password, studentNumber, parentNumber, classEmail, className, schoolName, gender, year, fees, firstInstalment, secondInstalment, paymentNotes }
         console.log(Student);
-        fetch('http://localhost:8080/api/student/addStudent', {
+        fetch('http://localhost:8080/api/students/', {
             method: 'POST',
             body: JSON.stringify(Student),
             headers: headers,

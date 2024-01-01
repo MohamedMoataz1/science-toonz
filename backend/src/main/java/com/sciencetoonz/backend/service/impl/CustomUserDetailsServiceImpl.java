@@ -1,34 +1,32 @@
 package com.sciencetoonz.backend.service.impl;
 
-import com.sciencetoonz.backend.Repository.StudentRepo;
-import com.sciencetoonz.backend.Repository.TeacherRepo;
+import com.sciencetoonz.backend.Repository.StudentRepository;
+import com.sciencetoonz.backend.Repository.TeacherRepository;
 import com.sciencetoonz.backend.model.Student;
-import com.sciencetoonz.backend.model.Teacher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @Service
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
-    private final TeacherRepo teacherRepo;
-    private final StudentRepo studentRepo;
+    private final TeacherRepository teacherRepository;
+    private final StudentRepository studentRepository;
 
-    public CustomUserDetailsServiceImpl(TeacherRepo teacherRepo, StudentRepo studentRepo) {
-        this.teacherRepo = teacherRepo;
-        this.studentRepo = studentRepo;
+    public CustomUserDetailsServiceImpl(TeacherRepository teacherRepository, StudentRepository studentRepository) {
+        this.teacherRepository = teacherRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username.contains("admin")) {
-            return teacherRepo.findByEmail(username);
+            return teacherRepository.findByEmail(username);
         } else {
-            Optional<Student> studentOptional = Optional.ofNullable(studentRepo.findByEmail(username));
+            Optional<Student> studentOptional = Optional.ofNullable(studentRepository.findByEmail(username));
             Student student = studentOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
             Student student1 = Student.builder()
                     .id(student.getId())

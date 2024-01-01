@@ -102,7 +102,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public List<SessionDto> getSessionsOfCourseOfStudent(Long studentId, Long courseId) {
+    public List<SessionDto> getFilteredSessionsOfCourseOfStudent(Long studentId, Long courseId) {
         Student student = studentService.getStudentById(studentId);
         Course course = courseService.findById(courseId);
         if(!course.getStudents().contains(student)) {
@@ -144,6 +144,25 @@ public class SessionServiceImpl implements SessionService {
         sortedSessions.forEach(session -> System.out.println(session.getId() + ": " + session.getDate()));
         System.out.println(sortedSessions.size());
         List<SessionDto> sessionDtos = sortedSessions.stream().map(session -> new SessionDto(session.getId(),
+                session.getDay(),
+                session.getStartTime(),
+                session.getEndTime(),
+                session.getDate(),
+                session.getLink(),
+                session.getCategory())).toList();
+        return sessionDtos;
+    }
+
+    @Override
+    public List<SessionDto> getSessionsOfCourseOfStudent(Long studentId, Long courseId) {
+        Student student = studentService.getStudentById(studentId);
+        Course course = courseService.findById(courseId);
+        if(!course.getStudents().contains(student)) {
+            throw ApiError.notFound("This Student is not registered in this course");
+        }
+        List<Session> sessions = sessionRepository.findByStudentsAndCourseId(student,courseId);
+
+        List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),
                 session.getDay(),
                 session.getStartTime(),
                 session.getEndTime(),

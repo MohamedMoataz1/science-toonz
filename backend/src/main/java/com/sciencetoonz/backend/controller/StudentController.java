@@ -31,20 +31,6 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @PostMapping("/addStudentToCourseWithSessions/{courseId}/{studentEmail}")
-    public ResponseEntity<String> addStudentToCourseWithSessions(@PathVariable("courseId") Long courseId, @PathVariable("studentEmail") String studentEmail,
-                                                     @RequestBody List<Long> sessionsIds) {
-        String success = studentService.addStudentToCourseWithSessions(studentEmail, courseId, sessionsIds);
-        return ResponseEntity.ok(success);
-    }
-
-    @DeleteMapping("/removeStudentFromCourse/{courseId}/{studentId}")
-    public ResponseEntity<String> removeStudentFromCourse(@PathVariable("courseId") Long courseId,
-                                                          @PathVariable("studentId") Long studentId) {
-        String success = studentService.removeStudentFromCourse(studentId, courseId);
-        return ResponseEntity.ok(success);
-    }
-
     @GetMapping("/getStudentDetails/{studentId}")
     public ResponseEntity<StudentDetailsDto> getStudentDetails(@PathVariable("studentId") Long studentId) {
         return ResponseEntity.ok(studentService.getStudentDetails(studentId));

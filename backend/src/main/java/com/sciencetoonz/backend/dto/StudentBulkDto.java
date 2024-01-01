@@ -5,11 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class StudentDto {
+public class StudentBulkDto {
 
     private Long id;
 
@@ -50,4 +51,6 @@ public class StudentDto {
     private long secondInstalment;
 
     private String paymentNotes;
+
+    private List<Long> sessionsId;
 }

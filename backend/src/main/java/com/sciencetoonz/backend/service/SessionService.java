@@ -12,9 +12,9 @@ public interface SessionService {
     public List<SessionDto> getSessionsDtoByCourseId(Long courseId);
     public List<Session> getSessionsByCourseId(Long courseId);
     public List<Session> getSessionsbySessionsIds(List<Long> sessionsIds);
+    public List<SessionDto> getFilteredSessionsOfCourseOfStudent(Long studentId, Long courseId);
     public List<SessionDto> getSessionsOfCourseOfStudent(Long studentId, Long courseId);
     public String addSessionsToStudent(List<Session> sessionList, List<Session> sessions, Student student);
-
     public String updateCourseSession(Long sessionId, SessionDto sessionDto);
     public String removeSessionsOfCourseOfStudent(Long studentId, Long courseId);
     public String updateSessionsOfStudent(Long studentId, long courseId, List<Long> sessionIds);

@@ -143,7 +143,7 @@ const CourseDetails = () => {
             addedSession.endTime += ":00"
             console.log(addedSession);
 
-            const response = await fetch(`http://localhost:8080/api/session/createSession/${AllDetails.id}`, {
+            const response = await fetch(`http://localhost:8080/api/sessions/${AllDetails.id}`, {
                 method: 'POST',
                 body: JSON.stringify(addedSession),
                 headers: headers,
@@ -213,7 +213,7 @@ const CourseDetails = () => {
     }
     const HandleDeleteSession = (SessionID) => {
         console.log(SessionID);
-        fetch(`http://localhost:8080/api/session/deleteSession/${SessionID}`, {
+        fetch(`http://localhost:8080/api/sessions/${SessionID}`, {
             method: 'DELETE',
             headers: headers,
         }).then((res) => res.json())

@@ -36,7 +36,7 @@ const Popupeditstudent = ({ togllemodal4forstudentEdit, showedStudent, Logo, App
             
         }
         console.log(AddedSessionsToStudent);
-        fetch(`http://localhost:8080/api/session/updateSessionsOfStudent/${showedStudent.id}/${AllDetails.id}`, {
+        fetch(`http://localhost:8080/api/sessions/students/${showedStudent.id}/courses/${AllDetails.id}`, {
             method: 'PUT',
             body: JSON.stringify(AddedSessionsToStudent),
             headers: headers,

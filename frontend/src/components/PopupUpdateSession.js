@@ -33,7 +33,7 @@ const PopupUpdateSession = ({
         console.log("viemolik.com");
         setmodal3(!modal3);
         const UpdatesData = { day, startTime, endTime, date, link, category }
-        fetch(`http://localhost:8080/api/session/updateCourseSession/${id}`, {
+        fetch(`http://localhost:8080/api/sessions/${id}`, {
             method: 'PUT',
             body: JSON.stringify(UpdatesData),
             headers: headers,

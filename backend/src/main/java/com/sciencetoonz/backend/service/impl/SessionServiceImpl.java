@@ -43,7 +43,7 @@ public class SessionServiceImpl implements SessionService {
 
         String dayS = session.getDay().substring(0,3).toLowerCase();
         String timeS = session.getStartTime().toString().substring(0,2).toLowerCase();
-        session.setSessionName(course.getName()+dayS+timeS);
+        session.setSessionName(course.getName()+dayS+timeS+course.getName());
         session.setCourse(course);
         Session savedSession = sessionRepository.findBySessionName(session.getSessionName());
         if (savedSession != null) {
@@ -56,6 +56,10 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public List<SessionDto> getSessionsDtoByCourseId(Long courseId) {
+        Course course = courseService.findById(courseId);
+        if(course == null) {
+            throw ApiError.notFound("Course not found!");
+        }
         List<Session> sessions = sessionRepository.findSessionsByCourseId(courseId);
         List<SessionDto> sessionDtos = sessions.stream().map(session -> new SessionDto(session.getId(),session.getDay(), session.getStartTime(),
                 session.getEndTime(),session.getDate(), session.getLink(), session.getCategory())).toList();
@@ -203,6 +207,12 @@ public class SessionServiceImpl implements SessionService {
 
         if(sessions.size() != sessionsIds.size()) {
             throw ApiError.notFound("There are sessions could not be found!");
+        }
+
+        for(Session session:sessions) {
+            if (session.getCourse()!=course) {
+                throw ApiError.badRequest("There is a session is not related to this course");
+            }
         }
 
         List<Session> sessionList = student.getSessions();

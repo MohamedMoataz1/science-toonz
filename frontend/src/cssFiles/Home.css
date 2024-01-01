@@ -1,55 +1,78 @@
+.active {
+    background-color: cornsilk;
+    border-radius: 10%;
+
+}
+
 .back {
     min-height: 100vh;
     background: #a3e7df;
-    
-
-
     display: flex;
     flex-direction: column;
     width: 100%;
+
 }
 
-.embdedbox
-{
+.embdedbox {
     min-height: 90vh;
     width: 95%;
-    margin: 35px auto;
+    margin: 20px auto;
     height: auto;
     overflow: auto;
     overflow: hidden;
     position: relative;
     border-radius: 50px;
-    box-shadow: 0px 0px 1px 0px #00dfc4; 
+    box-shadow: 0px 0px 1px 0px #00dfc4;
     display: flex;
     flex-direction: column;
     border: 1px solid #00dfc4;
     background: #1d2b3a;
 
 }
-    
 
- 
 
-.navbar {
+
+
+/* .navbar {
 
     display: flex;
-    flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-around;
-    margin-bottom: 30px;
-    margin-top: 20px;
-    margin-left: 20px;
+    justify-content: space-between;
+    margin: 35px 50px;
+    width: auto;
+    position: relative;
+   
     
-}
-.logoimage {
+} */
+/* .navbar .menu{
+    display: none;
+    position: absolute;
+    top: 3.75rem;
+    right: 40.5rem;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 2.25rem;
+    height: 2rem;
+    
+
+} */
+/* .navbar .menu span{
+    height: 0.5rem;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0.2rem;
+    margin: 0.1rem;
+
+} */
+
+/* .logoimage {
     width: 12%;
     height: 6%;
     margin-top: 20px;
 
-}
-.buttonlist {
+} */
+/* .buttonlist {
     display: flex;
-    
 
 }
 .navbuttons {
@@ -65,69 +88,80 @@
 .navbuttons:hover {
     
     /* text-decoration: underline; */
-    /* transform: translateY(-5px); */
-    border-radius: 10%;
+/* transform: translateY(-5px); */
+/* border-radius: 10%;
     background-color: cornsilk;
 
+} */
+.navbuttons a:hover {
+    background-color: #172554;
 }
+
 .Logoutbutton {
     background-color: transparent;
     border-color: transparent;
     cursor: pointer;
     font-size: 20px;
-    color:  #00dfc4;
+    color: #00dfc4;
     border-radius: 50px;
     margin-left: 999%;
 }
+
 .Logoutbutton:hover {
-    
+
     text-decoration: underline;
     transform: translateY(-5px);
 
 }
-.Coursesbutton {
+
+*/ .Coursesbutton {
     background-color: transparent;
     border-color: transparent;
     cursor: pointer;
     font-size: 20px;
     padding-right: 100px;
-    color:  coral;
+    color: coral;
 }
+
 .Coursesbutton:hover {
-    
+
     text-decoration: underline;
     transform: translateY(-5px);
 
 }
+
 .hellodr {
     margin-left: 8%;
     background-color: transparent;
     color: cornsilk;
     top: 0;
 }
+
 .hellodr h1 {
     font-size: 100px;
     /* background-color: transparent; */
     /* padding-left: 190px; */
     /* padding-top: 5000px; */
 }
+
 .hellodr h2 {
     font-size: 40px;
     padding: 10px;
 }
 
 .showcourses {
-    
-    
+
+
     display: flex;
     flex-flow: column;
     align-content: start;
-    
 
-    
+
+
 }
+
 .corse-prieview {
-    
+
     height: 200px;
     width: 90%;
     margin-top: 1%;
@@ -142,31 +176,36 @@
     text-align: center;
     text-decoration: none;
     border: 1px solid #00dfc4;
-    
-    
+
+
 }
-.corse-prieview h1{
+
+.corse-prieview h1 {
     font-size: 40px;
     color: #fff;
-} 
-.corse-prieview p{
+}
+
+.corse-prieview p {
     font-size: 25px;
     color: #fff;
 }
-.corse-prieview:hover{
-    
+
+.corse-prieview:hover {
+
     box-shadow: 0px 0px 15px 0px #00dfc4;
     transition: 0.4s;
 
 }
+
 .addCourse {
     height: 200px;
     width: 200px;
-    background-image: url('../images/3307376.png') ;
+    background-image: url('../images/3307376.png');
     background-size: cover;
     background-position: center;
 
 }
+
 .SubmitForm {
     display: flex;
     border: 1px solid black;
@@ -175,6 +214,7 @@
     align-content: center;
 
 }
+
 .Registerinputs {
     border-radius: 5px;
     margin: 10px;
@@ -183,13 +223,15 @@
     padding-left: 20px;
     width: 100%;
     height: 25px;
-    border-color:coral;
+    border-color: coral;
 
 }
+
 .RegisterForm {
     width: 50vh;
-    
+
 }
+
 .Registerbutton {
     margin-bottom: 20px;
     border-radius: 10px;
@@ -205,12 +247,14 @@
     left: 29%;
 
 }
+
 .Registerbutton:hover {
     background-color: #ae796a;
     transition: 0.2s;
 }
+
 .corse-prieview-false {
-    
+
     height: 200px;
     width: 90%;
     margin-top: 1%;
@@ -226,14 +270,238 @@
     text-decoration: none;
     border: 1px solid #00dfc4;
     background-color: darkgray;
-    
-    
+
+
 }
-.corse-prieview-false h1{
+
+.corse-prieview-false h1 {
     font-size: 40px;
     color: #fff;
-} 
-.corse-prieview-false p{
+}
+
+.corse-prieview-false p {
     font-size: 25px;
     color: #fff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    margin: 2%;
+    align-items: center;
+    height: auto;
+    background-color: transparent;
+    color: #fff;
+
+}
+
+.home,
+.register,
+.add-course,
+.show-student {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 2%;
+}
+
+.logout {
+    border: 1px solid #00dfc4;
+    border-radius: 10%;
+    text-decoration: none;
+    margin: 2%;
+    color: white;
+    font-size: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.nav-links :hover {
+    border-radius: 10%;
+    background-color: cornsilk;
+    color: black;
+}
+
+.logo {
+    /* border: 1px solid black; */
+    height: 80%;
+    width: 15%;
+    overflow: hidden;
+    /* Ensures the image doesn't overflow the container */
+
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* or "contain" depending on your preference */
+}
+
+.nav-links {
+    margin-right: 5%;
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    width: 75%;
+}
+
+@media (max-width:1080px) {
+    * {
+        font-size: 0.5rem;
+    }
+
+    .menu-button {
+        display: block !important;
+        position: absolute;
+        left: 40px;
+        
+        
+    }
+
+    .log {
+        display: flex;
+        position: absolute;
+        top: 15px;
+        left: 35px;
+    }
+
+    .logo {
+
+        width: 100%;
+        height: 90%;
+    }
+
+    .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .nav-links{
+        display: none;
+    }
+    .modal-menu{
+        scroll-behavior: none;
+        z-index: 55;
+        display: grid !important;
+        grid-template-columns: 240px 1fr;
+        justify-content: flex-start;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .nav-links-mobile {
+        background-color: #1d2b3a;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-flow: column;
+        width: 240px;
+        height: 100%;
+        padding-top: 30px;
+        gap: 25px;
+        padding-left: 25px;
+    }
+    .nav-links-mobile li {
+        font-size: 22px;
+        list-style: none;
+    }
+    .close-menu
+    {
+        
+        height: 100%;
+        backdrop-filter: blur(2px);
+    }
+
+
+
+    .navbar .menu {
+        display: flex;
+    }
+
+    .navbar {
+
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-around;
+        height: 90px;
+
+    }
+
+    .buttonlist {
+        display: flex;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+
+
+    }
+
+    .logoimage {
+        width: 60%;
+        height: 100%;
+
+    }
+
+    .embdedbox {
+        overflow: auto;
+        height: 100%;
+        margin: 0px;
+        border-radius: 40px;
+        margin: 20px auto;
+        font-size: 1rem;
+        width: 95%;
+        position: static;
+    }
+
+    .embdedbox h1 {
+        font-size: 3.5rem;
+    }
+
+    .embdedbox h2 {
+        font-size: 2.5rem;
+    }
+
+    .embdedbox p {
+        font-size: 2.5rem;
+    }
+
+    .corse-prieview {
+        flex-flow: column;
+        overflow: auto;
+    }
+
+    .date {
+        height: 30%;
+        width: 100%;
+        /* background-color: #ae796a; */
+    }
+
+    .subject {
+        height: 70%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: auto;
+        /* background-color: burlywood; */
+        padding-top: 3rem;
+    }
+
+    .corse-prieview-false {
+        flex-flow: column;
+    }
+}
+
+.menu-button {
+    display: none;
+}
+.modal-menu{
+    display: none;
 }

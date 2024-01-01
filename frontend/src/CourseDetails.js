@@ -20,6 +20,7 @@ import PopupUpdateSession from "./components/PopupUpdateSession";
 import Popupeditstudent from "./components/Popupeditstudent";
 import { useHistory } from 'react-router-dom';
 
+
 const CourseDetails = () => {
     const [AllDetails, setAllDetails] = useState('nothing to show');
     const { id } = useParams();
@@ -339,8 +340,8 @@ const CourseDetails = () => {
                     <button onClick={togglemodal} className="addingbutton">Add Session</button>
                     {modal && <Popupsession date={date} endTime={endTime} startTime={startTime} togglemodal={togglemodal} HandleAddSession={HandleAddSession} setday={setday} setstartTime={setstartTime} setendTime={setendTime} setlink={setlink} setcategory={setcategory} setdate={setdate} Logo={Logo} />}
                 </div>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableContainer component={Paper}  >
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table" >
                         <TableHead>
                             <TableRow className="thead">
                                 <TableCell> </TableCell>

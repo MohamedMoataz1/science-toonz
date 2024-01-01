@@ -1,7 +1,8 @@
 .background {
+    display: none;
     width: 100%;
     height: 100vh;
-    background-color:  #a3e7df;
+    background-color:  #a6b9b4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,15 +25,21 @@
 }
 .sciencetoonzphoto {
     /* border: 1px solid black; */
-    width: 75%;
+    /* background-image: url('../images/ST\ Transparent.png') ; */
+    width: 70%;
     height: 100%;
-    background-image: url('../images/ST\ Transparent.png') ;
-    background-size: 100%;
+    
+    /* background-size: 100%;
     background-position: center;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
     background-color: #1d2b3a;
-    
+      */
+}
+.sciencetoonzphoto img {
+    padding: 7%;
+    width: 100%;
+    height: 100%;
 }
 .loginform {
     /* border: 0.5px solid black;  */
@@ -101,4 +108,65 @@
     color: cornsilk;
     padding: 6px;
     
+}
+@media (max-width:540px ) {
+    .background{
+        background-color: transparent;
+
+    }
+    
+    .form {
+        flex-flow: column;
+        width: 100%;
+        height: 100%;
+        
+        
+    }
+    .sciencetoonzphoto{
+        width: 100%;
+        height: 37%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10%;
+        
+
+    }
+    .sciencetoonzphoto img {
+        width: 100%;
+        height: auto;
+    }
+    .loginform{
+        position: relative;
+        width: 100%;
+        height: auto;
+        
+      
+    }
+    .loginform h1{
+        font-size: 50px;
+        padding: 20px;
+ 
+    }
+    .loginform input[type="text"]{
+        padding: 2%;
+        font-size: large;
+ 
+    }
+    .loginform input[type="password"]{
+        padding: 2%;
+        font-size: large;
+
+    }
+
+    .submit{
+        width: 45%;
+        font-size: 1.8rem;
+
+    }
+    .wrongemaildiv {
+        font-size: 1.8rem;
+
+    }
+
 }

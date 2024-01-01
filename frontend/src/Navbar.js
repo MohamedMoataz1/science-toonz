@@ -1,32 +1,52 @@
 import { Button } from '@mui/material';
 import Logo from './images/ST Transparent.png';
 import { Link, useLocation, useHistory } from 'react-router-dom';
-const Navbar = () => {
+import { ClassNames } from '@emotion/react';
+import { useState } from 'react';
+import { IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import MobileMenu from './components/MobileMenu';
+const Navbar = ({isMobile ,setisMobile ,toggleMenuModal}) => {
     const history = useHistory();
     const loc = useLocation()
+    
     const logoutHandler = (e) => {
         localStorage.removeItem("userToken");
         history.push('/');
     }
+    
     return (
+        <nav className="navbar">
 
-        <div className="navbar">
-            <img src={Logo} alt="LOGO" className='logoimage' />
-            <ul className='buttonlist'>
-                <Link to="/home" className='navbuttons' > Home </Link>
-                <Link to="/home/RegisterStudent" className='navbuttons'> Register Student </Link>
-                <Link to="/home/addcourse" className='navbuttons' tabindex="0" title="AddCourse" >
-                    Create Course
+            <IonMenuButton onClick={toggleMenuModal} class='menu-button'></IonMenuButton>
+            
+            <div className='logo'>
+                <img src={Logo} alt="ScienceToonzLogo" />
+            </div>
+
+            <ul className="nav-links">
+                <Link to="/home" className="home">
+                    <li>Home</li>
                 </Link>
+                <Link to="/home/RegisterStudent" className="register">
+                    <li>Register Student</li>
+                </Link>
+                <Link to="/home/addcourse" className="add-course">
+                    <li>Create Course</li>
+                </Link>
+                <Link to="/home/ShowStudents" className="show-student">
+                    <li>Students</li>
 
-                <Link to = "/home/ShowStudents" className='navbuttons' tabindex="0" >Students</Link>
-                <a onClick={logoutHandler} className='navbuttons'> Logout </a>
-
-
-
+                </Link>
+                <div className="logout" onClick={logoutHandler}>
+                    <li>
+                        Logout
+                    </li>
+                </div>
             </ul>
-        </div>
 
+
+
+        </nav>
     );
 }
 

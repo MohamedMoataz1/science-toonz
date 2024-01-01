@@ -59,8 +59,8 @@ const PopupUpdateSession = ({
                     </div>
 
                     <form className="add-course-form"  onSubmit={handleFormSubmit}>
-                        <h1>Update For Session "{day}"</h1>
-
+                        <h1>Update For Session </h1>
+                        <h1>"{day}"</h1>
                         <label >day :</label>
                         <input className="studentpopupinputs" type="text" value={day} onChange={(e) => setday(e.target.value)} /> <br />
 

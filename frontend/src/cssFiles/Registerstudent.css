@@ -3,11 +3,11 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
-    
+
 }
 
 .body {
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,29 +16,36 @@
 
 
 }
+
 .inputRow {
     display: flex;
     justify-content: space-between;
     width: 100%;
-  }
-  .inputGroup {
+}
+
+.inputGroup {
     flex: 1;
-    margin-right: 10px; /* Adjust the spacing between input groups as needed */
-  }
-  .inputGroup:last-child {
+    margin-right: 10px;
+    /* Adjust the spacing between input groups as needed */
+}
+
+.inputGroup:last-child {
     margin-right: 0;
-  }
+}
 
 .inputBox {
 
     position: relative;
-    width: 370px;
+    width: 32%;
+
 }
+
 .inputGroup {
     position: relative;
     width: 100%;
     margin-bottom: 10px;
-  }
+}
+
 .inputBox input {
 
     width: 100%;
@@ -109,4 +116,25 @@
     background-color: white;
     color: #1d2b3a;
     transition: 0.5s;
+}
+
+@media (max-width:1080px) {
+    .inputBox {
+        width: 77%;
+    }
+    .inputBox input{
+        font-size: 2rem;
+    }
+
+    .inputBox span {
+        font-size: 1.5rem !important;
+    }
+
+    .inputBox input:valid+span,
+    .inputBox input:focus+span{
+        font-size: 0.8rem !important;
+    }
+    .RegisterbuttonS{
+        font-size: 1.5rem;
+    }
 }

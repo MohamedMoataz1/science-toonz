@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import Addcourseimage from './images/3307376.png'
 import { useState } from 'react';
 const CorseList = ({ corses, headers }) => {
-    
-    const [ifShowed,setifShowed] = useState(false); 
+
+    const [ifShowed, setifShowed] = useState(false);
     const HanldeShowing = () => {
         setifShowed(!ifShowed);
 
@@ -16,8 +16,12 @@ const CorseList = ({ corses, headers }) => {
                     .map(course => (
                         <Link to={`/home/course/${course.id}`} className='corse-prieview' tabindex="0" key={course.id} title={course.name}>
 
+                            <div className='subject'>
+
                             <h1> {course.name.toUpperCase()} </h1>
-                            <div>
+                            </div>
+
+                            <div className='date'>
                                 <p>Start Date: {formatDate(course.startDate)}</p>
                                 <p>End Date: {formatDate(course.endDate)}</p>
                             </div>
@@ -28,14 +32,14 @@ const CorseList = ({ corses, headers }) => {
 
 
                     ))}
-            {}
+            { }
             <div onClick={HanldeShowing} className='corse-prieview-false'>
-                {ifShowed === true ?<h1> Unactivate Courses  &#9650; </h1> :<h1> Unactivate Courses &#9660; </h1> }
-                
+                {ifShowed === true ? <h1> Unactivate Courses  &#9650; </h1> : <h1> Unactivate Courses &#9660; </h1>}
+
 
 
             </div>
-            
+
             {ifShowed && corses.filter(course => course.active === false)
                 .map(course => (
                     <Link to={`/home/course/${course.id}`} className='corse-prieview-false' tabindex="0" key={course.id} title={course.name}>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './cssFiles/Login.css';
 import { useHistory } from 'react-router-dom';
 import './cssFiles/Registerstudent.css'
+import sciencetoonzphoto from './images/ST\ Transparent.png'
 
 const Login = () => {
     const [email, setusername] = useState(null);
@@ -61,6 +62,7 @@ const Login = () => {
         <div className="background">
             <div className='form'>
                 <div className='sciencetoonzphoto' >
+                    <img src={sciencetoonzphoto} alt="a7a zizo haynkny" />
 
                 </div>
                 
@@ -85,7 +87,7 @@ const Login = () => {
                         required
                         onChange={(e) => setpassword(e.target.value)}
                     />
-                    <button className='submit'>Submit</button>
+                    <button className='submit'>Login</button>
 
 
                 </form>

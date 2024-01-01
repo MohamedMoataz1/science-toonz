@@ -16,12 +16,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import RegisterStudent from './components/RegisterStudent';
 import ShowStudents from './components/ShowStudents';
-
+import MobileMenu from './components/MobileMenu';
 
 const Home = () => {
 
       
-    
+    const [isMobile, setisMobile] = useState(false);
     const userToken = localStorage.getItem('userToken');
     const userName = localStorage.getItem('userName');
     const [corses, setcorses] = useState(null);
@@ -46,12 +46,23 @@ const Home = () => {
     }, [])
 
 
-
-
+    if (isMobile) {
+        document.body.classList.add('active-modal')
+    }
+    else {
+        document.body.classList.remove('active-modal')
+    }
+    const toggleMenuModal = () => {
+        setisMobile(!isMobile);
+        
+    }
     return (
         <div className="back">
+            {
+                isMobile && <MobileMenu toggleMenuModal={toggleMenuModal}></MobileMenu>
+            }
             <div className="embdedbox">
-                <Navbar />
+                <Navbar isMobile = {isMobile } setisMobile = {setisMobile} toggleMenuModal={toggleMenuModal} />
                 <switch>
                     <Route exact path="/home">
                         <ContentView corses={corses} userName={userName} />

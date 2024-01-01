@@ -22,7 +22,7 @@ const AddCourse = () => {
         e.preventDefault();
         const course = { name ,startDate, endDate,active, numOfCategories, materialLink }
         console.log(JSON.stringify(course));
-        fetch('http://localhost:8080/api/course/createCourse', {
+        fetch('http://localhost:8080/api/courses/', {
             method: 'POST',
             body: JSON.stringify(course),
             headers: headers,

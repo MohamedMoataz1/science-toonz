@@ -89,7 +89,7 @@ const CourseDetails = () => {
     useEffect(() => {
 
         const getall = async () => {
-            await fetch(`http://localhost:8080/api/course/getCourseDetailsById/${id}`, {
+            await fetch(`http://localhost:8080/api/courses/courseDetails/${id}`, {
                 headers: headers,
             })
                 .then((res) => {
@@ -181,7 +181,7 @@ const CourseDetails = () => {
 
         }
         console.log(AddedSessionsToStudent);
-        fetch(`http://localhost:8080/api/student/addStudentToCourseWithSessions/${AllDetails.id}/${AddedEmail}`, {
+        fetch(`http://localhost:8080/api/courses/${AllDetails.id}/students/${AddedEmail}/sessions`, {
             method: 'POST',
             body: JSON.stringify(AddedSessionsToStudent),
             headers: headers,
@@ -250,7 +250,7 @@ const CourseDetails = () => {
 
     }
     const HandleDeleteStudent = (StudentId) => {
-        fetch(`http://localhost:8080/api/student/removeStudentFromCourse/${AllDetails.id}/${StudentId}`, {
+        fetch(`http://localhost:8080/api/student/${AllDetails.id}/students/${StudentId}`, {
             method: 'DELETE',
             headers: headers,
         }).then((res) => res.json())
@@ -281,7 +281,7 @@ const CourseDetails = () => {
         const formattedStartDate = formatDate(AllDetails.startDate);
         const formattedEndDate = formatDate(AllDetails.endDate);
         try {
-            const response = await fetch(`http://localhost:8080/api/course/editCourse/${AllDetails.id}`, {
+            const response = await fetch(`http://localhost:8080/api/courses/${AllDetails.id}`, {
                 method: 'PUT',
                 headers: headers,
                 body: JSON.stringify({

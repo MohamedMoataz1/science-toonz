@@ -31,7 +31,7 @@ const Home = () => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/course/getCourses',
+        fetch('http://localhost:8080/api/courses/',
             {
                 headers: headers,
             })

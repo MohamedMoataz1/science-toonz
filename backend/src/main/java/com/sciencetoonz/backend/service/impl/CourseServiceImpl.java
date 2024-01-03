@@ -215,28 +215,36 @@ public class CourseServiceImpl implements CourseService {
             throw ApiError.notFound("Course not found!");
         }
 
+        if(isEmptyString(student.getSerial()) || isEmptyString(student.getFirstName()) || isEmptyString(student.getFatherName())
+                || isEmptyString(student.getLastName()) || isEmptyString(student.getArabic()) || isEmptyString(student.getOfficialEmail())
+                || isEmptyString(student.getEmail()) || isEmptyString(student.getPassword()) || isEmptyString(String.valueOf(student.getStudentNumber()))
+                || isEmptyString(String.valueOf(student.getParentNumber())) || isEmptyString(student.getClassEmail()) || isEmptyString(student.getGender())
+                || isEmptyString(String.valueOf(student.getYear()))) {
+            throw ApiError.badRequest("Please fill in all required fields (FirstName, LastName, OfficialEmail, StudentNumber, ParentNumber, etc.) of "+student.getEmail());
+        }
+
         List<Course> studentCourses = student.getCourses();
         if (studentCourses.contains(course)){
             throw ApiError.badRequest("Student "+student.getEmail() +" already Assigned to this course before!");
         }
 
         if(course.getNumOfCategories() != sessionsIds.size()) {
-            throw ApiError.badRequest("Number of sessions is not accurate to this course");
+            throw ApiError.badRequest("Number of sessions is not accurate to this course of student "+ studentEmail);
         }
 
         studentCourses.add(course);
         List<Session> sessions = sessionService.getSessionsbySessionsIds(sessionsIds);
         if(sessions.stream().count()==0) {
-            throw ApiError.notFound("No sessions with those ids");
+            throw ApiError.notFound("No sessions with those ids of student "+studentEmail);
         }
 
         if(sessions.size() != sessionsIds.size()) {
-            throw ApiError.notFound("There are sessions could not be found!");
+            throw ApiError.notFound("There are sessions could not be found! student "+studentEmail);
         }
 
         for(Session session:sessions) {
             if (session.getCourse()!=course) {
-                throw ApiError.badRequest("There is a session is not related to this course");
+                throw ApiError.badRequest("There is a session is not related to this course of student "+studentEmail);
             }
         }
 
@@ -244,7 +252,7 @@ public class CourseServiceImpl implements CourseService {
         //To check if there is a session assigned to before, but it must never execute
         boolean hasOverlap = sessions.stream().anyMatch(studentSessions::contains);
         if(hasOverlap) {
-            throw ApiError.badRequest("There is a session already assigned before");
+            throw ApiError.badRequest("There is a session already assigned before of student "+studentEmail);
         }
 
         studentSessions.addAll(sessions);
@@ -318,7 +326,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
 
-
+    private boolean isEmptyString(String str) {
+        return str == null || str.trim().isEmpty();
+    }
 
     private StudentDto buildStudentDto(StudentBulkDto studentBulkDto) {
         return StudentDto.builder()

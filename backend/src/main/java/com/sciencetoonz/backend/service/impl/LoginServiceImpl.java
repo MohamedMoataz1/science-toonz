@@ -34,6 +34,7 @@ public class LoginServiceImpl implements LoginService {
                         loginRequest.getPassword()
                 )
         );
+        System.out.println("password: "+loginRequest.getPassword());
         System.out.println(authentication);
 
         UserDetails user = AuthenticationUser.get(authentication);

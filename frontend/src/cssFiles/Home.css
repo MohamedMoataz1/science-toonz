@@ -298,13 +298,17 @@
 .home,
 .register,
 .add-course,
-.show-student {
+.show-student,
+.merge-courses {
     text-decoration: none;
     color: white;
     font-size: 20px;
     padding: 10px 20px;
     cursor: pointer;
     margin: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .logout {
@@ -316,6 +320,8 @@
     font-size: 20px;
     padding: 10px 20px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 .nav-links :hover {
@@ -341,11 +347,13 @@
 }
 
 .nav-links {
-    margin-right: 5%;
+    margin-right: 2%;
     display: flex;
     justify-content: flex-end;
     list-style: none;
     width: 75%;
+    text-align: center;
+    
 }
 
 @media (max-width:1080px) {

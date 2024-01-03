@@ -37,11 +37,16 @@ const Navbar = ({isMobile ,setisMobile ,toggleMenuModal}) => {
                     <li>Students</li>
 
                 </Link>
+                <Link to="/home/mergecourses" className="merge-courses">
+                    <li>Merge Courses</li>
+                
+                </Link>
                 <div className="logout" onClick={logoutHandler}>
                     <li>
                         Logout
                     </li>
                 </div>
+
             </ul>
 
 

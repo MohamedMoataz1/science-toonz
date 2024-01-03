@@ -17,7 +17,7 @@ import Paper from '@mui/material/Paper';
 import RegisterStudent from './components/RegisterStudent';
 import ShowStudents from './components/ShowStudents';
 import MobileMenu from './components/MobileMenu';
-
+import MergeCourses from './components/MergeCourses';
 const Home = () => {
 
       
@@ -79,6 +79,9 @@ const Home = () => {
                     </Route>
                     <Route exact path="/home/ShowStudents">
                         <ShowStudents />
+                    </Route>
+                    <Route exact path="/home/mergecourses">
+                        <MergeCourses courses={corses}/>
                     </Route>
 
                 </switch>

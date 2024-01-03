@@ -8,7 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import '../cssFiles/CourseDetails.css';
 import PopupShowStudent from "./PopupShowStudent";
-import * as XLSX from "xlsx";
 const ShowStudents = () => {
     const [allStudents, setAllStudents] = useState([]);
     const userToken = localStorage.getItem('userToken');
@@ -18,28 +17,7 @@ const ShowStudents = () => {
     const [searchBy, setsearchBy] = useState('email');
     const [studentsBulkData, setstudentsBulkData] = useState([]);
     console.log(allStudents);
-    const handleFileUpload = (e) => {
-        const reader = new FileReader();
-        reader.readAsBinaryString(e.target.files[0]);
-        reader.onload = (e) => {
-            const data = e.target.result;
-            const workbook = XLSX.read(data,{type:"binary"});
-            const sheetname = workbook.SheetNames[0];
-            const sheet = workbook.Sheets[sheetname];
-            const parsedData = XLSX.utils.sheet_to_json(sheet);
-            const excelStartDate = new Date('1899-12-30');
-        
-        for (let i = 0; i < parsedData.length; i++) {
-            const excelSerialDate = parsedData[i]["First Session"];
-            const dateValue = new Date(excelStartDate.getTime() + excelSerialDate * 24 * 60 * 60 * 1000);
-            parsedData[i]["First Session"] = dateValue;
-        }
-
-        console.log(parsedData);
-        }
-
-
-    }
+   
 
     const togllemodal = (student) => {
         setIfShowed(!IfShowed);
@@ -86,7 +64,7 @@ const ShowStudents = () => {
                         <option value="studentNumber">Student Number</option>
                         <option value="year">Year</option>
                     </select>
-                    <input type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
+                    
                 </div>
                 <div>
 

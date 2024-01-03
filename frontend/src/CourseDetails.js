@@ -19,7 +19,8 @@ import PopupStudents from "./components/PopupStudents";
 import PopupUpdateSession from "./components/PopupUpdateSession";
 import Popupeditstudent from "./components/Popupeditstudent";
 import { useHistory } from 'react-router-dom';
-
+import * as XLSX from "xlsx";
+import Swal from "sweetalert2";
 
 const CourseDetails = () => {
     const [AllDetails, setAllDetails] = useState('nothing to show');
@@ -47,6 +48,282 @@ const CourseDetails = () => {
     const [showButton, setShowButton] = useState(false);
     const history = useHistory();
     const [searchBy, setsearchBy] = useState('email');
+    const [courseCategory, setcourseCategory] = useState();
+    const headers = {
+        Authorization: `Bearer ${userToken}`,
+        'Content-Type': 'application/json',
+    };
+
+    const handleFileUpload = (e) => {
+        const reader = new FileReader();
+        reader.readAsBinaryString(e.target.files[0]);
+        reader.onload = async (e) => {
+            const data = e.target.result;
+            const workbook = XLSX.read(data, { type: "binary" });
+            const sheetname = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetname];
+            const parsedData = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+            let isvalid = true;
+            for (let i = 0; i < parsedData.length; i++) {
+
+
+                // Rename the key "Total Fees" to "fees"
+                if ("Serial" in parsedData[i]) {
+                    parsedData[i]["serial"] = parsedData[i]["Serial"];
+                    delete parsedData[i]["Serial"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("First Name" in parsedData[i]) {
+                    parsedData[i]["firstName"] = parsedData[i]["First Name"];
+                    delete parsedData[i]["First Name"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Fathers Name" in parsedData[i]) {
+                    parsedData[i]["fatherName"] = parsedData[i]["Fathers Name"];
+                    delete parsedData[i]["Fathers Name"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Last Name" in parsedData[i]) {
+                    parsedData[i]["lastName"] = parsedData[i]["Last Name"];
+                    delete parsedData[i]["Last Name"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Arabic" in parsedData[i]) {
+                    parsedData[i]["arabic"] = parsedData[i]["Arabic"];
+                    delete parsedData[i]["Arabic"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Email" in parsedData[i]) {
+                    parsedData[i]["officialEmail"] = parsedData[i]["Email"];
+                    delete parsedData[i]["Email"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("st Email" in parsedData[i]) {
+                    parsedData[i]["email"] = parsedData[i]["st Email"];
+                    delete parsedData[i]["st Email"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Password" in parsedData[i]) {
+                    parsedData[i]["password"] = parsedData[i]["Password"];
+                    delete parsedData[i]["Password"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Students Number:" in parsedData[i]) {
+                    parsedData[i]["studentNumber"] = parsedData[i]["Students Number:"];
+                    delete parsedData[i]["Students Number:"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Parents Number:" in parsedData[i]) {
+                    parsedData[i]["parentNumber"] = parsedData[i]["Parents Number:"];
+                    delete parsedData[i]["Parents Number:"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("GClassroom Email" in parsedData[i]) {
+                    parsedData[i]["classEmail"] = parsedData[i]["GClassroom Email"];
+                    delete parsedData[i]["GClassroom Email"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Name on g classroom" in parsedData[i]) {
+                    parsedData[i]["className"] = parsedData[i]["Name on g classroom"];
+                    delete parsedData[i]["Name on g classroom"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("School Name:" in parsedData[i]) {
+                    parsedData[i]["schoolName"] = parsedData[i]["School Name:"];
+                    delete parsedData[i]["School Name:"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Gender" in parsedData[i]) {
+                    parsedData[i]["gender"] = parsedData[i]["Gender"];
+                    delete parsedData[i]["Gender"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Year" in parsedData[i]) {
+                    parsedData[i]["year"] = parsedData[i]["Year"];
+                    delete parsedData[i]["Year"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("Total Fees" in parsedData[i]) {
+                    parsedData[i]["fees"] = parsedData[i]["Total Fees"];
+                    delete parsedData[i]["Total Fees"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("first instalmment" in parsedData[i]) {
+                    parsedData[i]["firstInstalment"] = parsedData[i]["first instalmment"];
+                    delete parsedData[i]["first instalmment"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("second instalmment" in parsedData[i]) {
+                    parsedData[i]["secondInstalment"] = parsedData[i]["second instalmment"];
+                    delete parsedData[i]["second instalmment"];
+                }
+                else {
+                    isvalid = false;
+                }
+                if ("payment notes" in parsedData[i]) {
+                    parsedData[i]["paymentNotes"] = parsedData[i]["payment notes"];
+                    delete parsedData[i]["payment notes"];
+                }
+                else {
+                    isvalid = false;
+                }
+
+
+
+            }
+            if (isvalid == false) {
+                Swal.fire({
+                    title: "Failed",
+                    text: "sorry file is in wrong format or there is a missing column",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            }
+            else if (Object.keys(parsedData[0]).length != AllDetails.numOfCategories + 19) {
+                Swal.fire({
+                    title: "Failed",
+                    text: "sorry file have wrong number of sessions",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            }
+            else {
+                
+
+                let z = AllDetails.numOfCategories;
+                let temp;
+                let sessionId = [];
+                for (let i = 0; i < parsedData.length; i++) {
+                    // console.log(`Row ${i + 1}:`);
+                    // Iterate through each key-value pair in parsedData[i]
+                    temp = 0;
+                    sessionId = []
+                    for (let key in parsedData[i]) {
+                        if (temp == z) {
+                            break;
+                        }
+                        else {
+                            sessionId.push(parsedData[i][key])
+                            temp += 1;
+                        }
+
+                    }
+
+                    parsedData[i]['sessionsId'] = sessionId;
+
+                }
+
+                for (let i = 0; i < parsedData.length; i++) {
+                    // Assuming AllDetails.numOfCategories is the number of columns to delete
+                    // console.log(` row: ${i}`)
+                    for (let j = 0; j < AllDetails.numOfCategories; j++) {
+                        const keys = Object.keys(parsedData[i]);
+                        const firstKey = keys[0];
+                        delete parsedData[i][firstKey];
+
+                    }
+
+                }
+                // Assuming parsedData is an array of objects
+                for (let i = 0; i < parsedData.length; i++) {
+                    console.log(`Row ${i + 1}:`);
+
+                    // Loop through each key and value in the current row
+                    for (let key in parsedData[i]) {
+                        const value = parsedData[i][key];
+                        console.log(`  ${key}: ${value}`);
+                    }
+                }
+                console.log(JSON.stringify(parsedData));
+                try {
+
+                    const response = await fetch(`http://localhost:8080/api/courses/bulkStudents/1`, {
+                        method: 'POST',
+                        body: JSON.stringify(parsedData),
+                        headers: headers,
+                    });
+
+                    if (!response.ok) {
+                        const responseBody = await response.json();
+
+                        console.error('Failed to post file', responseBody.message);
+                        
+                        Swal.fire({
+                            title: "Failed",
+                            text: `Failed to post file , ${responseBody.message}`,
+                            icon: "error",
+                            confirmButtonText: "OK",
+                        });
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: "Done",
+                        text: "Students assigned to this course succefully",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    }).then(() => {
+                        // Reload the page after the user clicks "OK"
+                        window.location.reload();
+                    });;
+                    
+                } catch (error) {
+                    console.error('Error while upload file:', error);
+                    // Handle the error here, show a message to the user, etc.
+                }
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+        }
+
+
+    }
 
     const AppendSessions = (newsessionid, index) => {
 
@@ -78,10 +355,7 @@ const CourseDetails = () => {
 
 
 
-    const headers = {
-        Authorization: `Bearer ${userToken}`,
-        'Content-Type': 'application/json',
-    };
+
 
 
 
@@ -112,6 +386,7 @@ const CourseDetails = () => {
                     setstudents(data.studentWithSessionsDtos);
                     setSessions(data.sessions);
                     setAddedSessionsToStudent(new Array(data.numOfCategories).fill(0));
+
                 });
 
         };
@@ -443,6 +718,7 @@ const CourseDetails = () => {
                         <option value="studentNumber">Student Number</option>
                         <option value="year">year</option>
                     </select>
+                    <input type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
                 </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">

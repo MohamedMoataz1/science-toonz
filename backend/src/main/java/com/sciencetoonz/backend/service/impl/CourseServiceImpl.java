@@ -209,7 +209,6 @@ public class CourseServiceImpl implements CourseService {
         if(student == null) {
             throw ApiError.notFound("Student not found!");
         }
-
         Course course = findById(courseId);
         if(course == null) {
             throw ApiError.notFound("Course not found!");
@@ -223,11 +222,11 @@ public class CourseServiceImpl implements CourseService {
             throw ApiError.badRequest("Please fill in all required fields (FirstName, LastName, OfficialEmail, StudentNumber, ParentNumber, etc.) of "+student.getEmail());
         }
 
+
         List<Course> studentCourses = student.getCourses();
         if (studentCourses.contains(course)){
             throw ApiError.badRequest("Student "+student.getEmail() +" already Assigned to this course before!");
         }
-
         if(course.getNumOfCategories() != sessionsIds.size()) {
             throw ApiError.badRequest("Number of sessions is not accurate to this course of student "+ studentEmail);
         }
@@ -241,21 +240,23 @@ public class CourseServiceImpl implements CourseService {
         if(sessions.size() != sessionsIds.size()) {
             throw ApiError.notFound("There are sessions could not be found! student "+studentEmail);
         }
+        System.out.println(6);
 
         for(Session session:sessions) {
             if (session.getCourse()!=course) {
                 throw ApiError.badRequest("There is a session is not related to this course of student "+studentEmail);
             }
         }
-
+        System.out.println(7);
         List<Session> studentSessions = student.getSessions();
         //To check if there is a session assigned to before, but it must never execute
         boolean hasOverlap = sessions.stream().anyMatch(studentSessions::contains);
         if(hasOverlap) {
             throw ApiError.badRequest("There is a session already assigned before of student "+studentEmail);
         }
-
+        System.out.println(8);
         studentSessions.addAll(sessions);
+        System.out.println(9);
         studentService.saveStudent(student);
         return sessions.size() + " sessions added to " + student.getFirstName() +
                 " with Course " + course.getName();
@@ -312,13 +313,16 @@ public class CourseServiceImpl implements CourseService {
         }
 
         for (StudentBulkDto studentBulkDto : studentBulkDtos) {
+            System.out.println("student with email: " + studentBulkDto.getEmail());
             StudentDto studentDto = buildStudentDto(studentBulkDto);
 
             if (studentService.getStudentByEmail(studentBulkDto.getEmail()) == null) {
                 studentService.addStudent(studentDto);
             }
-
+            System.out.println("student found "+studentDto.getEmail());
             List<Long> sessionsIds = studentBulkDto.getSessionsId();
+            System.out.println("sessions gotten!");
+            System.out.println(studentBulkDto);
             String status = addStudentToCourseWithSessions(studentDto.getEmail(), courseId, sessionsIds);
             System.out.println(status);
         }

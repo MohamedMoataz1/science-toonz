@@ -7,7 +7,7 @@ const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSess
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/students/notInCourse/2', {
+                const response = await fetch(`http://localhost:8080/api/students/notInCourse/${id}`, {
                     method: 'GET',
                     headers: headers,
                 });
@@ -45,7 +45,7 @@ const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSess
                             <option value="" disabled>Select an email</option>
                             {studentsNotInCourse.map(student => (
                                 <option key={student.id} value={student.email}>
-                                    {student.email}
+                                     {student.email}
                                 </option>
                             ))}
                         </select>

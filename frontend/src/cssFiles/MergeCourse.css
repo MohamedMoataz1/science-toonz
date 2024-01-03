@@ -1,0 +1,33 @@
+.dropdownboxesforcoursetomergeparentdiv {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    height: 10rem;
+    padding-top: 4rem;
+
+
+
+}
+.dropdownboxesforcoursetomerge {
+    border-radius: 5px;
+    margin: 20px;
+    padding: 10px;
+    font-size: 15px ;
+    text-align: center;
+    width: 15rem;
+}
+.dropdownboxesforcoursetomerge option{
+    font-size: 10px;
+    width: 15rem;
+}
+.add-course-form {
+    color: #fff;
+    /* border: 1px solid black; */
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin: 22px;
+    padding: 10px;
+}

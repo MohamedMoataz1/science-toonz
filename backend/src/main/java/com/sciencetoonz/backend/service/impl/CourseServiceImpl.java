@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -293,6 +294,19 @@ public class CourseServiceImpl implements CourseService {
         }
         Course mainCourse = savedMainCourse.get();
         Course deletedCourse = savedDeletedCourse.get();
+
+        if(mainCourse.getNumOfCategories() != deletedCourse.getNumOfCategories()) {
+            throw ApiError.badRequest("Courses don't have the same number of categories. Merge not allowed.");
+        }
+
+        // Check for common students
+        List<Student> commonStudents = mainCourse.getStudents().stream()
+                .filter(student -> deletedCourse.getStudents().contains(student))
+                .collect(Collectors.toList());
+
+        if (!commonStudents.isEmpty()) {
+            throw ApiError.badRequest("Courses have common students. Merge not allowed.");
+        }
         List<Student> students = studentService.getStudentsByCourseId(deletedCourseId);
         List<Session> sessions = sessionService.getSessionsByCourseId(deletedCourseId);
         mainCourse.getSessions().addAll(sessions);

@@ -7,7 +7,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    padding-top: 20px;
 
 
 }
@@ -127,6 +127,7 @@ body.active-modal {
     position: sticky;
     top: 0;
     background-color: #f2f2f2;
+    z-index: 0;
 }
 
 .non-sticky {
@@ -237,7 +238,7 @@ body.active-modal {
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 20px;
-    width: 35%;
+    width: 75%;
 
 }
 
@@ -396,5 +397,102 @@ body.active-modal {
     .SubmitSessionsEdit{
         font-size: 1.71rem;
     } 
+    div:where(.swal2-container).swal2-center > .swal2-popup {
+        /* Your styles go here */
+        /* For example: */
+        background-color: #ffffff;
+        color: #333333;
+        font-size: large;
+        /* Add more styles as needed */
+    }
+    div:where(.swal2-container).swal2-center > .swal2-popup button{
+        /* Your styles go here */
+        /* For example:
+        background-color: #ffffff;
+        color: #333333; */
+        font-size: large;
+        /* Add more styles as needed */
+    }
+    div:where(.swal2-icon).swal2-question.swal2-icon-show {
+        /* Your styles go here */
+        /* For example: */
+        font-size: 10px;
+        color: #4285f4;
+        /* Add more styles as needed */
+    }
+    .header-course{
+        grid-template-columns: 4fr 1fr;
+    }
+    .delete-active-edit-div{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end !important;
     
+    }
+    .delete-active-edit-div button{
+        font-size: 15px;
+        padding: 10%;
+
+        
+    }
+    .addingbutton{
+        margin-top: 10px !important;
+    }
+    .css-i4bv87-MuiSvgIcon-root{
+        font-size: 2.5rem !important;
+    }
+    
+}
+.header-course{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    
+    
+}
+.course-header-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: center;
+    margin-left: 40%;
+    margin-top: 5%;
+}
+.delete-active-edit-div{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+}
+.adding-button-header {
+    margin-bottom: 2px;
+    border-radius: 10px;
+    display: block;
+    font-size: 1.466vw;
+    font-weight: 600;
+    margin-top: 12px;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+    
+
+}
+.adding-button-header-two {
+    margin-bottom: 2px;
+    border-radius: 10px;
+    display: block;
+    font-size: 1.466vw;
+    font-weight: 600;
+    margin-top: 12px;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+
+
+}
+.custom-select:required:invalid {
+    color: rgba(255, 255, 255, 0.25);
+  }
+.css-78trlr-MuiButtonBase-root-MuiIconButton-root{
+    position: static !important;
 }

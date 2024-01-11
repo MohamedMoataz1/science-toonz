@@ -18,9 +18,13 @@ import Popupsession from "./components/popupsession"
 import PopupStudents from "./components/PopupStudents";
 import PopupUpdateSession from "./components/PopupUpdateSession";
 import Popupeditstudent from "./components/Popupeditstudent";
+import PopupEditCourse from "./components/PopupEditCourse";
 import { useHistory } from 'react-router-dom';
 import * as XLSX from "xlsx";
 import Swal from "sweetalert2";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const CourseDetails = () => {
     const [AllDetails, setAllDetails] = useState('nothing to show');
@@ -49,10 +53,87 @@ const CourseDetails = () => {
     const history = useHistory();
     const [searchBy, setsearchBy] = useState('email');
     const [courseCategory, setcourseCategory] = useState();
+    const [modalEditCourse, setmodalEditCourse] = useState(false);
+    const [ForEffectWhenDeleteStudent, setForEffectWhenDeleteStudent] = useState(false);
     const headers = {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json',
     };
+
+    const mapKeysToCamelCase = {
+        "Serial": "serial",
+        "First Name": "firstName",
+        "Fathers Name": "fatherName",
+        "Last Name": "lastName",
+        "Arabic": "arabic",
+        "Email": "officialEmail",
+        "st Email": "email",
+        "Password": "password",
+        "Students Number:": "studentNumber",
+        "Parents Number:": "parentNumber",
+        "GClassroom Email": "classEmail",
+        "Name on g classroom": "className",
+        "School Name:": "schoolName",
+        "Gender": "gender",
+        "Year": "year",
+        "Total Fees": "fees",
+        "first instalmment": "firstInstalment",
+        "second instalmment": "secondInstalment",
+        "payment notes": "paymentNotes"
+    }
+
+    const mapSheetHeader = (sheet, mapper) => {
+        const range = XLSX.utils.decode_range(sheet['!ref']);
+        range.s.r = 0; // Set the start row to 0 (first row)
+        range.e.r = 0; // Set the end row to 0 (first row)
+
+        // Iterate through each cell in the first row and increment its value by one
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            const cellAddress = { c: C, r: range.s.r };
+            const cell_ref = XLSX.utils.encode_cell(cellAddress);
+            if (sheet[cell_ref].v) {
+                const newVal = mapper[sheet[cell_ref].v] || sheet[cell_ref].v;
+                sheet[cell_ref] = { v: newVal, t: "s" }
+            }
+        }
+
+    }
+
+    const getHeaderValues = (sheet) => {
+        const headerValues = [];
+        const range = XLSX.utils.decode_range(sheet['!ref']);
+        range.s.r = 0; // Set the start row to 0 (first row)
+        range.e.r = 0; // Set the end row to 0 (first row)
+
+        // Iterate through each cell in the first row and increment its value by one
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            const cell_address = { c: C, r: range.s.r };
+            const cell_ref = XLSX.utils.encode_cell(cell_address);
+            if (sheet[cell_ref].v) {
+                headerValues.push(sheet[cell_ref].v);
+            }
+        }
+        return headerValues;
+    }
+
+    const validateAllKeysExist = (sheet, mapper) => {
+        const headerValues = getHeaderValues(sheet);
+        let isValid = true;
+        Object.keys(mapper).forEach(key => isValid = headerValues.includes(key));
+        return isValid;
+    }
+
+    const aggregateSessionIds = (parsedData) => {
+        // Get all session columns
+        const sessionsCols = Object.keys(parsedData[0]).filter(o => o.toLowerCase().includes("session"));
+        parsedData.forEach(o => {
+            o.sessionsId = [];
+            sessionsCols.forEach(key => {
+                o.sessionsId.push(o[key]);
+                delete o[key];
+            })
+        })
+    }
 
     const handleFileUpload = (e) => {
         const reader = new FileReader();
@@ -62,149 +143,8 @@ const CourseDetails = () => {
             const workbook = XLSX.read(data, { type: "binary" });
             const sheetname = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetname];
-            const parsedData = XLSX.utils.sheet_to_json(sheet, { defval: "" });
-            let isvalid = true;
-            for (let i = 0; i < parsedData.length; i++) {
+            let isvalid = validateAllKeysExist(sheet, mapKeysToCamelCase);
 
-
-                // Rename the key "Total Fees" to "fees"
-                if ("Serial" in parsedData[i]) {
-                    parsedData[i]["serial"] = parsedData[i]["Serial"];
-                    delete parsedData[i]["Serial"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("First Name" in parsedData[i]) {
-                    parsedData[i]["firstName"] = parsedData[i]["First Name"];
-                    delete parsedData[i]["First Name"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Fathers Name" in parsedData[i]) {
-                    parsedData[i]["fatherName"] = parsedData[i]["Fathers Name"];
-                    delete parsedData[i]["Fathers Name"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Last Name" in parsedData[i]) {
-                    parsedData[i]["lastName"] = parsedData[i]["Last Name"];
-                    delete parsedData[i]["Last Name"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Arabic" in parsedData[i]) {
-                    parsedData[i]["arabic"] = parsedData[i]["Arabic"];
-                    delete parsedData[i]["Arabic"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Email" in parsedData[i]) {
-                    parsedData[i]["officialEmail"] = parsedData[i]["Email"];
-                    delete parsedData[i]["Email"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("st Email" in parsedData[i]) {
-                    parsedData[i]["email"] = parsedData[i]["st Email"];
-                    delete parsedData[i]["st Email"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Password" in parsedData[i]) {
-                    parsedData[i]["password"] = parsedData[i]["Password"];
-                    delete parsedData[i]["Password"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Students Number:" in parsedData[i]) {
-                    parsedData[i]["studentNumber"] = parsedData[i]["Students Number:"];
-                    delete parsedData[i]["Students Number:"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Parents Number:" in parsedData[i]) {
-                    parsedData[i]["parentNumber"] = parsedData[i]["Parents Number:"];
-                    delete parsedData[i]["Parents Number:"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("GClassroom Email" in parsedData[i]) {
-                    parsedData[i]["classEmail"] = parsedData[i]["GClassroom Email"];
-                    delete parsedData[i]["GClassroom Email"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Name on g classroom" in parsedData[i]) {
-                    parsedData[i]["className"] = parsedData[i]["Name on g classroom"];
-                    delete parsedData[i]["Name on g classroom"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("School Name:" in parsedData[i]) {
-                    parsedData[i]["schoolName"] = parsedData[i]["School Name:"];
-                    delete parsedData[i]["School Name:"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Gender" in parsedData[i]) {
-                    parsedData[i]["gender"] = parsedData[i]["Gender"];
-                    delete parsedData[i]["Gender"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Year" in parsedData[i]) {
-                    parsedData[i]["year"] = parsedData[i]["Year"];
-                    delete parsedData[i]["Year"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("Total Fees" in parsedData[i]) {
-                    parsedData[i]["fees"] = parsedData[i]["Total Fees"];
-                    delete parsedData[i]["Total Fees"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("first instalmment" in parsedData[i]) {
-                    parsedData[i]["firstInstalment"] = parsedData[i]["first instalmment"];
-                    delete parsedData[i]["first instalmment"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("second instalmment" in parsedData[i]) {
-                    parsedData[i]["secondInstalment"] = parsedData[i]["second instalmment"];
-                    delete parsedData[i]["second instalmment"];
-                }
-                else {
-                    isvalid = false;
-                }
-                if ("payment notes" in parsedData[i]) {
-                    parsedData[i]["paymentNotes"] = parsedData[i]["payment notes"];
-                    delete parsedData[i]["payment notes"];
-                }
-                else {
-                    isvalid = false;
-                }
-
-
-
-            }
             if (isvalid == false) {
                 Swal.fire({
                     title: "Failed",
@@ -212,117 +152,63 @@ const CourseDetails = () => {
                     icon: "error",
                     confirmButtonText: "OK",
                 });
+                return;
             }
-            else if (Object.keys(parsedData[0]).length != AllDetails.numOfCategories + 19) {
+
+            mapSheetHeader(sheet, mapKeysToCamelCase);
+            const parsedData = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+            console.log("=======================");
+            aggregateSessionIds(parsedData);
+            console.log()
+
+            if (Object.keys(parsedData[0]).length - 1 + parsedData[0]["sessionsId"].length != AllDetails.numOfCategories + 19) {
                 Swal.fire({
                     title: "Failed",
                     text: "sorry file have wrong number of sessions",
                     icon: "error",
                     confirmButtonText: "OK",
                 });
+                return;
             }
-            else {
-                
 
-                let z = AllDetails.numOfCategories;
-                let temp;
-                let sessionId = [];
-                for (let i = 0; i < parsedData.length; i++) {
-                    // console.log(`Row ${i + 1}:`);
-                    // Iterate through each key-value pair in parsedData[i]
-                    temp = 0;
-                    sessionId = []
-                    for (let key in parsedData[i]) {
-                        if (temp == z) {
-                            break;
-                        }
-                        else {
-                            sessionId.push(parsedData[i][key])
-                            temp += 1;
-                        }
+            try {
 
-                    }
+                const response = await fetch(`http://localhost:8080/api/courses/bulkStudents/1`, {
+                    method: 'POST',
+                    body: JSON.stringify(parsedData),
+                    headers: headers,
+                });
 
-                    parsedData[i]['sessionsId'] = sessionId;
+                if (!response.ok) {
+                    const responseBody = await response.json();
 
-                }
-
-                for (let i = 0; i < parsedData.length; i++) {
-                    // Assuming AllDetails.numOfCategories is the number of columns to delete
-                    // console.log(` row: ${i}`)
-                    for (let j = 0; j < AllDetails.numOfCategories; j++) {
-                        const keys = Object.keys(parsedData[i]);
-                        const firstKey = keys[0];
-                        delete parsedData[i][firstKey];
-
-                    }
-
-                }
-                // Assuming parsedData is an array of objects
-                for (let i = 0; i < parsedData.length; i++) {
-                    console.log(`Row ${i + 1}:`);
-
-                    // Loop through each key and value in the current row
-                    for (let key in parsedData[i]) {
-                        const value = parsedData[i][key];
-                        console.log(`  ${key}: ${value}`);
-                    }
-                }
-                console.log(JSON.stringify(parsedData));
-                try {
-
-                    const response = await fetch(`http://localhost:8080/api/courses/bulkStudents/1`, {
-                        method: 'POST',
-                        body: JSON.stringify(parsedData),
-                        headers: headers,
-                    });
-
-                    if (!response.ok) {
-                        const responseBody = await response.json();
-
-                        console.error('Failed to post file', responseBody.message);
-                        
-                        Swal.fire({
-                            title: "Failed",
-                            text: `Failed to post file , ${responseBody.message}`,
-                            icon: "error",
-                            confirmButtonText: "OK",
-                        });
-                        return;
-                    }
+                    console.error('Failed to post file', responseBody.message);
 
                     Swal.fire({
-                        title: "Done",
-                        text: "Students assigned to this course succefully",
-                        icon: "success",
+                        title: "Failed",
+                        text: `Failed to post file , ${responseBody.message}`,
+                        icon: "error",
                         confirmButtonText: "OK",
-                    }).then(() => {
-                        // Reload the page after the user clicks "OK"
-                        window.location.reload();
-                    });;
-                    
-                } catch (error) {
-                    console.error('Error while upload file:', error);
-                    // Handle the error here, show a message to the user, etc.
+                    });
+                    return;
                 }
 
+                Swal.fire({
+                    title: "Done",
+                    text: "Students assigned to this course succefully",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                }).then(() => {
+                    // Reload the page after the user clicks "OK"
+                    window.location.reload();
+                });;
 
-
-
-
-
+            } catch (error) {
+                console.error('Error while upload file:', error);
+                // Handle the error here, show a message to the user, etc.
             }
 
-
-
-
-
-
-
-
         }
-
-
     }
 
     const AppendSessions = (newsessionid, index) => {
@@ -393,7 +279,7 @@ const CourseDetails = () => {
 
         getall();
 
-    }, []);
+    }, [modal3, modal, modal2, ForEffectWhenDeleteStudent]);
 
 
     if (modal || modal2 || modal3 || modal4forstudentEdit) {
@@ -434,7 +320,7 @@ const CourseDetails = () => {
             // Optionally, you can handle the success case here
 
             // Reload the page (though it's better to use React state/props to update UI without a full page reload)
-            window.location.reload();
+            // window.location.reload();
         } catch (error) {
             console.error('Error while adding session:', error);
             // Handle the error here, show a message to the user, etc.
@@ -447,11 +333,10 @@ const CourseDetails = () => {
     const HandleAddStudent = () => {
 
         setmodal2(!modal2);
-        console.log(AddedSessionsToStudent);
         for (let i = 0; i < AddedSessionsToStudent.length; i++) {
             if (AddedSessionsToStudent[i] === 0) {
                 AddedSessionsToStudent.splice(i, 1);
-                i--; // Adjust index after removing an element
+                i--;
             }
 
         }
@@ -467,7 +352,7 @@ const CourseDetails = () => {
                 console.log(AddedSessionsToStudent);
             })
 
-        window.location.reload();
+        // window.location.reload();
 
 
 
@@ -497,6 +382,7 @@ const CourseDetails = () => {
 
             })
         window.location.reload();
+        setForEffectWhenDeleteStudent("update");
 
 
     }
@@ -532,14 +418,14 @@ const CourseDetails = () => {
             .then((data) => {
                 console.log(data);
             })
-        window.location.reload();
+        // window.location.reload();
     }
 
     const togllemodal4forstudentEdit = (student) => {
         setmodal4forstudentEdit(!modal4forstudentEdit);
         setshowedStudent(student);
     }
-    console.log(AllDetails.materialLink);
+
     console.log('Request Payload:', JSON.stringify({
         name: AllDetails.name,
         startDate: AllDetails.startDate,
@@ -591,29 +477,125 @@ const CourseDetails = () => {
         history.push('/home');
         window.location.reload();
     };
-    console.log(AllDetails.active);
+    const handleDeleteCourse = () => {
+
+        Swal.fire({
+            title: 'Delete course?',
+            text: `Are you sure you want to delete "${AllDetails.name}" course?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:8080/api/courses/${AllDetails.id}`, {
+                    method: 'DELETE',
+                    headers: headers,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        // You can handle success here, for example, by updating the UI
+
+                        history.push('/home');
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        // Handle errors here, for example, by displaying an error message
+                        console.error('There was a problem deleting the course:', error);
+                    });
+            };
+        });
+    }
+
+
+    const togglemodalEditCourse = () => {
+        setmodalEditCourse(!modalEditCourse);
+        const theadElement = document.querySelector('.thead'); // Get the .thead element
+        const theadElement2 = document.querySelector('.thead2');
+        if (modalEditCourse) {
+            theadElement.classList.remove('non-sticky'); // Remove the non-sticky class
+            theadElement2.classList.remove('non-sticky2');
+        } else {
+            theadElement.classList.add('non-sticky'); // Add the non-sticky class
+            theadElement2.classList.add('non-sticky2');
+        }
+    }
+    const isValidUrl = (url) => {
+        // Simple URL format check (adjust as needed)
+        const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+        return urlRegex.test(url);
+    };
+
+    // const formattedMaterialLink = isValidUrl(AllDetails.materialLink)
+    //     ? AllDetails.materialLink
+    //     : '#';
+        
+    const handleLinkClick = () => {
+        if (isValidUrl(AllDetails.materialLink)) {
+            window.open(AllDetails.materialLink, '_blank');
+        } else {
+            // Handle invalid link (you can display a message or stay on the same page)
+            console.error('Invalid Link:', AllDetails.materialLink);
+            // Optionally, display an error message or stay on the same page
+            Swal.fire({
+                title: "Invalid Link",
+                text: `'Invalid Link:', ${AllDetails.materialLink}`,
+                icon: "error",
+                confirmButtonText: "OK",
+            });
+            
+        }
+    };
 
     return (
 
 
 
         <div className="Details">
-            <div className="for-adding-button">
+            <div className="header-course">
 
-                <button className="addingbutton" onClick={HandleActivationCourse}>{AllDetails.active ? 'Active' : 'Deactive'}</button>
+                <div className="course-header-details">
+                    <h1>Course Name:  {AllDetails.name}</h1>
+                    <h2>Start Date:  {AllDetails.startDate}</h2>
+                    <h2>end Date:  {AllDetails.endDate}</h2>
+                    {/* <a className="addingbutton" href={AllDetails.materialLink} target="_blank" rel="noopener noreferrer" >  Material Link </a> */}
+                    <a className="addingbutton"  target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
+                        Material Link
+                    </a>
+
+
+                </div>
+                <div>
+                    <div className="delete-active-edit-div">
+
+                        <button className="adding-button-header" onClick={HandleActivationCourse}>{AllDetails.active ? 'Active' : 'Deactive'}</button>
+                        <button className="adding-button-header-two" onClick={handleDeleteCourse}>Delete</button>
+                        <button className="adding-button-header-two" onClick={togglemodalEditCourse}>Edit</button>
+                        {modalEditCourse &&
+
+                            <PopupEditCourse
+                                modalEditCourse={modalEditCourse}
+                                togglemodalEditCourse={togglemodalEditCourse}
+                                Logo={Logo}
+                                AllDetails={AllDetails}
+                                headers={headers}
+
+
+
+
+                            />
+                        }
+                    </div>
+                </div>
             </div>
-
-            <h1>Course Name:  {AllDetails.name}</h1>
-            <h2>Start Date:  {AllDetails.startDate}</h2>
-            <h2>end Date:  {AllDetails.endDate}</h2>
-            <a className="addingbutton" href={AllDetails.materialLink} target="_blank" rel="noopener noreferrer" >  Material Link </a>
-
 
             <div className="sessions-container">
                 <div className="nav-bar-session-details">
                     <h2>sessions : </h2>
                     <button onClick={togglemodal} className="addingbutton">Add Session</button>
-                    {modal && <Popupsession date={date} endTime={endTime} startTime={startTime} togglemodal={togglemodal} HandleAddSession={HandleAddSession} setday={setday} setstartTime={setstartTime} setendTime={setendTime} setlink={setlink} setcategory={setcategory} setdate={setdate} Logo={Logo} />}
+                    {modal && <Popupsession AllDetails={AllDetails} date={date} endTime={endTime} startTime={startTime} togglemodal={togglemodal} HandleAddSession={HandleAddSession} setday={setday} setstartTime={setstartTime} setendTime={setendTime} setlink={setlink} setcategory={setcategory} setdate={setdate} Logo={Logo} />}
                 </div>
                 <TableContainer component={Paper}  >
                     <Table sx={{ minWidth: 650 }} aria-label="simple table" >
@@ -645,10 +627,16 @@ const CourseDetails = () => {
                                     <TableCell >{session.endTime}</TableCell>
                                     <TableCell >{session.link}</TableCell>
                                     <TableCell >
-                                        <button onClick={() => HandleDeleteSession(session.id)}> Delete </button>
+
+                                        <IconButton onClick={() => HandleDeleteSession(session.id)} aria-label="delete" style={{ zIndex: 100 }}>
+                                            <DeleteIcon />
+                                        </IconButton>
                                     </TableCell>
                                     <TableCell >
-                                        <button onClick={() => togglemodal3(session)}> Edit </button>
+                                        <IconButton onClick={() => togglemodal3(session)} aria-label="edit">
+                                            <EditIcon />
+                                        </IconButton>
+                                        {/* <button onClick={() => togglemodal3(session)}> Edit </button> */}
                                         {modal3 &&
 
                                             <PopupUpdateSession
@@ -671,6 +659,7 @@ const CourseDetails = () => {
                                                 setmodal3={setmodal3}
                                                 headers={headers}
                                                 sessionofstudent={sessionofstudent}
+                                                AllDetails={AllDetails}
 
 
                                             />
@@ -778,12 +767,17 @@ const CourseDetails = () => {
 
                                         <TableCell >{Student.studentNumber}</TableCell>
                                         <TableCell>
-                                            <button onClick={() => HandleDeleteStudent(Student.id)} > Delete </button>
+
+                                            <IconButton onClick={() => HandleDeleteStudent(Student.id)} aria-label="delete">
+                                                <DeleteIcon />
+                                            </IconButton>
                                         </TableCell>
 
                                         <TableCell>
-                                            <button onClick={() => togllemodal4forstudentEdit(Student)}> Show </button>
-
+                                            {/* <button onClick={() => togllemodal4forstudentEdit(Student)}> Show </button> */}
+                                            <IconButton onClick={() => togllemodal4forstudentEdit(Student)} aria-label="edit">
+                                                <EditIcon />
+                                            </IconButton>
                                         </TableCell>
 
                                     </TableRow>

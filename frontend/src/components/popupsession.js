@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../cssFiles/Registerstudent.css';
-const Popupsession = ({ endTime,startTime,togglemodal, HandleAddSession, setday, setstartTime, setendTime, setlink, setcategory, setdate, Logo , date }) => {
+const Popupsession = ({ endTime, startTime, togglemodal, HandleAddSession, setday, setstartTime, setendTime, setlink, setcategory, setdate, Logo, date, AllDetails }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFocused2, setIsFocused2] = useState(false);
     const [isFocused3, setIsFocused3] = useState(false);
@@ -89,10 +89,24 @@ const Popupsession = ({ endTime,startTime,togglemodal, HandleAddSession, setday,
                             <span>Session Link</span>
 
 
-                            <input  type="text" required onChange={(e) => setcategory(e.target.value)} />
-                            <span>Session Category</span>
+                            <select
+                                required
+                                defaultValue=""
+                                onChange={(e) => setcategory(e.target.value)}
+                                className="custom-select" 
+                            >
+                                <option disabled value="">
+                                    Session Category
+                                </option>
+                                {[...Array(parseInt(AllDetails.numOfCategories))].map((_, index) => (
+                                    <option key={index + 1} value={index + 1}>
+                                        {index + 1}
+                                    </option>
+                                ))}
+                            </select>
 
-                            
+
+
 
                             {isFocused3 ? (
                                 <input
@@ -114,15 +128,15 @@ const Popupsession = ({ endTime,startTime,togglemodal, HandleAddSession, setday,
                                 />
                             )}
                             <span>Date</span>
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+
+
+
+
+
+
+
+
+
                             <button className="RegisterbuttonS" >
                                 Add Session
                             </button>

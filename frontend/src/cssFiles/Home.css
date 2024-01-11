@@ -273,6 +273,26 @@
 
 
 }
+.corse-prieview-true-active {
+
+    height: 200px;
+    width: 90%;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    border-radius: 45px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 40px;
+    cursor: pointer;
+    /* background-color: rgb(217, 215, 250); */
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #00dfc4;
+    background-color: transparent;
+
+
+}
 
 .corse-prieview-false h1 {
     font-size: 40px;
@@ -280,6 +300,15 @@
 }
 
 .corse-prieview-false p {
+    font-size: 25px;
+    color: #fff;
+}
+.corse-prieview-true-active h1 {
+    font-size: 40px;
+    color: #fff;
+}
+
+.corse-prieview-true-active p {
     font-size: 25px;
     color: #fff;
 }
@@ -504,6 +533,29 @@
 
     .corse-prieview-false {
         flex-flow: column;
+    }
+    div:where(.swal2-container).swal2-center > .swal2-popup {
+        /* Your styles go here */
+        /* For example: */
+        background-color: #ffffff;
+        color: #333333;
+        font-size: large;
+        /* Add more styles as needed */
+    }
+    div:where(.swal2-container).swal2-center > .swal2-popup button{
+        /* Your styles go here */
+        /* For example:
+        background-color: #ffffff;
+        color: #333333; */
+        font-size: large;
+        /* Add more styles as needed */
+    }
+    div:where(.swal2-icon).swal2-question.swal2-icon-show {
+        /* Your styles go here */
+        /* For example: */
+        font-size: 10px;
+        color: #4285f4;
+        /* Add more styles as needed */
     }
 }
 

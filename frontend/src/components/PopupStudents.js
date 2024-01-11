@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSession, Logo, setAddedEmail, AppendSessions, Categories, headers ,AddedEmail}) => {
+const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSession, Logo, setAddedEmail, AppendSessions, Categories, headers, AddedEmail }) => {
 
 
     const [studentsNotInCourse, setStudentsNotInCourse] = useState([]);
@@ -26,7 +26,12 @@ const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSess
         fetchData();
     }, []);
     console.log(studentsNotInCourse);
+    const formatTime = (timeString) => {
 
+        const [hours, minutes] = timeString.split(':');
+        return `${hours}:${minutes}`;
+
+    }
     return (
         <div className="modal">
             <div className="overlay">
@@ -45,7 +50,7 @@ const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSess
                             <option value="" disabled>Select an email</option>
                             {studentsNotInCourse.map(student => (
                                 <option key={student.id} value={student.email}>
-                                     {student.email}
+                                    {student.email}
                                 </option>
                             ))}
                         </select>
@@ -56,7 +61,10 @@ const PopupStudents = ({ Sessions, HandleAddStudent, togglemodal2, id, AddedSess
                                     <option disabled selected>Select Session {index + 1} </option>
                                     {Sessions.map((session) => (
                                         session.category == (index + 1) ?
-                                            <option value={session.id} > {session.day} </option>
+                                            <option value={session.id} >
+                                                {session.day} <br />
+                                                {formatTime(session.startTime)} - {formatTime(session.endTime)}
+                                            </option>
 
                                             : null
 

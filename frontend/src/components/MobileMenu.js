@@ -23,6 +23,10 @@ const MobileMenu = ({toggleMenuModal}) => {
                 <li onClick={toggleMenuModal}>Students</li>
 
             </Link>
+            <Link onClick={toggleMenuModal} to="/home/mergecourses" className="merge-courses">
+                    <li>Merge Courses</li>
+                
+                </Link>
             <div className="logout" onClick={logoutHandler}>
                 <li onClick={toggleMenuModal}>
                     Logout

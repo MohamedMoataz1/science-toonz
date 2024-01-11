@@ -4,14 +4,26 @@ import { useState } from 'react';
 const CorseList = ({ corses, headers }) => {
 
     const [ifShowed, setifShowed] = useState(false);
+    const [ifShowed2, setifShowed2] = useState(false);
     const HanldeShowing = () => {
         setifShowed(!ifShowed);
 
     }
+    const HanldeShowing2 = () => {
+        setifShowed2(!ifShowed2);
+
+    }
+
     return (
 
         <div className='showcourses'>
-            {
+            <div onClick={HanldeShowing2} className='corse-prieview-true-active'>
+                {ifShowed2 === true ? <h1> Active Courses  &#9650; </h1> : <h1> Active Courses &#9660; </h1>}
+
+
+
+            </div>
+            { ifShowed2 &&
                 corses.filter(course => course.active === true)
                     .map(course => (
                         <Link to={`/home/course/${course.id}`} className='corse-prieview' tabindex="0" key={course.id} title={course.name}>
@@ -32,9 +44,9 @@ const CorseList = ({ corses, headers }) => {
 
 
                     ))}
-            { }
+            
             <div onClick={HanldeShowing} className='corse-prieview-false'>
-                {ifShowed === true ? <h1> Unactivate Courses  &#9650; </h1> : <h1> Unactivate Courses &#9660; </h1>}
+                {ifShowed === true ? <h1> Deactivate Courses  &#9650; </h1> : <h1> Deactivate Courses &#9660; </h1>}
 
 
 

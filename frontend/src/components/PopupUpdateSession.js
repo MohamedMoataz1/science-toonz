@@ -17,7 +17,8 @@ const PopupUpdateSession = ({
     category,
     id,
     Logo,
-    headers
+    headers,
+    AllDetails
 }) => {
 
 
@@ -79,8 +80,23 @@ const PopupUpdateSession = ({
 
 
                         <label >category :</label>
-                        <input className="studentpopupinputs" type="text" required value={category} onChange={(e) => setcategory(e.target.value)} />
 
+
+                        <select
+                            required
+                            defaultValue={category}
+                            onChange={(e) => setcategory(e.target.value)}
+                            className="studentpopupinputs"
+                        >
+                            <option disabled>{category}</option>
+                            {[...Array(parseInt(AllDetails.numOfCategories))].map((_, index) =>
+                                category !== index + 1 ? (
+                                    <option key={index + 1} value={index + 1}>
+                                        {index + 1}
+                                    </option>
+                                ) : null
+                            )}
+                        </select>
 
                         {/* <input className="studentpopupinputs" type="date" required value={date} onChange={(e) => setdate(e.target.value)} /> */}
 
